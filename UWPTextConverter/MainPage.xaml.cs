@@ -86,6 +86,13 @@ namespace UWPTextConverter
                     picker.SuggestedStartLocation = PickerLocationId.Desktop;
 
                     StorageFile file = await picker.PickSaveFileAsync();
+                    if (file != null)
+                    {
+                        CachedFileManager.DeferUpdates(file);
+                        var a = await package.GetAsByteArrayAsync();
+                        await FileIO.WriteBytesAsync(file, a);                        
+                        FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+                    }
                 }
             }
         }
