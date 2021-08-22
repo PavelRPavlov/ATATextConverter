@@ -8,6 +8,7 @@ using System.Xml;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.Storage.Provider;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -68,15 +69,30 @@ namespace UWPTextConverter
                 {
                     int dataStartRow;
                     ExcelWorksheet defaultSheet = this.CreateWorkSheet(package, group.Key, out dataStartRow);
-
+                    defaultSheet.DefaultColWidth = 30;
+                    defaultSheet.Column(3).Width = 15;
+                    defaultSheet.Column(4).Width = 70;
                     foreach (Detail detail in group)
                     {
-                        defaultSheet.Cells[$"A{dataStartRow}"].Value = detail.Height;
-                        defaultSheet.Cells[$"B{dataStartRow}"].Value = detail.Width;
-                        defaultSheet.Cells[$"C{dataStartRow}"].Value = detail.Quantity;
-                        defaultSheet.Cells[$"D{dataStartRow}"].Value = string.Format("{0} {1}; {2}", detail.LoniraEgdes, detail.Hint, detail.Description);
+                        var cellA = defaultSheet.Cells[$"A{dataStartRow}"];
+                        cellA.Value = detail.Height;
+                        cellA.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                        var cellB = defaultSheet.Cells[$"B{dataStartRow}"];
+                        cellB.Value = detail.Width;
+                        cellB.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                        var cellC = defaultSheet.Cells[$"C{dataStartRow}"];
+                        cellC.Value = detail.Quantity;
+                        cellC.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                        var cellD = defaultSheet.Cells[$"D{dataStartRow}"];
+                        cellD.Value = string.Format("{0} {1}; {2}", detail.LoniraEgdes, detail.Hint, detail.Description);
+                        cellD.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+
                         dataStartRow++;
                     }
+
                     var filePath = DateTime.Now.ToString("yyy-MM-dd") + "_ATAFurniture_" + group.Key;
 
                     var picker = new FileSavePicker();
@@ -135,6 +151,7 @@ namespace UWPTextConverter
             using (var templateReader = XmlReader.Create(templateDirPath))
             {
                 templateReader.Read();
+
                 // Create default sheettemplateReader.ReadToDescendant(XmlRootNodeName))
                 var sheetName = templateReader.GetAttribute(NameAttribute);
                 package.Workbook.Worksheets.Add(sheetName);
@@ -162,6 +179,8 @@ namespace UWPTextConverter
                             }
                             var cell = defaultSheet.Cells[cellName];
                             cell.Value = val;
+
+                            // we use fixed width (ExcelWorksheet.DefaultColWidth) because this method throws exception under UWP
                             //cell.AutoFitColumns();
                         }
                     }
