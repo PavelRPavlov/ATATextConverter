@@ -3,8 +3,8 @@
   <PropertyGroup>
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>False</AppxShowAllApps>
-    <AppxBuildConfigurationSelection>x64</AppxBuildConfigurationSelection>
-    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
+    <AppxBuildConfigurationSelection>x86|x64</AppxBuildConfigurationSelection>
+    <PackageOptionalProjectsInIdeBuilds>True</PackageOptionalProjectsInIdeBuilds>
     <ProjectView>ShowAllFiles</ProjectView>
     <Source>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</Source>
     <SmallTileSource>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</SmallTileSource>

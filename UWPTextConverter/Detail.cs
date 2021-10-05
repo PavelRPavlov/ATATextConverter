@@ -5,14 +5,14 @@
         public double Width;
         public double Height;
         public int Quantity;
+        public int CuttingNumber;
         public string Material;
-        public string Hint;
+        public string Cabinet;
         public bool IsGrainDirectionReversed;
         public bool HasLeftEdge;
         public bool HasTopEdge;
         public bool HasRightEdge;
         public bool HasBottomEdge;
-        public string Description;
         public string LoniraEgdes
         {
             get
@@ -21,19 +21,19 @@
             }
         }
 
-        public Detail(double height, double width, int quantity, string material, bool isGrainDirectionReversed, string hint, bool hasTopEdge, bool hasBottomEdge, bool hasRightEdge, bool hasLeftEdge, string description)
+        public Detail(double height, double width, int quantity, string material, bool isGrainDirectionReversed, bool hasTopEdge, bool hasBottomEdge, bool hasRightEdge, bool hasLeftEdge, string cabinet, int cuttingNumber)
         {
             this.Height = height;
             this.Width = width;
             this.Quantity = quantity;
             this.Material = material;
             this.IsGrainDirectionReversed = isGrainDirectionReversed;
-            this.Hint = hint;
             this.HasLeftEdge = hasLeftEdge;
             this.HasTopEdge = hasTopEdge;
             this.HasRightEdge = hasRightEdge;
             this.HasBottomEdge = hasBottomEdge;
-            this.Description = description;
+            this.Cabinet = cabinet;
+            this.CuttingNumber = cuttingNumber;
 
             if (this.IsGrainDirectionReversed)
             {

@@ -87,7 +87,7 @@ namespace UWPTextConverter
                         cellC.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
                         var cellD = defaultSheet.Cells[$"D{dataStartRow}"];
-                        cellD.Value = string.Format("{0} {1}; {2}", detail.LoniraEgdes, detail.Hint, detail.Description);
+                        cellD.Value = string.Format("{0}; {1} {2}", detail.LoniraEgdes, detail.Cabinet, detail.CuttingNumber);
                         cellD.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
 
                         dataStartRow++;
@@ -130,12 +130,12 @@ namespace UWPTextConverter
                     int.Parse(separateParameters[2]),
                     separateParameters[3],
                     int.Parse(separateParameters[4]) == 1,
-                    separateParameters[5],
+                    int.Parse(separateParameters[5]) == 1,
                     int.Parse(separateParameters[6]) == 1,
                     int.Parse(separateParameters[7]) == 1,
                     int.Parse(separateParameters[8]) == 1,
-                    int.Parse(separateParameters[9]) == 1,
-                    separateParameters[10]
+                    separateParameters[9],
+                    int.Parse(separateParameters[10])
                     );
                 details.Add(detail);
             }
