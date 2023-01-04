@@ -8,3 +8,12 @@ To properly implement the conversion, this converter requires the exporting feat
 To apply the expected Polyboard settings, navigate to **Settings** -> **Export settings** -> **Export format**
 
 In the **Values** field enter the following string: **width;height;count;name**
+
+# How to use the converter
+1. Create Polyboard workspace and create the desired design
+1. Make sure you name the separate cabinets and properly add edge bending
+1. Export the workspace as text with the beforementioned settings
+1. Save the text file
+1. Open the ATATextConverter app
+1. Drop the Polyboard text file into the app
+1. Save the newly generated excel files

@@ -1,1 +1,0 @@
-MainPackage=D:\work\ATATextConverter\UWPTextConverter\bin\x86\Release\UWPTextConverter_1.1.9.0_x86.msix
