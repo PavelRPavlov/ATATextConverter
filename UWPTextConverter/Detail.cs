@@ -13,33 +13,27 @@
         public bool HasTopEdge;
         public bool HasRightEdge;
         public bool HasBottomEdge;
-        public string LoniraEgdes
-        {
-            get
-            {
-                return this.CreateLoniraEdges();
-            }
-        }
+        public string LoniraEgdes =>  CreateLoniraEdges();
 
         public Detail(double height, double width, int quantity, string material, bool isGrainDirectionReversed, bool hasTopEdge, bool hasBottomEdge, bool hasRightEdge, bool hasLeftEdge, string cabinet, int cuttingNumber)
         {
-            this.Height = height;
-            this.Width = width;
-            this.Quantity = quantity;
-            this.Material = material;
-            this.IsGrainDirectionReversed = isGrainDirectionReversed;
-            this.HasLeftEdge = hasLeftEdge;
-            this.HasTopEdge = hasTopEdge;
-            this.HasRightEdge = hasRightEdge;
-            this.HasBottomEdge = hasBottomEdge;
-            this.Cabinet = cabinet;
-            this.CuttingNumber = cuttingNumber;
+            Height = height;
+            Width = width;
+            Quantity = quantity;
+            Material = material;
+            IsGrainDirectionReversed = isGrainDirectionReversed;
+            HasLeftEdge = hasLeftEdge;
+            HasTopEdge = hasTopEdge;
+            HasRightEdge = hasRightEdge;
+            HasBottomEdge = hasBottomEdge;
+            Cabinet = cabinet;
+            CuttingNumber = cuttingNumber;
 
-            if (this.IsGrainDirectionReversed)
+            if (IsGrainDirectionReversed)
             {
-                var temp = this.Width;
-                this.Width = this.Height;
-                this.Height = temp;
+                var temp = Width;
+                Width = Height;
+                Height = temp;
             }
         }
 
@@ -48,40 +42,40 @@
             int longEdgeCount = 0;
             int shortEdgeCount = 0;
 
-            if (this.Width >= this.Height)
+            if (Width >= Height)
             {
-                if (this.HasLeftEdge)
+                if (HasLeftEdge)
                 {
                     shortEdgeCount++;
                 }
-                if (this.HasTopEdge)
+                if (HasTopEdge)
                 {
                     longEdgeCount++;
                 }
-                if (this.HasRightEdge)
+                if (HasRightEdge)
                 {
                     shortEdgeCount++;
                 }
-                if (this.HasBottomEdge)
+                if (HasBottomEdge)
                 {
                     longEdgeCount++;
                 }
             }
             else
             {
-                if (this.HasLeftEdge)
+                if (HasLeftEdge)
                 {
                     longEdgeCount++;
                 }
-                if (this.HasTopEdge)
+                if (HasTopEdge)
                 {
                     shortEdgeCount++;
                 }
-                if (this.HasRightEdge)
+                if (HasRightEdge)
                 {
                     longEdgeCount++;
                 }
-                if (this.HasBottomEdge)
+                if (HasBottomEdge)
                 {
                     shortEdgeCount++;
                 }

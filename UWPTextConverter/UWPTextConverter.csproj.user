@@ -4,7 +4,7 @@
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>False</AppxShowAllApps>
     <AppxBuildConfigurationSelection>x86</AppxBuildConfigurationSelection>
-    <PackageOptionalProjectsInIdeBuilds>True</PackageOptionalProjectsInIdeBuilds>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
     <ProjectView>ShowAllFiles</ProjectView>
     <Source>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</Source>
     <SmallTileSource>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</SmallTileSource>
@@ -15,5 +15,8 @@
     <SplashScreenSource>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</SplashScreenSource>
     <PackageLogoSource>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</PackageLogoSource>
     <BadgeLogoSource>D:\work\ATATextConverter\UWPTextConverter\Assets\600x600.jpg</BadgeLogoSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
 </Project>
