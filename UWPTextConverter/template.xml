@@ -4,6 +4,7 @@
     <cell name="B1" value="АТА Фърничър ЕООД"/>
     <cell name="A2" value="Телефон за връзка"/>
     <cell name="B2" value="0898 72 17 48"/>
+
     <cell name="A3" value="Материал"/>
     <cell name="materialNameCell" value="B3"/>
     
