@@ -6,7 +6,7 @@
 # To configure this workflow:
 # 1. Set up the following secrets in your repository:
 #   - AZURE_FUNCTIONAPP_PUBLISH_PROFILE
-# 2. Change env variables for your configuration.
+# 2. Change env variables for your configuration. 
 #
 # For more information on:
 #   - GitHub Actions for Azure: https://github.com/Azure/Actions
