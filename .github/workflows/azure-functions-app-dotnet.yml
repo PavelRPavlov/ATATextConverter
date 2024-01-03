@@ -21,6 +21,7 @@ name: Deploy DotNet project to Azure Function App
 on:
   push:
     branches: ["main"]
+    paths: ATAFurniture.Functions/**
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'atafurniture-functions'   # set this to your function app name on Azure
