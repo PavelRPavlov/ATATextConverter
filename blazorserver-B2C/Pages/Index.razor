@@ -1,0 +1,17 @@
+﻿@page "/"
+
+<h1>This is the index page</h1>
+
+<h2>Below are the claims for the current user</h2>
+<AuthorizeView>
+    <UserClaims/>
+</AuthorizeView>
+
+@code {
+    [Inject] private ILogger<Index> Logger { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Logger.LogInformation("Index page initialized");
+    }
+}
