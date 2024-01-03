@@ -16,7 +16,7 @@
 #
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples/tree/master/FunctionApp
 
-name: Deploy DotNet project to Azure Function App
+name: Deploy Azure Function App
 
 on:
   push:
@@ -24,6 +24,7 @@ on:
       - main
     paths:
       - 'ATAFurniture.Functions/**'
+  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'atafurniture-functions'   # set this to your function app name on Azure
