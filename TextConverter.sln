@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPTextConverter", "UWPText
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAFurniture.Server", "ATAFurniture.Server\ATAFurniture.Server.csproj", "{F17FA230-5244-418B-BBFA-F2F62799B0DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAFurniture.Functions", "ATAFurniture.Functions\ATAFurniture.Functions.csproj", "{67905BE2-3475-46E8-A4F3-B59BA9D9521E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAFurniture.Functions", "ATAFurniture.Functions\ATAFurniture.Functions.csproj", "{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}"
 EndProject
 Global
@@ -35,14 +33,6 @@ Global
 		{F17FA230-5244-418B-BBFA-F2F62799B0DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F17FA230-5244-418B-BBFA-F2F62799B0DA}.Release|x86.ActiveCfg = Release|Any CPU
 		{F17FA230-5244-418B-BBFA-F2F62799B0DA}.Release|x86.Build.0 = Release|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Debug|x86.Build.0 = Debug|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Release|x86.ActiveCfg = Release|Any CPU
-		{67905BE2-3475-46E8-A4F3-B59BA9D9521E}.Release|x86.Build.0 = Release|Any CPU
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Debug|x86.ActiveCfg = Debug|Any CPU
