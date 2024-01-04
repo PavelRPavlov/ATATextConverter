@@ -2,7 +2,7 @@
   "profiles": {
     "ATAFurniture.Functions": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7211",
+      "commandLineArgs": "--port 7267",
       "launchBrowser": false
     }
   }

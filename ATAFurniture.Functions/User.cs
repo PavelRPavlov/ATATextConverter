@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ATAFurniture.Server.Models;
+namespace ATAFurniture.Functions;
 
 public class User
 {
@@ -11,15 +11,27 @@ public class User
     public string PartitionKey { get; init; }
     public string Name { get; init; }
     public string Email { get; init; }
-    public int CreditsCount { get; init; }
+    public string CreditsCount { get; private set; }
 
-    public User(string aadId, string name, string email, int credits = 0)
+    public User()
+    {
+        
+    }
+
+    public User(string aadId, string name, string email, string credits)
     {
         PartitionKey = PARTITION_KEY;
         Id = aadId;
         Name = name;
         Email = email;
         CreditsCount = credits;
+    }
+    
+    public void AddCredits(int credits)
+    {
+        var creditsCount = int.Parse(CreditsCount);
+        creditsCount += credits;
+        CreditsCount = creditsCount.ToString();
     }
 
     public override string ToString()

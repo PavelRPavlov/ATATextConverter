@@ -6,9 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.IdentityModel.Tokens.Jwt;
+using ATAFurniture.Server.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
-using Models;
 
 namespace ATAFurniture.Server;
 
