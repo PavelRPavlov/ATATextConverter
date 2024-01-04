@@ -36,7 +36,7 @@ public class UserClaimsBase : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await GetClaimsPrincipalData();
-        //secretValue = await ReadSecret();
+        secretValue = await ReadSecret();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -92,7 +92,7 @@ public class UserClaimsBase : ComponentBase
                     new DefaultAzureCredentialOptions
                     {
                         // TODO: this should be assigned by Terraform at deployment time
-                        ManagedIdentityClientId = "6e75764a-32c1-4337-8e9a-46b919229090"
+                        ManagedIdentityClientId = "5f996b60-56be-415b-b6b3-442400bc6c3f"
                     }),
                 options);
         }
