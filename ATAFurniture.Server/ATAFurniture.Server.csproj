@@ -4,6 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>aspnet-BlazorServer-262E896B-5298-4EF8-8C09-D6328097A1E7</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
+    <Company>ATAFurniture.Server</Company>
+    <Product>ATAFurniture.Server</Product>
+    <AssemblyName>ATAFurniture.Server</AssemblyName>
+    <RootNamespace>ATAFurniture.Server</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

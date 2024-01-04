@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
-namespace blazorserver_B2C
+namespace ATAFurniture.Server
 {
     public class Startup
     {

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace blazorserver_B2C.Components
+namespace ATAFurniture.Server.Components
 {
     /// <summary>
     /// Base class for UserClaims component.

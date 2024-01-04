@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace blazorserver_B2C
+namespace ATAFurniture.Server
 {
     public class Program
     {

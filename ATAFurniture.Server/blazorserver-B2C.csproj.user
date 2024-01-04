@@ -5,6 +5,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>BlazorServer</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\az\Downloads\ms-identity-blazor-server-main\WebApp-OIDC\B2C\blazorserver-B2C\Properties\PublishProfiles\atafurniture-app - Zip Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\work\ata\ATATextConverter\blazorserver-B2C\Properties\PublishProfiles\atafurniture-app - Zip Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

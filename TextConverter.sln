@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPTextConverter", "UWPTextConverter\UWPTextConverter.csproj", "{DA71769E-2EDF-40DA-A38D-257F75EE8E3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "blazorserver-B2C", "blazorserver-B2C\blazorserver-B2C.csproj", "{F17FA230-5244-418B-BBFA-F2F62799B0DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAFurniture.Server", "ATAFurniture.Server\ATAFurniture.Server.csproj", "{F17FA230-5244-418B-BBFA-F2F62799B0DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAFurniture.Functions", "ATAFurniture.Functions\ATAFurniture.Functions.csproj", "{67905BE2-3475-46E8-A4F3-B59BA9D9521E}"
 EndProject
