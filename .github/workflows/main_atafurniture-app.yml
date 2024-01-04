@@ -3,16 +3,16 @@
 
 name: Deploy Azure Web App
 
-env:
-  BUILD_FOLDER_PATH: 'ATAFurniture.Server/**'
-
 on:
   push:
     branches:
       - main
     paths:
-      - ${{ env.BUILD_FOLDER_PATH }}
+      - 'ATAFurniture.Server/**'
   workflow_dispatch:
+
+env:
+  BUILD_FOLDER_PATH: 'ATAFurniture.Server/**'
 
 jobs:
   build:
