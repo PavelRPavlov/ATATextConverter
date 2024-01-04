@@ -8,6 +8,7 @@ using Microsoft.Identity.Web.UI;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
+using Models;
 
 namespace ATAFurniture.Server;
 
@@ -31,7 +32,9 @@ public class Startup
         JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
         // Configuration to sign-in users with Azure AD B2C.
-        services.AddMicrosoftIdentityWebAppAuthentication(Configuration); 
+        services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
+
+        services.Configure<CosmosDbConfiguration>(Configuration.GetSection("CosmosDb"));
 
         services.AddHttpContextAccessor();
             

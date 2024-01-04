@@ -1,4 +1,7 @@
-﻿@inherits UserClaimsBase
+﻿@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Options
+@using Models
+@inherits UserClaimsBase
 <AuthorizeView>
     <h4>
         @context.User.Identity.Name has successfully signed-in
@@ -35,6 +38,9 @@
 
 @code {
 
+    [Inject]
+    IOptions<CosmosDbConfiguration> CosmosDbConfigValue { get; set; }
+    
     private CosmosClient cosmosClient = null;
     private Database database = null;
     private CosmosContainer container = null;
@@ -48,17 +54,17 @@
 
     private async Task EnsureDatabaseContainer()
     {
+        var cosmosConfig = CosmosDbConfigValue.Value;
         cosmosClient ??= new CosmosClient(
-            "https://atafurniture-db.documents.azure.com:443/",
-            "Jf3mB7yRWPGEEwq6KpVhtm91BupvGfybSY5Gs3iZUSBaRMlqQOJFzavaSMQz9MBzC9syo7XCMe7jACDbjZ4sVw==",
+            cosmosConfig.EndpointUri,
+            cosmosConfig.PrimaryKey,
             new CosmosClientOptions()
             { 
                 ApplicationName = "ATAFurniture Converter" 
             });
-        this.database ??= await this.cosmosClient.CreateDatabaseIfNotExistsAsync("ConverterApp");
-        Console.WriteLine("Created Database: {0}\n", this.database.Id);
-        this.container ??= await this.database.CreateContainerIfNotExistsAsync("ConverterUsersContainer", "/partitionKey", 400);
-        Console.WriteLine("Created Container: {0}\n", this.container.Id);
+        this.database ??= await this.cosmosClient.CreateDatabaseIfNotExistsAsync(cosmosConfig.DatabaseId);
+
+        this.container ??= await this.database.CreateContainerIfNotExistsAsync(cosmosConfig.UserContainerId, "/partitionKey", 400);
     }
 
     protected async void ReadUser()
@@ -75,6 +81,7 @@
             ;
         }
         userInDb = userResponse?.Resource;
+        StateHasChanged();
     }
 
     protected async void SaveUser()
