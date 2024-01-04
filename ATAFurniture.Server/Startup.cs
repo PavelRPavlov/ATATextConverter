@@ -8,8 +8,6 @@ using Microsoft.Identity.Web.UI;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace ATAFurniture.Server;
 

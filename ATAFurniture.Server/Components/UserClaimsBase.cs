@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace ATAFurniture.Server.Components;
 
@@ -24,6 +26,9 @@ public class UserClaimsBase : ComponentBase
 
     [Inject]
     private ILogger<UserClaimsBase> _logger { get; set; }
+    
+    [Inject]
+    IConfiguration Configuration { get; set; }
 
     protected string secretValue;
 
@@ -92,7 +97,7 @@ public class UserClaimsBase : ComponentBase
                     new DefaultAzureCredentialOptions
                     {
                         // TODO: this should be assigned by Terraform at deployment time
-                        ManagedIdentityClientId = "5f996b60-56be-415b-b6b3-442400bc6c3f"
+                        ManagedIdentityClientId = Configuration.GetSection("ManagedIdentityClientId").Value,
                     }),
                 options);
         }
