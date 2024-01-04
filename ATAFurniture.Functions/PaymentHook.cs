@@ -28,7 +28,7 @@ public class PaymentHook
     }
 
     [Function("PaymentHook")]
-    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var userIdString = req.Query["id"];
@@ -47,14 +47,16 @@ public class PaymentHook
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
         
-        var containerResult = await EnsureDatabaseContainer(_cosmosDbConfiguration);
+        var containerResult = EnsureDatabaseContainer(_cosmosDbConfiguration)
+            .GetAwaiter().GetResult();
         
         if (containerResult.IsFailure)
         {;
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
         
-        var userResult = await ReadUser(containerResult.Value, userId);
+        var userResult = ReadUser(containerResult.Value, userId)
+            .GetAwaiter().GetResult();
         if (userResult.IsFailure)
         {;
             return req.CreateResponse(HttpStatusCode.BadRequest);
@@ -62,7 +64,8 @@ public class PaymentHook
         
         _logger.LogInformation("Working with user: {@User}", userResult.Value);
         
-        var updateResult = await UpdateUser(containerResult.Value, userResult.Value, purchasedCreditsCount);
+        var updateResult = UpdateUser(containerResult.Value, userResult.Value, purchasedCreditsCount)
+            .GetAwaiter().GetResult();
 
         return req.CreateResponse(updateResult.IsFailure ? HttpStatusCode.BadRequest : HttpStatusCode.OK);
     }
