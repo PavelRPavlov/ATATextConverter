@@ -36,7 +36,7 @@ public class UserClaimsBase : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await GetClaimsPrincipalData();
-        secretValue = await ReadSecret();
+        //secretValue = await ReadSecret();
     }
 
     protected override void OnAfterRender(bool firstRender)
