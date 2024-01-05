@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <AzureFunctionsVersion>V4</AzureFunctionsVersion>
         <Nullable>enable</Nullable>
+		<OutputType>Exe</OutputType>
         <UserSecretsId>74007fc8-7f14-4d09-a69a-cbd268ce5167</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
