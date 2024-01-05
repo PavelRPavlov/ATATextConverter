@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using CSharpFunctionalExtensions;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using CosmosClient = Microsoft.Azure.Cosmos.CosmosClient;
@@ -17,7 +15,6 @@ namespace ATAFurniture.Functions;
 
 public class PaymentHook
 {
-    private const string GET_USER_BY_ID_QUERY = "SELECT * FROM c WHERE c.id = @id";
     private readonly ILogger _logger;
     private readonly CosmosDbConfiguration _cosmosDbConfiguration;
 
@@ -28,7 +25,7 @@ public class PaymentHook
     }
 
     [Function("PaymentHook")]
-    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var userIdString = req.Query["id"];
@@ -47,25 +44,22 @@ public class PaymentHook
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
         
-        var containerResult = EnsureDatabaseContainer(_cosmosDbConfiguration)
-            .GetAwaiter().GetResult();
+        var containerResult = await EnsureDatabaseContainer(_cosmosDbConfiguration);
         
         if (containerResult.IsFailure)
         {;
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
-        
-        var userResult = ReadUser(containerResult.Value, userId)
-            .GetAwaiter().GetResult();
+
+        var userResult = await ReadUser(containerResult.Value, userId);
         if (userResult.IsFailure)
         {;
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
         
         _logger.LogInformation("Working with user: {@User}", userResult.Value);
-        
-        var updateResult = UpdateUser(containerResult.Value, userResult.Value, purchasedCreditsCount)
-            .GetAwaiter().GetResult();
+
+        var updateResult = await UpdateUser(containerResult.Value, userResult.Value, purchasedCreditsCount);
 
         return req.CreateResponse(updateResult.IsFailure ? HttpStatusCode.BadRequest : HttpStatusCode.OK);
     }

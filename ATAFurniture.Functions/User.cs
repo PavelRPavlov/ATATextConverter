@@ -11,14 +11,14 @@ public class User
     public string PartitionKey { get; init; }
     public string Name { get; init; }
     public string Email { get; init; }
-    public string CreditsCount { get; private set; }
+    public int CreditsCount { get; private set; }
 
     public User()
     {
         
     }
 
-    public User(string aadId, string name, string email, string credits)
+    public User(string aadId, string name, string email, int credits)
     {
         PartitionKey = PARTITION_KEY;
         Id = aadId;
@@ -29,9 +29,7 @@ public class User
     
     public void AddCredits(int credits)
     {
-        var creditsCount = int.Parse(CreditsCount);
-        creditsCount += credits;
-        CreditsCount = creditsCount.ToString();
+        CreditsCount += credits;
     }
 
     public override string ToString()
