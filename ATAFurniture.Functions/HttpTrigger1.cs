@@ -16,7 +16,7 @@ public class HttpTrigger1
     }
 
     [Function("HttpTrigger1")]
-    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+    public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
         FunctionContext executionContext)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
