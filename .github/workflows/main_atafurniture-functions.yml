@@ -1,19 +1,17 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Deploy Azure Function App
+name: Build and deploy dotnet core app to Azure Function App - atafurniture-functions
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'ATAFurniture.Functions/**'
   workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
+  DOTNET_VERSION: '7.0.x' # set this to the dotnet version to use
 
 jobs:
   build-and-deploy:
@@ -41,4 +39,4 @@ jobs:
           app-name: 'atafurniture-functions'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_827D8720889F47F89B73A5714733A0A4 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_03B34F15722D42DCAAAC842B031EC85D }}
