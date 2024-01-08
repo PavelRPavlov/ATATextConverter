@@ -6,24 +6,18 @@ public class User
 {
     public const string PARTITION_KEY = "Users";
     [JsonProperty("id")]
-    public string Id { get; init; }
+    public string Id { get; set; }
     [JsonProperty("partitionKey")]
-    public string PartitionKey { get; init; }
-    public string Name { get; init; }
-    public string Email { get; init; }
-    public int CreditsCount { get; init; }
-
-    public User(string aadId, string name, string email, int credits = 0)
-    {
-        PartitionKey = PARTITION_KEY;
-        Id = aadId;
-        Name = name;
-        Email = email;
-        CreditsCount = credits;
-    }
+    public string PartitionKey { get; set; }
+    public int CreditsCount { get; set; }
 
     public override string ToString()
     {
         return JsonConvert.SerializeObject(this);
+    }
+
+    public void AddCredits(int creditsToAdd)
+    {
+        CreditsCount += creditsToAdd;
     }
 }

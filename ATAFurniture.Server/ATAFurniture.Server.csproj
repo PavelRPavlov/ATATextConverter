@@ -12,10 +12,22 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
+    <PackageReference Include="EPPlus" Version="7.0.5" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.23.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\files\1b31408b-ce54-4c95-91f3-d9cea5d51af5\2024-01-05_ATAFurniture_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\9bf9d7c5-0507-4f6d-a67a-94e00ac405c2\2024-01-05_ATAFurniture_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ba0ac56b-a7c0-43dc-948a-0f74d1e2eb64\2024-01-05_ATAFurniture_HDF 3 mm.xlsx" />
   </ItemGroup>
 
 </Project>

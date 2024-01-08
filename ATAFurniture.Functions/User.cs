@@ -8,10 +8,10 @@ public class User
     [JsonProperty("id")]
     public string Id { get; init; }
     [JsonProperty("partitionKey")]
-    public string PartitionKey { get; init; }
-    public string Name { get; init; }
-    public string Email { get; init; }
-    public int CreditsCount { get; private set; }
+    public string PartitionKey { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public int CreditsCount { get; set; }
 
     public User()
     {

@@ -1,0 +1,17 @@
+<sheet name="Sheet 1">
+  <cells>
+    <cell name="A1" value="Име на клиента"/>
+    <cell name="B1" value="{CompanyName}"/>
+    <cell name="A2" value="Телефон за връзка"/>
+    <cell name="B2" value="{MobileNumber}"/>
+    <cell name="A3" value="Материал"/>
+    <cell name="B3" value="{MaterialName}"/>    
+    
+    <cell name="A5" value="Размер по фладер [мм]"/>
+    <cell name="B5" value="Размер срещу фладер [мм]"/>
+    <cell name="C5" value="Брой детайли"/>
+    <cell name="D5" value="Кантиране"/>
+    <cell name="E5" value="Забележка"/>
+    <cell name="A6" value="{TableStart}"/>
+  </cells>
+</sheet>

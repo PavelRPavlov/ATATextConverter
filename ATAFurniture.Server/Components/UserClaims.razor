@@ -1,29 +1,29 @@
-﻿@using Microsoft.Extensions.Configuration
+﻿@using ATAFurniture.Server.Models
+@using ATAFurniture.Server.Services
 @using Microsoft.Extensions.Options
-@using Models
 @inherits UserClaimsBase
 <AuthorizeView>
     <h4>
         @context.User.Identity.Name has successfully signed-in
     </h4>
     Claims from the ID token
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Claim Type</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var claim in _claims)
-            {
-            <tr>
-                <td>@claim.Type</td>
-                <td>@claim.Value</td>
-            </tr>
-            }
-        </tbody>
-    </table>
+    @* <table class="table"> *@
+    @*     <thead> *@
+    @*         <tr> *@
+    @*             <th>Claim Type</th> *@
+    @*             <th>Value</th> *@
+    @*         </tr> *@
+    @*     </thead> *@
+    @*     <tbody> *@
+    @*         @foreach (var claim in _claims) *@
+    @*         { *@
+    @*         <tr> *@
+    @*             <td>@claim.Type</td> *@
+    @*             <td>@claim.Value</td> *@
+    @*         </tr> *@
+    @*         } *@
+    @*     </tbody> *@
+    @* </table> *@
 
     <h1>Secret is</h1>
 
@@ -32,76 +32,78 @@
     <h1>Read User from DB:</h1>
     <button @onclick="ReadUser">Read User</button>
     <button @onclick="SaveUser">Save User</button>
+    <button @onclick="AddCredits">Add Credits</button>
     <p>Info in DB</p>
-    <p>@userInDb?.ToString()</p>
+    <p>@_userInDb?.ToString()</p>
 </AuthorizeView>
 
 @code {
-
-    [Inject]
-    IOptions<CosmosDbConfiguration> CosmosDbConfigValue { get; set; }
     
-    private CosmosClient cosmosClient = null;
-    private Database database = null;
-    private CosmosContainer container = null;
-    private User userInDb = null;
+    [Inject]
+    UserContextService UserContextService { get; set; }
+    private User _userInDb = null;
 
-    override protected async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await EnsureDatabaseContainer();
+        //await CreateUserContext();
     }
 
-    private async Task EnsureDatabaseContainer()
+    private async void AddCredits()
     {
-        var cosmosConfig = CosmosDbConfigValue.Value;
-        cosmosClient ??= new CosmosClient(
-            cosmosConfig.EndpointUri,
-            cosmosConfig.PrimaryKey,
-            new CosmosClientOptions()
-            { 
-                ApplicationName = "ATAFurniture Converter" 
-            });
-        this.database ??= await this.cosmosClient.CreateDatabaseIfNotExistsAsync(cosmosConfig.DatabaseId);
-
-        this.container ??= await this.database.CreateContainerIfNotExistsAsync(cosmosConfig.UserContainerId, "/partitionKey", 400);
+        // _userInDb.AddCredits(14);
+        // await EnsureDatabaseContainer();
+        // ItemResponse<User> userResponse;
+        // try
+        // {
+        //     userResponse = await _container.ReplaceItemAsync(_userInDb, _userInDb.Id, new PartitionKey(User.PARTITION_KEY));
+        // }
+        // catch (Exception e)
+        // {
+        //     ;
+        // }
+        //
+        // ;
     }
 
-    protected async void ReadUser()
+    private async void ReadUser()
     {
-        await EnsureDatabaseContainer();
-        var userId = _claims.First(c => c.Type.Equals("oid")).Value;
-        ItemResponse<User> userResponse = null;
-        try
-        {
-            userResponse = await this.container.ReadItemAsync<User>(userId, new PartitionKey(User.PARTITION_KEY));
-        }
-        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-        {
-            ;
-        }
-        userInDb = userResponse?.Resource;
-        StateHasChanged();
+        // await EnsureDatabaseContainer();
+        // var userId = _claims.First(c => c.Type.Equals("oid")).Value;
+        // ItemResponse<User> userResponse = null;
+        // try
+        // {
+        //     userResponse = await _container.ReadItemAsync<User>(userId, new PartitionKey(User.PARTITION_KEY));
+        // }
+        // catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        // {
+        //     ;
+        // }
+        // _userInDb = userResponse?.Resource;
+        // StateHasChanged();
     }
 
-    protected async void SaveUser()
+    private async void SaveUser()
     {
-        await EnsureDatabaseContainer();
-        var userId = _claims.First(c => c.Type.Equals("oid")).Value;
-        var userName = _claims.First(c => c.Type.Equals("name")).Value;
-        var userEmail = _claims.First(c => c.Type.Equals("emails")).Value;
-        ItemResponse<User> userResponse = null;
-
-        try
-        {
-            userResponse = await this.container.ReadItemAsync<User>(userId, new PartitionKey(User.PARTITION_KEY));
-        }
-        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-        {
-            var user = new User(userId, userName, userEmail);
-            userResponse = await this.container.CreateItemAsync<User>(user, new PartitionKey(User.PARTITION_KEY));
-        }
-        
-        userInDb = userResponse?.Resource;
+        // await EnsureDatabaseContainer();
+        // var userId = _claims.First(c => c.Type.Equals("oid")).Value;
+        // ItemResponse<User> userResponse = null;
+        //
+        // try
+        // {
+        //     userResponse = await _container.ReadItemAsync<User>(userId, new PartitionKey(User.PARTITION_KEY));
+        // }
+        // catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        // {
+        //     var user = new User
+        //     {
+        //         Id = userId,
+        //         CreditsCount = UserContext.CreditCount
+        //     };
+        //     
+        //     userResponse = await _container.CreateItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+        // }
+        //
+        // _userInDb = userResponse?.Resource;
     }
 }
