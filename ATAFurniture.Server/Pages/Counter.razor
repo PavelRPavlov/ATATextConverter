@@ -10,9 +10,14 @@
 
 @code {
     private int currentCount = 0;
-
+    
+    [Inject]
+    private ILogger<Counter> _logger { get; set; }
+    
     private void IncrementCount()
     {
+        _logger.LogInformation("Incrementing count");
         currentCount++;
+        _logger.LogError("No Error, just test");
     }
 }

@@ -156,4 +156,11 @@
             sessionDir.Delete(true);
         }
     }
+
+    protected override void OnParametersSet()
+    {
+        Logger.LogDebug("User is {@User}", UserContextService);
+        base.OnParametersSet();
+    }
+
 }

@@ -1,11 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ATAFurniture.Server.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using User = ATAFurniture.Server.Models.User;
 
 namespace ATAFurniture.Server.Services;
 

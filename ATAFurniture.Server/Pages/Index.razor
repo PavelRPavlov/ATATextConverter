@@ -9,9 +9,4 @@
 
 @code {
     [Inject] private ILogger<Index> Logger { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Logger.LogInformation("Index page initialized");
-    }
 }

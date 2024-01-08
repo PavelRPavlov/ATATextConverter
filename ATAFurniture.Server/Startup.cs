@@ -11,7 +11,9 @@ using ATAFurniture.Server.Services;
 using ATAFurniture.Server.Services.ExcelGenerator;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Options;
 using Radzen;
+using Serilog;
 
 namespace ATAFurniture.Server;
 
@@ -46,13 +48,6 @@ public class Startup(IConfiguration configuration)
             }*/
         ).AddMicrosoftIdentityUI();
 
-        services.AddLogging(options =>
-        {
-            options.ClearProviders();
-            options.AddConsole();
-            options.AddDebug();
-        });
-
         services.AddScoped<DialogService>();
         services.AddScoped<NotificationService>();
         services.AddScoped<ContextMenuService>();
@@ -80,9 +75,9 @@ public class Startup(IConfiguration configuration)
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
 
         app.UseAuthentication();
