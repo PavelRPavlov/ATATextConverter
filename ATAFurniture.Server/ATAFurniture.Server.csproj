@@ -39,4 +39,10 @@
     <_ContentIncludedByDefault Remove="wwwroot\files\ba0ac56b-a7c0-43dc-948a-0f74d1e2eb64\2024-01-05_ATAFurniture_HDF 3 mm.xlsx" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Services\ExcelGenerator\excelTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

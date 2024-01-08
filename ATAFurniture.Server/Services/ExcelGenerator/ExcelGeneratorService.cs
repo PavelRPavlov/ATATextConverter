@@ -17,7 +17,9 @@ public record ContactInfo(string CompanyName, string MobileNumber);
 
 public class ExcelGeneratorService(ILogger<ExcelGeneratorService> logger)
 {
-    private const string XmlTemplateFilePath = "Services/ExcelGenerator/template.xml";
+    // this path is relative to the wwwroot folder
+    private const string XmlTemplateFilePath = "/Services/ExcelGenerator/excelTemplate.xml";
+    
     private const string XmlMaterialNameCellFlag = "{MaterialName}";
     private const string XmlCompanyNameCellFlag = "{CompanyName}";
     private const string XmlMobileNumberCellFlag = "{MobileNumber}";
@@ -89,6 +91,8 @@ public class ExcelGeneratorService(ILogger<ExcelGeneratorService> logger)
 
             filesToSave.Add(await CreateSingleExcelFile(materialGroup));
         }
+
+        logger.LogInformation("Created files are {FilesToSave}", filesToSave);
 
         return filesToSave;
     }
