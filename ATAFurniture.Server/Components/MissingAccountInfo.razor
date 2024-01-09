@@ -1,0 +1,63 @@
+﻿@using ATAFurniture.Server.Models
+@using ATAFurniture.Server.Services
+
+@if (!_isContactInfoComplete)
+{
+    <RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Filled">
+        Потребителският профил няма пълна информация
+    </RadzenAlert>
+    <RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Filled">
+        Генерираните документи няма да съдържат контакти
+    </RadzenAlert>
+    <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Outlined" Shade="Shade.Default">
+        Може да въведете информацията в профилa си от <a href="MicrosoftIdentity/Account/EditProfile" class="btn btn-link">тук</a>
+    </RadzenAlert>
+    
+    <RadzenTemplateForm TItem="TemporaryContactInfo" Data=@TempContactInfo>
+        <RadzenFieldset Text="Временни контакти (няма да бъдат запазени)">
+            <RadzenStack Gap="1rem">
+                <RadzenRow>
+                    <RadzenColumn Size="12" SizeMD="4">
+                        <RadzenLabel Text="Име на фирма"></RadzenLabel>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="8">
+                        <RadzenTextBox 
+                            class="w-100"
+                            style="display: block"
+                            Name="CompanyName"
+                            @bind-Value=@TempContactInfo.CompanyName/>
+                        <RadzenRequiredValidator Component="CompanyName" Text="Полето е задължително" Style="position: relative"/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow>
+                    <RadzenColumn Size="12" SizeMD="4">
+                        <RadzenLabel Text="Телефон за връзка"></RadzenLabel>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="8">
+                        <RadzenTextBox
+                            class="w-100"
+                            style="display: block"
+                            Name="MobileNumber"
+                            @bind-Value=@TempContactInfo.MobileNumber/>
+                        <RadzenRequiredValidator Component="MobileNumber" Text="Полето е задължително" Style="position: relative"/>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenStack>
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+    <br/>
+}
+@code {
+    [Inject] UserContextService UserContextService { get; set; }
+    [CascadingParameter] TemporaryContactInfo TempContactInfo { get; set; }
+    bool _isContactInfoComplete;
+
+    protected override void OnInitialized()
+    {
+        TempContactInfo.CompanyName = UserContextService.CompanyName;
+        TempContactInfo.MobileNumber = UserContextService.MobileNumber;
+        
+        _isContactInfoComplete = !string.IsNullOrEmpty(TempContactInfo.CompanyName) &&
+                                 !string.IsNullOrEmpty(TempContactInfo.MobileNumber);
+    }
+}

@@ -33,16 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\files\1b31408b-ce54-4c95-91f3-d9cea5d51af5\2024-01-05_ATAFurniture_Basic white W908 ST2.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\9bf9d7c5-0507-4f6d-a67a-94e00ac405c2\2024-01-05_ATAFurniture_Basic white W908 ST2.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\ba0ac56b-a7c0-43dc-948a-0f74d1e2eb64\2024-01-05_ATAFurniture_HDF 3 mm.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\26431d59-7341-4e75-bc97-555d1db18cfb\2024-01-08_TestCompany_AGT White.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\a0323653-c6bd-4f24-8d99-a3d24ffdee9d\2024-01-08_TestCompany_Basic white W908 ST2.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Services\ExcelGenerator\excelTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

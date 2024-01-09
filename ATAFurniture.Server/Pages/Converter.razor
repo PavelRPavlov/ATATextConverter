@@ -13,46 +13,9 @@
 
 <PageTitle>Converter</PageTitle>
 
-@if (!_isContactInfoComplete)
-{
-    <RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter">
-        Your profile is missing contact information. Please consider 
-        <a href="MicrosoftIdentity/Account/EditProfile" class="btn btn-primary">Editing</a> your profile to provide required details
-    </RadzenAlert>
-    
-    <RadzenTemplateForm TItem="TemporaryContactInfo" Data=@_tempContactInfo>
-        <RadzenFieldset Text="Temporary Contact Info">
-            <RadzenStack Gap="1rem">
-                <RadzenRow>
-                    <RadzenColumn Size="12" SizeMD="4">
-                        <RadzenLabel Text="Company Name"></RadzenLabel>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12" SizeMD="8">
-                        <RadzenTextBox 
-                            class="w-100"
-                            style="display: block"
-                            Name="CompanyName"
-                            @bind-Value=@_tempContactInfo.CompanyName/>
-                        <RadzenRequiredValidator Component="CompanyName" Text="Company Name is required" Style="position: relative"/>
-                    </RadzenColumn>
-                </RadzenRow>
-                <RadzenRow>
-                    <RadzenColumn Size="12" SizeMD="4">
-                        <RadzenLabel Text="Mobile Number"></RadzenLabel>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12" SizeMD="8">
-                        <RadzenTextBox
-                            class="w-100"
-                            style="display: block"
-                            Name="MobileNumber"
-                            @bind-Value=@_tempContactInfo.MobileNumber/>
-                        <RadzenRequiredValidator Component="MobileNumber" Text="Mobile Number is required" Style="position: relative"/>
-                    </RadzenColumn>
-                </RadzenRow>
-            </RadzenStack>
-        </RadzenFieldset>
-    </RadzenTemplateForm>
-}
+<CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
+    <MissingAccountInfo/>
+</CascadingValue>
 
 <RadzenCard>
     <RadzenRow>
@@ -64,34 +27,17 @@
         </RadzenColumn>
     </RadzenRow>
 </RadzenCard>
-
-@if (_files.Count > 0)
-{
-    <br/>
-    <br/>
-    <RadzenLabel Text="Download files"></RadzenLabel>
-    <br/>
-    <RadzenCard>
-        <RadzenColumn>
-            <RadzenStack Gap="1em">
-                @foreach (var file in _files)
-                {
-                    <p>
-                        <a href="@file.Url" download="@file.Name">@file.Name</a>
-                    </p>
-                }
-            </RadzenStack>
-        </RadzenColumn>
-    </RadzenCard>
-}
+<br/>
+<br/>
+<CascadingValue TValue="List<FileContext>" Value="@_files">
+    <DownloadFiles/>
+</CascadingValue>
 
 @code {
     private readonly List<FileContext> _files = [];
     private readonly List<DirectoryInfo> _sessionDirs = [];
     private readonly TemporaryContactInfo _tempContactInfo = new();
 
-    private bool _isContactInfoComplete;
-    
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
         List<FileSaveContext> createdFiles = new();
@@ -139,15 +85,6 @@
                 context.FileName),
             context.Content);
         _files.Add(new FileContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName)});
-    }
-
-    protected override void OnInitialized()
-    {
-        _tempContactInfo.CompanyName = UserContextService.CompanyName;
-        _tempContactInfo.MobileNumber = UserContextService.MobileNumber;
-        
-        _isContactInfoComplete = !string.IsNullOrEmpty(_tempContactInfo.CompanyName) &&
-                                !string.IsNullOrEmpty(_tempContactInfo.MobileNumber);
     }
 
     public void Dispose()

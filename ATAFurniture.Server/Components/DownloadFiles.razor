@@ -1,0 +1,21 @@
+﻿@using ATAFurniture.Server.Models
+@if (Files.Count > 0)
+{
+    <RadzenLabel Text="Download files"></RadzenLabel>
+    <br/>
+    <RadzenCard>
+        <RadzenColumn>
+            <RadzenStack Gap="1em">
+                @foreach (var file in Files)
+                {
+                    <p>
+                        <a href="@file.Url" download="@file.Name">@file.Name</a>
+                    </p>
+                }
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenCard>
+}
+@code {
+    [CascadingParameter] List<FileContext> Files { get; set; }
+}
