@@ -3,7 +3,6 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using SystemEnvironment = System.Environment;
 using Serilog;
 
@@ -29,7 +28,7 @@ public class Program
         
         try
         {
-            Log.Information("Starting...");
+            //Log.Information("Starting...");
 
             CreateHostBuilder(args).Build().Run();
         }

@@ -1,21 +1,29 @@
-﻿<AuthorizeView>
+﻿@using Radzen.Blazor.Rendering
+
+<AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <a href="MicrosoftIdentity/Account/EditProfile" class="btn btn-primary">Edit Profile</a>
-        <a href="MicrosoftIdentity/Account/ResetPassword" class="btn btn-primary">Reset Password</a>
-        <a href="MicrosoftIdentity/Account/SignOut" class="btn btn-primary">Log out</a> 
+        <RadzenLabel @ref="label" class="btn-link" @onclick="(OnProfileNameClick)">Hello, @context.User.Identity.Name</RadzenLabel>
+        <Popup @ref=popup Lazy=true Style="display:none;position:absolute;height:300px;width:300px;padding:5px;">
+            <RadzenCard class="bg-body-tertiary">
+                <RadzenStack Gap="1em">
+                    <a href="MicrosoftIdentity/Account/EditProfile" class="btn btn-outline-primary">Edit Profile</a>
+                    <a href="MicrosoftIdentity/Account/ResetPassword" class="btn btn-outline-primary">Reset Password</a>
+                    <a href="MicrosoftIdentity/Account/SignOut" class="btn btn-outline-primary">Log out</a>
+                </RadzenStack>
+            </RadzenCard>
+        </Popup>
     </Authorized>
     <NotAuthorized>
-        <a href="MicrosoftIdentity/Account/SignIn">Log in</a>
+        <a href="MicrosoftIdentity/Account/SignIn" class="btn btn-primary">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 
-@code {
-    // TODO: structured login should be used
-    [Inject] private ILogger<LoginDisplay> Logger { get; set; }
+@code{
+    RadzenLabel label;
+    Popup popup;
 
-    protected override void OnInitialized()
+    private async void OnProfileNameClick(MouseEventArgs mouseEventArgs)
     {
-        Logger.LogInformation("LoginDisplay component initialized");
+        await popup.ToggleAsync(label.Element);
     }
 }

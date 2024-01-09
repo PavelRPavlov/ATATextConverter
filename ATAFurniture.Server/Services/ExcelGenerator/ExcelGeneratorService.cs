@@ -17,9 +17,7 @@ public record ContactInfo(string CompanyName, string MobileNumber);
 
 public class ExcelGeneratorService(ILogger<ExcelGeneratorService> logger)
 {
-    // this path is relative to the wwwroot folder
     private const string XmlTemplateFilePath = "Services/ExcelGenerator/excelTemplate.xml";
-    
     private const string XmlMaterialNameCellFlag = "{MaterialName}";
     private const string XmlCompanyNameCellFlag = "{CompanyName}";
     private const string XmlMobileNumberCellFlag = "{MobileNumber}";

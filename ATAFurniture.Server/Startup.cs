@@ -9,11 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using ATAFurniture.Server.Models;
 using ATAFurniture.Server.Services;
 using ATAFurniture.Server.Services.ExcelGenerator;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.Extensions.Options;
 using Radzen;
-using Serilog;
 
 namespace ATAFurniture.Server;
 
