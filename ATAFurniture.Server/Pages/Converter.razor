@@ -1,104 +1,19 @@
 ﻿@page "/Converter"
 @attribute [Authorize]
-@using System.IO
 @using ATAFurniture.Server.Models
-@using ATAFurniture.Server.Services
-@using ATAFurniture.Server.Services.ExcelGenerator
-@using Microsoft.AspNetCore.Hosting
-@implements IDisposable
-@inject ILogger<Converter> Logger
-@inject IWebHostEnvironment Environment
-@inject UserContextService UserContextService
-@inject ExcelGeneratorService ExcelGeneratorService
 
 <PageTitle>Converter</PageTitle>
 
-<CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
-    <MissingAccountInfo/>
-</CascadingValue>
-
-<RadzenCard>
-    <RadzenRow>
-        <RadzenColumn Size="12" SizeMD="4">
-            <RadzenLabel Text="Polyboard export file"></RadzenLabel>
-        </RadzenColumn>
-        <RadzenColumn Size="12" SizeMD="8">
-            <InputFile OnChange="@LoadFiles"/>
-        </RadzenColumn>
-    </RadzenRow>
-</RadzenCard>
-<br/>
-<br/>
-<CascadingValue TValue="List<FileContext>" Value="@_files">
-    <DownloadFiles/>
-</CascadingValue>
+<RadzenStack Gap="1em">
+    <CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
+        <MissingAccountInfo/>
+    </CascadingValue>
+    
+    <CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
+        <FileHandlingComponent/>
+    </CascadingValue>
+</RadzenStack>
 
 @code {
-    private readonly List<FileContext> _files = [];
-    private readonly List<DirectoryInfo> _sessionDirs = [];
     private readonly TemporaryContactInfo _tempContactInfo = new();
-
-    private async Task LoadFiles(InputFileChangeEventArgs e)
-    {
-        List<FileSaveContext> createdFiles = new();
-        
-        foreach (var file in e.GetMultipleFiles(1))
-        {
-            try
-            {
-                await using MemoryStream memoryStream = new();
-                await file.OpenReadStream().CopyToAsync(memoryStream);
-                createdFiles = await ExcelGeneratorService.CreateFiles(
-                    memoryStream,
-                    new ContactInfo(
-                        UserContextService.CompanyName,
-                        UserContextService.MobileNumber));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("File: {Filename} Error: {Error}",
-                    file.Name, ex.Message);
-            }
-        }
-        
-        foreach (var file in createdFiles)
-        {
-            await SaveFile(file);
-        }
-    }
-
-    private async Task SaveFile(FileSaveContext context)
-    {
-        var filesRootPath = "files";
-        var salt = Guid.NewGuid().ToString();
-        var sessionFolder = Path.Combine(
-            Environment.ContentRootPath,
-            "wwwroot",
-            filesRootPath,
-            salt);
-        var sessionDir = Directory.CreateDirectory(sessionFolder);
-        _sessionDirs.Add(sessionDir);
-        
-        await File.WriteAllBytesAsync(
-            Path.Combine(
-                sessionDir.FullName,
-                context.FileName),
-            context.Content);
-        _files.Add(new FileContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName)});
-    }
-
-    public void Dispose()
-    {
-        foreach (var sessionDir in _sessionDirs)
-        {
-            sessionDir.Delete(true);
-        }
-    }
-
-    protected override void OnParametersSet()
-    {
-        Logger.LogDebug("User is {@User}", UserContextService);
-        base.OnParametersSet();
-    }
-
 }

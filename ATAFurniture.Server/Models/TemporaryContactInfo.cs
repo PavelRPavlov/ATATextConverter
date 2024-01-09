@@ -2,7 +2,6 @@
 
 public class TemporaryContactInfo
 {
-    public string CompanyName { get; set; }
-    public string MobileNumber { get; set; }
-    public string FileName { get; set; }
+    public string CompanyName { get; set; } = null;
+    public string MobileNumber { get; set; } = null;
 }

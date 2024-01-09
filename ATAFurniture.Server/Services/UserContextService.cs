@@ -34,8 +34,15 @@ public class UserContextService
         _logger = logger;
         CreateUserContext().ConfigureAwait(false);
     }
+    
+    public async Task AddCredits(int count)
+    {
+        _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, Id);
+        await _cosmosDbContext.AddCredits(Id, count);
+        CreditCount += count;
+    }
 
-    private async Task CreateUserContext()
+    public async Task CreateUserContext()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;

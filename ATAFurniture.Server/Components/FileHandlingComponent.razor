@@ -1,0 +1,141 @@
+﻿@using ATAFurniture.Server.Models
+@using System.IO
+@using ATAFurniture.Server.Services.ExcelGenerator
+@using Microsoft.AspNetCore.Hosting
+@using ATAFurniture.Server.Services
+
+@implements IDisposable
+
+<RadzenCard>
+@if (_isBusy)
+{
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+}
+else
+{
+    <RadzenStack>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenColumn Size="12" SizeMD="4">
+                <RadzenLabel Text="Налични кредити: "/>
+                <RadzenLabel Text="@UserContextService.CreditCount.ToString()"></RadzenLabel>
+            </RadzenColumn>
+
+            @if (UserContextService.CreditCount == 0)
+            {
+                <RadzenColumn Size="12" SizeMD="8">
+                    <RadzenButton Text="Добави кредити"
+                                  Icon="add_circle_outline"
+                                  ButtonStyle="ButtonStyle.Secondary"
+                                  Click="OnAddCreditsButtonPress"/>
+                </RadzenColumn>
+            }
+        </RadzenRow>
+        <RadzenRow >
+            <RadzenColumn Size="12" SizeMD="4">
+                <RadzenLabel Text="Избери Polyboard file"></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="8">
+                <InputFile disabled="@(UserContextService.CreditCount == 0)" OnChange="@LoadFiles"/>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenStack>
+}
+</RadzenCard>
+<br/>
+@if (_files.Count > 0)
+{
+    <RadzenLabel Text="Download files"></RadzenLabel>
+    <RadzenCard>
+        <RadzenColumn>
+            <RadzenStack Gap="1em">
+                @foreach (var file in _files)
+                {
+                    <p>
+                        <a href="@file.Url" download="@file.Name">@file.Name</a>
+                    </p>
+                }
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenCard>
+}
+
+@code {
+    [Inject] ExcelGeneratorService ExcelGeneratorService { get; set; }
+    [Inject] ILogger<FileHandlingComponent> Logger { get; set; }
+    [Inject] IWebHostEnvironment Environment { get; set; }
+    [Inject] UserContextService UserContextService { get; set; }
+    [CascadingParameter] TemporaryContactInfo TemporaryContactInfo { get; set; }
+
+    private readonly List<FileContext> _files = [];
+    private readonly List<DirectoryInfo> _sessionDirs = [];
+    private bool _isBusy = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isBusy = true;
+        await UserContextService.CreateUserContext();
+        _isBusy = false;
+    }
+
+    private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
+    {
+        await UserContextService.AddCredits(10);
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        List<FileSaveContext> createdFiles = new();
+
+        foreach (var file in e.GetMultipleFiles(1))
+        {
+            try
+            {
+                await using MemoryStream memoryStream = new();
+                await file.OpenReadStream().CopyToAsync(memoryStream);
+                createdFiles = await ExcelGeneratorService.CreateFiles(
+                    memoryStream,
+                    new ContactInfo(
+                        TemporaryContactInfo?.CompanyName ?? UserContextService.CompanyName,
+                        TemporaryContactInfo?.MobileNumber ?? UserContextService.MobileNumber));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {Filename} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+
+        foreach (var file in createdFiles)
+        {
+            await SaveFile(file);
+        }
+    }
+
+    private async Task SaveFile(FileSaveContext context)
+    {
+        var filesRootPath = "files";
+        var salt = Guid.NewGuid().ToString();
+        var sessionFolder = Path.Combine(
+            Environment.ContentRootPath,
+            "wwwroot",
+            filesRootPath,
+            salt);
+        var sessionDir = Directory.CreateDirectory(sessionFolder);
+        _sessionDirs.Add(sessionDir);
+
+        await File.WriteAllBytesAsync(
+            Path.Combine(
+                sessionDir.FullName,
+                context.FileName),
+            context.Content);
+        _files.Add(new FileContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName) });
+    }
+
+    public void Dispose()
+    {
+        foreach (var sessionDir in _sessionDirs)
+        {
+            sessionDir.Delete(true);
+        }
+    }
+}

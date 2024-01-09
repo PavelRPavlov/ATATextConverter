@@ -1,4 +1,5 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using ATAFurniture.Server.Services
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand ms-3" href="">Converter</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -23,12 +24,13 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    [Inject] UserContextService UserContextService { get; set; }
+    private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }

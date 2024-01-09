@@ -31,6 +31,20 @@ public class CosmosDbContext(
         }
         return userResponse.Resource;
     }
+    
+    public async Task AddCredits(string userId, int count)
+    {
+        await EnsureDatabaseContainer();
+        var user = await GetUser(userId);
+        if (user == null)
+        {
+            logger.LogError("User with id {UserId} not found", userId);
+            throw new ArgumentException($"User with id {userId} not found");
+        }
+        user.AddCredits(count);
+        var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+        logger.LogInformation("Added {CreditCount} credits to user {Id}", count, userId);
+    }
 
     private async Task EnsureDatabaseContainer()
     {
