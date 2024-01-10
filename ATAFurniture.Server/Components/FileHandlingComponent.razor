@@ -97,6 +97,8 @@ else
 
     private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
     {
+        // trigger the payment flow
+        // move this to the webhook the flow will call
         await UserContextService.AddCredits(10, true);
     }
 
