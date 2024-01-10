@@ -1,0 +1,61 @@
+﻿@page "/Configuration"
+
+<RadzenColumn>
+    <RadzenStack>
+        <RadzenAlert Variant="Variant.Outlined" AlertStyle="AlertStyle.Info">
+            За използването на този конвертор е необходимо PolyBoard да се конфигурира по определен начин. В противен случай, няма как да се подсигури правилна комуникация между двата софтуера
+        </RadzenAlert>
+        
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Go to <b>Cutting Lists</b> --> <b>Cutting Lists Options...</b>
+        </RadzenRow>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Under <b>ASCII Options</b> --> <b>Format</b> click on the tree dots at the end
+        </RadzenRow>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Select <b>Format...</b>
+        </RadzenRow>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Use the arrow buttons to set the order of items as follows:
+        </RadzenRow>
+        <RadzenCard>
+            <ol>
+                @foreach(var step in polyboardFormatOrder)
+                {
+                    <li>@step</li>
+                }
+            </ol>
+        </RadzenCard>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Set the separator to be <b>;</b>
+        </RadzenRow>
+        <RadzenRow AlignItems="AlignItems.Center">
+            <RadzenIcon Icon="arrow_right"></RadzenIcon>
+            Click <b>OK</b> to apply the settings
+        </RadzenRow>
+    </RadzenStack>
+</RadzenColumn>
+
+@code {
+
+    private List<string> polyboardFormatOrder = 
+    [
+        "Height",
+        "Width",
+        "Quantity",
+        "Material",
+        "Grain Direction",
+        "Top Edge Present",
+        "Bottom Edge Present",
+        "Right Edge Present",
+        "Left Edge Present",
+        "Cabinet",
+        "Cutting Number"
+    ];
+
+}

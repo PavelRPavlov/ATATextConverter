@@ -10,16 +10,21 @@
     <nav class="flex-column">
         <div class="nav-item">
             <NavLink class="nav-link px-3" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home"></span> Home
+                <RadzenIcon Icon="home" class="me-3"/> Home
             </NavLink>
         </div>
         <AuthorizeView>
             <div class="nav-item">
                 <NavLink class="nav-link px-3" href="Converter" Match="NavLinkMatch.All">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Converter
+                    <RadzenIcon Icon="receipt_long" class="me-3"/> Converter
                 </NavLink>
             </div>
         </AuthorizeView>
+        <div class="nav-item">
+            <NavLink class="nav-link px-3" href="Configuration" Match="NavLinkMatch.All">
+                <RadzenIcon Icon="settings" class="me-3"/> Configuration
+            </NavLink>
+        </div>
     </nav>
 </div>
 

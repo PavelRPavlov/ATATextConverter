@@ -2,28 +2,21 @@
 
 <AuthorizeView>
     <Authorized>
-        <RadzenLabel @ref="label" class="btn-link" @onclick="(OnProfileNameClick)">Hello, @context.User.Identity.Name</RadzenLabel>
-        <Popup @ref=popup Lazy=true Style="display:none;position:absolute;height:300px;width:300px;padding:5px;">
-            <RadzenCard class="bg-body-tertiary">
-                <RadzenStack Gap="1em">
-                    <a href="MicrosoftIdentity/Account/EditProfile" class="btn btn-outline-primary">Edit Profile</a>
-                    <a href="MicrosoftIdentity/Account/ResetPassword" class="btn btn-outline-primary">Reset Password</a>
-                    <a href="MicrosoftIdentity/Account/SignOut" class="btn btn-outline-primary">Log out</a>
-                </RadzenStack>
-            </RadzenCard>
-        </Popup>
+        <RadzenProfileMenu>
+            <Template>
+                <RadzenRow>
+                    <RadzenLabel Text="Hello,"/>
+                    <RadzenLabel Text=@context.User.Identity.Name></RadzenLabel>
+                </RadzenRow>
+            </Template>
+            <ChildContent>
+                <RadzenProfileMenuItem Text="Edit Profile" Path="MicrosoftIdentity/Account/EditProfile" Icon="edit"></RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Text="Reset Password" Path="MicrosoftIdentity/Account/ResetPassword" Icon="lock_reset"></RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Text="Sign Out" Path="MicrosoftIdentity/Account/SignOut" Icon="logout"></RadzenProfileMenuItem>
+            </ChildContent>
+        </RadzenProfileMenu>
     </Authorized>
     <NotAuthorized>
         <a href="MicrosoftIdentity/Account/SignIn" class="btn btn-primary">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
-
-@code{
-    RadzenLabel label;
-    Popup popup;
-
-    private async void OnProfileNameClick(MouseEventArgs mouseEventArgs)
-    {
-        await popup.ToggleAsync(label.Element);
-    }
-}
