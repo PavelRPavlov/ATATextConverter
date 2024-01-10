@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using User = ATAFurniture.Server.Models.User;
 
 namespace ATAFurniture.Server.Services;
 
@@ -23,7 +25,6 @@ public class UserContextService
     public string MobileNumber { get; private set; }
     public string CompanyName { get; private set; }
     public int CreditCount { get; private set; }
-
     public UserContextService(
         AuthenticationStateProvider authenticationStateProvider,
         CosmosDbContext cosmosDbContext,
@@ -32,7 +33,7 @@ public class UserContextService
         _authenticationStateProvider = authenticationStateProvider;
         _cosmosDbContext = cosmosDbContext;
         _logger = logger;
-        CreateUserContext().ConfigureAwait(false);
+        ExtractUserIdentity().ConfigureAwait(false);
     }
     
     public async Task AddCredits(int count)
@@ -42,7 +43,13 @@ public class UserContextService
         CreditCount += count;
     }
 
-    public async Task CreateUserContext()
+    public async Task EnrichUserContextWithDbData()
+    {
+        var dbUser = await _cosmosDbContext.GetUser(Id) ?? await _cosmosDbContext.CreateUser(Id, 10);
+        CreditCount = dbUser.CreditsCount;
+    }
+
+    private async Task ExtractUserIdentity()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -60,11 +67,12 @@ public class UserContextService
             Email = userEmail;
             MobileNumber = mobileNumber;
             CompanyName = companyName;
-
-            var dbUser = await _cosmosDbContext.GetUser(userId);
-            var creditCount = dbUser.CreditsCount;
-
-            CreditCount = creditCount;
         }
+    }
+
+    public async Task ConsumeSingleCredit()
+    {
+        await _cosmosDbContext.RemoveCredits(Id, 1);
+        CreditCount--;
     }
 }

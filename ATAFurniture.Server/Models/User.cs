@@ -15,9 +15,4 @@ public class User
     {
         return JsonConvert.SerializeObject(this);
     }
-
-    public void AddCredits(int creditsToAdd)
-    {
-        CreditsCount += creditsToAdd;
-    }
 }

@@ -19,8 +19,7 @@ else
                 <RadzenLabel Text="Налични кредити: "/>
                 <RadzenLabel Text="@UserContextService.CreditCount.ToString()"></RadzenLabel>
             </RadzenColumn>
-
-            @if (UserContextService.CreditCount == 0)
+            @if (UserContextService.CreditCount <= 0)
             {
                 <RadzenColumn Size="12" SizeMD="8">
                     <RadzenButton Text="Добави кредити"
@@ -30,18 +29,26 @@ else
                 </RadzenColumn>
             }
         </RadzenRow>
-        <RadzenRow >
+        <RadzenRow>
             <RadzenColumn Size="12" SizeMD="4">
-                <RadzenLabel Text="Избери Polyboard file"></RadzenLabel>
+                <RadzenLabel Text="Избери Polyboard файл"></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn Size="12" SizeMD="8">
-                <InputFile disabled="@(UserContextService.CreditCount == 0)" OnChange="@LoadFiles"/>
+                <InputFile disabled="@(UserContextService.CreditCount <= 0)" OnChange="@LoadFiles"/>
             </RadzenColumn>
         </RadzenRow>
     </RadzenStack>
 }
 </RadzenCard>
 <br/>
+@if(_isLoadingFiles)
+{
+    <RadzenColumn>
+        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+            <Template><h6>Working</h6></Template>
+        </RadzenProgressBarCircular>
+    </RadzenColumn>
+}
 @if (_files.Count > 0)
 {
     <RadzenLabel Text="Download files"></RadzenLabel>
@@ -66,26 +73,34 @@ else
     [Inject] UserContextService UserContextService { get; set; }
     [CascadingParameter] TemporaryContactInfo TemporaryContactInfo { get; set; }
 
-    private readonly List<FileContext> _files = [];
+    private readonly List<FileDisplayContext> _files = [];
     private readonly List<DirectoryInfo> _sessionDirs = [];
     private bool _isBusy = false;
+    private bool _isLoadingFiles = false;
 
     protected override async Task OnInitializedAsync()
     {
         _isBusy = true;
-        await UserContextService.CreateUserContext();
+        await UserContextService.EnrichUserContextWithDbData();
         _isBusy = false;
     }
 
     private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
     {
         await UserContextService.AddCredits(10);
+        StateHasChanged();
     }
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
+        if (UserContextService.CreditCount <= 0)
+        {
+            return;
+        }
+        
         List<FileSaveContext> createdFiles = new();
 
+        _isLoadingFiles = true;
         foreach (var file in e.GetMultipleFiles(1))
         {
             try
@@ -100,15 +115,17 @@ else
             }
             catch (Exception ex)
             {
-                Logger.LogError("File: {Filename} Error: {Error}",
-                    file.Name, ex.Message);
+                Logger.LogError(ex, "Error while creating excel file");
             }
         }
-
+        _files.Clear();
         foreach (var file in createdFiles)
         {
             await SaveFile(file);
         }
+        _isLoadingFiles = false;
+        
+        await UserContextService.ConsumeSingleCredit();
     }
 
     private async Task SaveFile(FileSaveContext context)
@@ -128,7 +145,7 @@ else
                 sessionDir.FullName,
                 context.FileName),
             context.Content);
-        _files.Add(new FileContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName) });
+        _files.Add(new FileDisplayContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName) });
     }
 
     public void Dispose()

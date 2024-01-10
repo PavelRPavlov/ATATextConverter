@@ -32,18 +32,42 @@ public class CosmosDbContext(
         return userResponse.Resource;
     }
     
-    public async Task AddCredits(string userId, int count)
+    public async Task<User> CreateUser(string userId, int initialCreditCount)
     {
         await EnsureDatabaseContainer();
-        var user = await GetUser(userId);
-        if (user == null)
+        var user = new User
         {
-            logger.LogError("User with id {UserId} not found", userId);
-            throw new ArgumentException($"User with id {userId} not found");
+            Id = userId,
+            PartitionKey = User.PARTITION_KEY,
+            CreditsCount = initialCreditCount
+        };
+        var userResponse = await _container.CreateItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+        logger.LogInformation("Created user {Id}", userId);
+        return userResponse.Resource;
+    }
+    
+    public async Task AddCredits(string userId, int count)
+    {
+        var user = await GetUser(userId);
+        if (user is null)
+        {
+            return;
         }
-        user.AddCredits(count);
+        user.CreditsCount += count;
         var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
         logger.LogInformation("Added {CreditCount} credits to user {Id}", count, userId);
+    }
+
+    public async Task RemoveCredits(string userId, int count)
+    {
+        var user = await GetUser(userId);
+        if (user is null)
+        {
+            return;
+        }
+        user.CreditsCount -= count;
+        var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+        logger.LogInformation("User {Id} consumed {CreditCount} credits", userId, count);
     }
 
     private async Task EnsureDatabaseContainer()
