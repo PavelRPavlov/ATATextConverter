@@ -6,64 +6,74 @@
 
 @implements IDisposable
 
-<RadzenCard>
 @if (_isBusy)
 {
-    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+    <RadzenStack>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+    </RadzenStack>
 }
 else
 {
-    <RadzenStack>
-        <RadzenRow AlignItems="AlignItems.Center">
-            <RadzenColumn Size="12" SizeMD="4">
-                <RadzenLabel Text="Налични кредити: "/>
-                <RadzenLabel Text="@UserContextService.CreditCount.ToString()"></RadzenLabel>
-            </RadzenColumn>
-            @if (UserContextService.CreditCount <= 0)
-            {
-                <RadzenColumn Size="12" SizeMD="8">
-                    <RadzenButton Text="Добави кредити"
-                                  Icon="add_circle_outline"
-                                  ButtonStyle="ButtonStyle.Secondary"
-                                  Click="OnAddCreditsButtonPress"/>
-                </RadzenColumn>
-            }
-        </RadzenRow>
-        <RadzenRow>
-            <RadzenColumn Size="12" SizeMD="4">
-                <RadzenLabel Text="Избери Polyboard файл"></RadzenLabel>
-            </RadzenColumn>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.CreditCount.ToString()"></RadzenLabel>
+        @if (UserContextService.CreditCount <= 0)
+        {
             <RadzenColumn Size="12" SizeMD="8">
-                <InputFile disabled="@(UserContextService.CreditCount <= 0)" OnChange="@LoadFiles"/>
+                <RadzenButton Text="Добави кредити"
+                              Icon="add_circle_outline"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Click="OnAddCreditsButtonPress"/>
             </RadzenColumn>
-        </RadzenRow>
-    </RadzenStack>
-}
-</RadzenCard>
-<br/>
-@if(_isLoadingFiles)
-{
-    <RadzenColumn>
-        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
-            <Template><h6>Working</h6></Template>
-        </RadzenProgressBarCircular>
-    </RadzenColumn>
-}
-@if (_files.Count > 0)
-{
-    <RadzenLabel Text="Download files"></RadzenLabel>
-    <RadzenCard>
-        <RadzenColumn>
-            <RadzenStack Gap="1em">
-                @foreach (var file in _files)
-                {
-                    <p>
-                        <a href="@file.Url" download="@file.Name">@file.Name</a>
-                    </p>
-                }
-            </RadzenStack>
-        </RadzenColumn>
-    </RadzenCard>
+        }
+    </RadzenRow>
+
+    <RadzenPanel AllowCollapse="true">
+        <HeaderTemplate>
+            <RadzenRow class="my-3">
+                <RadzenIcon Icon="difference"></RadzenIcon> Files
+            </RadzenRow>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenSplitter Orientation="Orientation.Horizontal" Collapse=@OnCollapseDisabled >
+                <RadzenSplitterPane Collapsible="false" Size="40%" Max="50%" Min="30%">
+                    <RadzenStack>
+                        <RadzenLabel Text="Избери Polyboard файл:"></RadzenLabel>
+                        <InputFile disabled="@(UserContextService.CreditCount <= 0)" OnChange="@LoadFiles"/>
+                    </RadzenStack>
+                </RadzenSplitterPane>
+                <RadzenSplitterPane Collapsible="false" Size="60%" >
+                    @if (_isLoadingFiles)
+                    {
+                        <RadzenColumn>
+                            <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                                <Template><h6>Working</h6></Template>
+                            </RadzenProgressBarCircular>
+                        </RadzenColumn>
+                    }
+                    @if (_files.Count > 0)
+                    {
+                        <RadzenLabel class="ms-3" Text="Download files:"></RadzenLabel>
+                        <RadzenColumn>
+                            <RadzenStack Gap="1em">
+                                <ul>
+                                    @foreach (var file in _files)
+                                    {
+                                        <li><a href="@file.Url" download="@file.Name">@file.Name</a></li>
+                                    }
+                                </ul>
+                            </RadzenStack>
+                        </RadzenColumn>
+                    }
+                </RadzenSplitterPane>
+            </RadzenSplitter>
+        </ChildContent>
+    </RadzenPanel>
 }
 
 @code {
@@ -116,6 +126,7 @@ else
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Error while creating excel file");
+                return;
             }
         }
         _files.Clear();
@@ -146,6 +157,11 @@ else
                 context.FileName),
             context.Content);
         _files.Add(new FileDisplayContext { Name = context.FileName, Url = Path.Combine(filesRootPath, salt, context.FileName) });
+    }
+
+    void OnCollapseDisabled(RadzenSplitterEventArgs args)
+    {
+        args.Cancel = true;
     }
 
     public void Dispose()
