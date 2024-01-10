@@ -97,8 +97,7 @@ else
 
     private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
     {
-        await UserContextService.AddCredits(10);
-        StateHasChanged();
+        await UserContextService.AddCredits(10, true);
     }
 
     private async Task LoadFiles(InputFileChangeEventArgs e)

@@ -25,6 +25,8 @@ public class UserContextService
     public string MobileNumber { get; private set; }
     public string CompanyName { get; private set; }
     public int CreditCount { get; private set; }
+    public int CreditResets { get; private set; }
+
     public UserContextService(
         AuthenticationStateProvider authenticationStateProvider,
         CosmosDbContext cosmosDbContext,
@@ -36,10 +38,14 @@ public class UserContextService
         ExtractUserIdentity().ConfigureAwait(false);
     }
     
-    public async Task AddCredits(int count)
+    public async Task AddCredits(int count, bool countResets = false)
     {
+        if (countResets)
+        {
+            CreditResets++;
+        }
         _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, Id);
-        await _cosmosDbContext.AddCredits(Id, count);
+        await _cosmosDbContext.AddCredits(Id, count, countResets);
         CreditCount += count;
     }
 

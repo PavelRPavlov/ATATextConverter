@@ -10,6 +10,7 @@ public class User
     [JsonProperty("partitionKey")]
     public string PartitionKey { get; set; }
     public int CreditsCount { get; set; }
+    public int CreditResets { get; set; }
 
     public override string ToString()
     {

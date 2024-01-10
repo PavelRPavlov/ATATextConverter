@@ -46,12 +46,17 @@ public class CosmosDbContext(
         return userResponse.Resource;
     }
     
-    public async Task AddCredits(string userId, int count)
+    public async Task AddCredits(string userId, int count, bool countResets = false)
     {
         var user = await GetUser(userId);
         if (user is null)
         {
             return;
+        }
+
+        if (countResets)
+        {
+            user.CreditResets++;
         }
         user.CreditsCount += count;
         var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
