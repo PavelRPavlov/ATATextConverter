@@ -6,7 +6,7 @@ name: Build and deploy KROIKO
 on:
   push:
     branches:
-      - main
+      - 'releases/**'
     paths:
       - 'ATAFurniture.Server/**'
   workflow_dispatch:
