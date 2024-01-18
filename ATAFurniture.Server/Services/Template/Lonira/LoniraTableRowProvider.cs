@@ -19,19 +19,16 @@ public class LoniraTableRowProvider : ITableRowProvider
         var detailType = typeof(Detail);
         foreach (var property in DetailPropertyToColumnMap)
         {
-            result.Add(new Cell
+            result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber), 1)
             {
-                Name = Cell.GetCellName(rowNumber, startColumnNumber),
-                Value = detailType.GetProperty(property)?.GetValue(detail)?.ToString(),
-                ContentAlignment = 1
+                Value = detailType.GetProperty(property)?.GetValue(detail)?.ToString()
             });
             
             startColumnNumber++;
         }
         
-        result.Add(new Cell
+        result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber))
         {
-            Name = Cell.GetCellName(rowNumber, startColumnNumber),
             Value = $"{GetLoniraEdges(detail)}; {detail.Cabinet}"
         });
         

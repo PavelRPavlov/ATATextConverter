@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAFurniture.Server", "ATAF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAFurniture.Functions", "ATAFurniture.Functions\ATAFurniture.Functions.csproj", "{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAFurniture.Server.Tests", "ATAFurniture.Server.Tests\ATAFurniture.Server.Tests.csproj", "{263F1728-F003-48F8-BB92-CE3C9F42A62E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7B870F6-940C-429E-A186-F5C6C8CC4E9A}.Release|x86.Build.0 = Release|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Debug|x86.Build.0 = Debug|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Release|x86.ActiveCfg = Release|Any CPU
+		{263F1728-F003-48F8-BB92-CE3C9F42A62E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
