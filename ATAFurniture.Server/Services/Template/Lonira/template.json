@@ -1,0 +1,53 @@
+{
+    "ColumnWidths":[25,25,15,20,20],
+    "Cells": [
+        {
+            "Name": "A1",
+            "Value": "Име на клиента"
+        },
+        {
+            "Name": "B1",
+            "Value": "{CompanyName}"
+        },
+        {
+            "Name": "A2",
+            "Value": "Телефон за връзка"
+        },
+        {
+            "Name": "B2",
+            "Value": "{MobileNumber}"
+        },
+        {
+            "Name": "A3",
+            "Value": "Материал"
+        },
+        {
+            "Name": "B3",
+            "Value": "{MaterialName}"
+        },
+        {
+            "Name": "A5",
+            "Value": "Размер по фладер [мм]"
+        },
+        {
+            "Name": "B5",
+            "Value": "Размер срещу фладер [мм]"
+        },
+        {
+            "Name": "C5",
+            "Value": "Брой детайли"
+        },
+        {
+            "Name": "D5",
+            "Value": "Кантиране"
+        },
+        {
+            "Name": "E5",
+            "Value": "Забележка"
+        },
+        {
+            "Name": "A6",
+            "Value": "{TableStart}"
+        }
+    ]
+}

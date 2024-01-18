@@ -116,7 +116,7 @@ else
         {
             try
             {
-                await using MemoryStream memoryStream = new();
+                using MemoryStream memoryStream = new();
                 await file.OpenReadStream().CopyToAsync(memoryStream);
                 createdFiles = await ExcelGeneratorService.CreateFiles(
                     memoryStream,

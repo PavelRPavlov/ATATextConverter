@@ -9,6 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 using ATAFurniture.Server.Models;
 using ATAFurniture.Server.Services;
 using ATAFurniture.Server.Services.ExcelGenerator;
+using ATAFurniture.Server.Services.ExcelGenerator.XlsxWrapper;
+using ATAFurniture.Server.Services.Template;
+using ATAFurniture.Server.Services.Template.Lonira;
 using Microsoft.AspNetCore.Rewrite;
 using Radzen;
 
@@ -55,8 +58,14 @@ public class Startup(IConfiguration configuration)
         services.AddServerSideBlazor();
 
         services.AddScoped<UserContextService>();
-        services.AddScoped<ExcelGeneratorService>();
         services.AddScoped<CosmosDbContext>();
+        
+        services.AddScoped<DetailsExtractor>();
+        services.AddScoped<ITemplateBuilder, LoniraTemplateBuilder>();
+        services.AddScoped<ITableRowProvider, LoniraTableRowProvider>();
+        services.AddScoped<IExcelFileGenerator, ExcelFileGenerator>();
+        services.AddScoped<IFileNameProvider, LoniraFileNameProvider>();
+        services.AddScoped<ExcelGeneratorService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
