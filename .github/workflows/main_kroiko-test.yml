@@ -48,13 +48,14 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .net-app
+          path: /downloads
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: .net-app
-          path: /
+          path: /downloads
           host: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
           port: 21
           username: ${{ secrets.KROIKO_FTP_DEPLOYMENT_USERNAME }}
