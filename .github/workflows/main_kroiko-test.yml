@@ -53,7 +53,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          local-dir: /downloads
+          local-dir: /downloads/
           server-dir: kroiko/
           server: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
           username: ${{ secrets.KROIKO_FTP_DEPLOYMENT_USERNAME }}
