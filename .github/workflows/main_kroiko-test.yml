@@ -48,13 +48,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: .net-app
-          path: /downloads
 
       - name: Deploy to Azure Web App
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
         with:
-          local-dir: /downloads/
-          server-dir: kroiko/
-          server: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
-          username: ${{ secrets.KROIKO_FTP_DEPLOYMENT_USERNAME }}
-          password: ${{ secrets.KROIKO_FTP_DEPLOYMENT_PASSWORD }}
+          app-name: 'kroiko-test'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BA7B4421ECF243F1BE0603BC41565B89 }}
+          package: .
