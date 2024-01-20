@@ -51,9 +51,12 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: sokuhatiku/ftp-upload-artifact@v1
         with:
-          app-name: 'kroiko-test'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BA7B4421ECF243F1BE0603BC41565B89 }}
-          package: .
+          name: .net-app
+          host: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
+          port: 21
+          username: ${{ secrets.KROIKO_FTP_DEPLOYMENT_USERNAME }}
+          password: ${{ secrets.KROIKO_FTP_DEPLOYMENT_PASSWORD }}
+          secure: true
+          remote-path: /kroiko
