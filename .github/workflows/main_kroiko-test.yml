@@ -51,14 +51,10 @@ jobs:
           path: /downloads
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          name: .net-app
-          path: /downloads
-          host: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
-          port: 21
+          local-dir: /downloads
+          server-dir: kroiko/
+          server: ${{ secrets.KROIKO_FTP_DEPLOYMENT_URL }}
           username: ${{ secrets.KROIKO_FTP_DEPLOYMENT_USERNAME }}
           password: ${{ secrets.KROIKO_FTP_DEPLOYMENT_PASSWORD }}
-          secure: true
-          remote-path: /kroiko
