@@ -58,7 +58,11 @@ else
                             </RadzenProgressBarCircular>
                         </RadzenColumn>
                     }
-                    @if (_files.Count > 0)
+                    @if (_isError)
+                    {
+                        <RadzenAlert Text="Каченият файл не отговаря на изискванията за формат! Кредити не са консумирани. Може да опитате с друг файл." AlertStyle="AlertStyle.Danger" Variant="Variant.Filled"></RadzenAlert>
+                    }
+                    @if(_files.Count > 0)
                     {
                         <RadzenLabel class="ms-3" Text="Download files:"></RadzenLabel>
                         <RadzenColumn>
@@ -84,7 +88,7 @@ else
     [Inject] IWebHostEnvironment Environment { get; set; }
     [Inject] UserContextService UserContextService { get; set; }
     [Inject] IServiceProvider ServiceProvider { get; set; }
-    
+
     [CascadingParameter] TemporaryContactInfo TemporaryContactInfo { get; set; }
     [CascadingParameter] SupportedCompany TargetCompany { get; set; }
 
@@ -92,6 +96,7 @@ else
     private readonly List<DirectoryInfo> _sessionDirs = [];
     private bool _isBusy = false;
     private bool _isLoadingFiles = false;
+    private bool _isError = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,12 +118,14 @@ else
         {
             return;
         }
-        
+
         List<FileSaveContext> createdFiles = new();
 
         var templateBuilder = ServiceProvider.GetKeyedService<ITemplateBuilder>(TargetCompany.Name);
         var fileNameProvider = ServiceProvider.GetKeyedService<IFileNameProvider>(TargetCompany.Name);
 
+        _isBusy = false;
+        _isError = false;
         _isLoadingFiles = true;
         foreach (var file in e.GetMultipleFiles(1))
         {
@@ -141,13 +148,23 @@ else
                 return;
             }
         }
+
         _files.Clear();
+        if (createdFiles is null)
+        {
+            _isError = true;
+            _isLoadingFiles = false;
+            _isBusy = false;
+            return;
+        }
+        
         foreach (var file in createdFiles)
         {
             await SaveFile(file);
         }
+
         _isLoadingFiles = false;
-        
+
         await UserContextService.ConsumeSingleCredit();
     }
 

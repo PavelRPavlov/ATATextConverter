@@ -29,7 +29,7 @@ public class DetailsExtractor(ILogger<DetailsExtractor> logger)
         return ConvertLinesToDetails(textLines);
     }
 
-    private static List<Detail> ConvertLinesToDetails(string[] lines)
+    private List<Detail> ConvertLinesToDetails(string[] lines)
     {
         var details = new List<Detail>();
         foreach (var line in lines)
@@ -40,6 +40,11 @@ public class DetailsExtractor(ILogger<DetailsExtractor> logger)
             }
 
             var separateParameters = line.Split(ParameterSplitter);
+            if (separateParameters.Length != 11)
+            {
+                logger.LogError("Invalid number of parameters in line {Line}", line);
+                return null;
+            }
             var detail = new Detail(
                 double.Parse(separateParameters[0], CultureInfo.InvariantCulture),
                 double.Parse(separateParameters[1], CultureInfo.InvariantCulture),

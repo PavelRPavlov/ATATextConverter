@@ -1,6 +1,5 @@
 ﻿using ATAFurniture.Server.Services.Template;
 using FluentAssertions;
-using Snapshooter.Xunit;
 using Xunit;
 
 namespace ATAFurniture.Server.Tests.TemplateServiceTests;

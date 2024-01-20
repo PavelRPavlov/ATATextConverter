@@ -14,6 +14,10 @@ public class FileGeneratorService(ILogger<FileGeneratorService> logger, DetailsE
     public async Task<List<FileSaveContext>> CreateFiles(MemoryStream memoryStream, ContactInfo contactInfo, ITemplateBuilder templateBuilder, IFileNameProvider fileNameProvider)
     {
         var details = detailsExtractor.ExtractDetailsAsync(memoryStream);
+        if (details is null)
+        {
+            return null;
+        }
         var sheets = await templateBuilder.BuildTemplateAsync(contactInfo, details);;
         var files = await excelFileGenerator.GenerateExcelFilesAsync(sheets, fileNameProvider);
         foreach (var file in files)

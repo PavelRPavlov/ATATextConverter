@@ -1,0 +1,20 @@
+214.0;247.0;1;Basic white W908 ST2;0;0;0;1;0;Model[0];1
+914.0;397.0;2;Basic white W908 ST2;0;0;0;1;0;Model[8];6
+800.0;402.0;1;AGT White;0;1;1;1;1;Model[9];1
+762.0;382.0;1;Basic white W908 ST2;0;0;0;1;0;Model[9];2
+882.0;382.0;2;AGT White;0;0;1;1;1;Model[9];3
+810.0;762.0;1;HDF 3 mm;0;0;0;0;0;Model[9];4
+762.0;369.0;1;Basic white W908 ST2;0;0;0;1;0;Model[9];5
+645.0;397.0;2;AGT White;0;0;1;1;1;Model[9];6
+177.5;796.0;1;AGT White;0;1;1;1;1;Model[9];7
+350.0;150.0;2;Basic white W908 ST2;0;1;1;1;1
+712.0;350.0;1;HDF 3 mm;0;1;1;1;1;Model[9];9
+712.0;137.0;1;Basic white W908 ST2;0;1;1;1;1;Model[9];10
+712.0;137.0;1;Basic white W908 ST2;0;1;1;1;1;Model[9];11
+762.0;54.0;1;AGT White;0;0;0;0;1;Model[9];12
+1164.0;317.0;1;H3170 Dyb kendyl natur;0;0;0;1;0;Model[10];1
+1200.0;317.0;1;H3170 Dyb kendyl natur;0;1;1;1;0;Model[10];2
+1082.0;317.0;2;H3170 Dyb kendyl natur;0;0;0;1;0;Model[10];3
+1100.0;1200.0;1;HDF 3 mm;0;0;0;0;0;Model[10];4
+1164.0;317.0;7;H3170 Dyb kendyl natur;0;0;0;1;0;Model[10];5
+297.0;100.0;1;H3170 Dyb kendyl natur;0;0;0;0;1;Model[10];6
