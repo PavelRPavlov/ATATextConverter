@@ -94,4 +94,16 @@ public class CosmosDbContext(
 
         _container ??= await _database.CreateContainerIfNotExistsAsync(cosmosConfig.UserContainerId, "/partitionKey", 400);
     }
+
+    public async Task UpdateSelectedCompany(string userId, SupportedCompany selectedTargetCompany)
+    {
+        var user = await GetUser(userId);
+        if (user is null)
+        {
+            return;
+        }
+        user.LastSelectedCompany = selectedTargetCompany;
+        var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+        logger.LogInformation("User {UserId} selected {@SelectedTargetCompany} as default export target", userId, selectedTargetCompany);
+    }
 }

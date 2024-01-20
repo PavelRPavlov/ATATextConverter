@@ -6,5 +6,5 @@ namespace ATAFurniture.Server.Services.ExcelGenerator;
 
 public interface IExcelFileGenerator
 {
-    Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets);
+    Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider);
 }

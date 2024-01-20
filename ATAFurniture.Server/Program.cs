@@ -30,7 +30,8 @@ public class Program
         {
             //Log.Information("Starting...");
 
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            host.Run();
         }
         catch (Exception ex)
         {

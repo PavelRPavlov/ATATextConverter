@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using ATAFurniture.Server.Services.ExcelGenerator;
 using ATAFurniture.Server.Services.ExcelGenerator.XlsxWrapper;
 using ATAFurniture.Server.Services.Template;
 using ATAFurniture.Server.Services.Template.Lonira;
+using ATAFurniture.Server.Services.Template.Suliver;
 using Microsoft.AspNetCore.Rewrite;
 using Radzen;
 
@@ -61,11 +63,14 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<CosmosDbContext>();
         
         services.AddScoped<DetailsExtractor>();
-        services.AddScoped<ITemplateBuilder, LoniraTemplateBuilder>();
-        services.AddScoped<ITableRowProvider, LoniraTableRowProvider>();
+        services.AddKeyedScoped<ITemplateBuilder, LoniraTemplateBuilder>(nameof(SupportedCompanies.Lonira));
+        services.AddKeyedScoped<ITableRowProvider, LoniraTableRowProvider>(nameof(SupportedCompanies.Lonira));
+        services.AddKeyedScoped<IFileNameProvider, LoniraFileNameProvider>(nameof(SupportedCompanies.Lonira));
+        services.AddKeyedScoped<ITemplateBuilder, SuliverTemplateBuilder>(nameof(SupportedCompanies.Suliver));
+        services.AddKeyedScoped<ITableRowProvider, SuliverTableRowProvider>(nameof(SupportedCompanies.Suliver));
+        services.AddKeyedScoped<IFileNameProvider, SuliverFileNameProvider>(nameof(SupportedCompanies.Suliver));
         services.AddScoped<IExcelFileGenerator, ExcelFileGenerator>();
-        services.AddScoped<IFileNameProvider, LoniraFileNameProvider>();
-        services.AddScoped<ExcelGeneratorService>();
+        services.AddScoped<FileGeneratorService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

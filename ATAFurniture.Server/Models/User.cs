@@ -11,6 +11,7 @@ public class User
     public string PartitionKey { get; set; }
     public int CreditsCount { get; set; }
     public int CreditResets { get; set; }
+    public SupportedCompany LastSelectedCompany { get; set; }
 
     public override string ToString()
     {

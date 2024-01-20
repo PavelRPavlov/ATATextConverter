@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ATAFurniture.Server.Services.ExcelGenerator.XlsxWrapper;
 
-public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger, IFileNameProvider fileNameProvider) : IExcelFileGenerator
+public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger) : IExcelFileGenerator
 {
-    public async Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets)
+    public async Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider)
     {
         var result = new List<FileSaveContext>();
         

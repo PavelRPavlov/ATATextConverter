@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ATAFurniture.Server.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
-using User = ATAFurniture.Server.Models.User;
 
 namespace ATAFurniture.Server.Services;
 
@@ -26,6 +25,7 @@ public class UserContextService
     public string CompanyName { get; private set; }
     public int CreditCount { get; private set; }
     public int CreditResets { get; private set; }
+    public SupportedCompany LastSelectedCompany { get; private set; }
 
     public UserContextService(
         AuthenticationStateProvider authenticationStateProvider,
@@ -36,6 +36,7 @@ public class UserContextService
         _cosmosDbContext = cosmosDbContext;
         _logger = logger;
         ExtractUserIdentity().ConfigureAwait(false);
+        EnrichUserContextWithDbData().ConfigureAwait(false);
     }
     
     public async Task AddCredits(int count, bool countResets = false)
@@ -53,6 +54,7 @@ public class UserContextService
     {
         var dbUser = await _cosmosDbContext.GetUser(Id) ?? await _cosmosDbContext.CreateUser(Id, 10);
         CreditCount = dbUser.CreditsCount;
+        LastSelectedCompany = dbUser.LastSelectedCompany;
     }
 
     private async Task ExtractUserIdentity()
@@ -80,5 +82,17 @@ public class UserContextService
     {
         await _cosmosDbContext.RemoveCredits(Id, 1);
         CreditCount--;
+    }
+
+    public async Task UpdateSelectedCompanyAsync(SupportedCompany targetCompany)
+    {
+        LastSelectedCompany = targetCompany;
+        await _cosmosDbContext.UpdateSelectedCompany(Id, targetCompany);
+    }
+
+    public async ValueTask<SupportedCompany> GetPreviouslySelectedTargetCompanyAsync()
+    {
+        var user = await _cosmosDbContext.GetUser(Id);
+        return user?.LastSelectedCompany;
     }
 }

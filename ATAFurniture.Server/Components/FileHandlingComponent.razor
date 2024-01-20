@@ -3,7 +3,9 @@
 @using ATAFurniture.Server.Services.ExcelGenerator
 @using Microsoft.AspNetCore.Hosting
 @using ATAFurniture.Server.Services
-
+@using ATAFurniture.Server.Services.Template
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Hosting
 @implements IDisposable
 
 @if (_isBusy)
@@ -77,11 +79,14 @@ else
 }
 
 @code {
-    [Inject] ExcelGeneratorService ExcelGeneratorService { get; set; }
+    [Inject] FileGeneratorService FileGeneratorService { get; set; }
     [Inject] ILogger<FileHandlingComponent> Logger { get; set; }
     [Inject] IWebHostEnvironment Environment { get; set; }
     [Inject] UserContextService UserContextService { get; set; }
+    [Inject] IServiceProvider ServiceProvider { get; set; }
+    
     [CascadingParameter] TemporaryContactInfo TemporaryContactInfo { get; set; }
+    [CascadingParameter] SupportedCompany TargetCompany { get; set; }
 
     private readonly List<FileDisplayContext> _files = [];
     private readonly List<DirectoryInfo> _sessionDirs = [];
@@ -111,6 +116,9 @@ else
         
         List<FileSaveContext> createdFiles = new();
 
+        var templateBuilder = ServiceProvider.GetKeyedService<ITemplateBuilder>(TargetCompany.Name);
+        var fileNameProvider = ServiceProvider.GetKeyedService<IFileNameProvider>(TargetCompany.Name);
+
         _isLoadingFiles = true;
         foreach (var file in e.GetMultipleFiles(1))
         {
@@ -118,11 +126,14 @@ else
             {
                 using MemoryStream memoryStream = new();
                 await file.OpenReadStream().CopyToAsync(memoryStream);
-                createdFiles = await ExcelGeneratorService.CreateFiles(
+                createdFiles = await FileGeneratorService.CreateFiles(
                     memoryStream,
                     new ContactInfo(
                         TemporaryContactInfo?.CompanyName ?? UserContextService.CompanyName,
-                        TemporaryContactInfo?.MobileNumber ?? UserContextService.MobileNumber));
+                        TemporaryContactInfo?.MobileNumber ?? UserContextService.MobileNumber,
+                        TargetCompany),
+                    templateBuilder,
+                    fileNameProvider);
             }
             catch (Exception ex)
             {
