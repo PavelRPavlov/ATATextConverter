@@ -88,7 +88,7 @@ public class CosmosDbContext(
             cosmosConfig.PrimaryKey,
             new CosmosClientOptions
             { 
-                ApplicationName = "ATAFurniture Converter" 
+                ConnectionMode = ConnectionMode.Gateway
             });
         try
         {
