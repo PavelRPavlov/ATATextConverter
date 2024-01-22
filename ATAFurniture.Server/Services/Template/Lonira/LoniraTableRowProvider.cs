@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ATAFurniture.Server.Services.DetailsExtractor;
 using ATAFurniture.Server.Services.ExcelGenerator;
 
 namespace ATAFurniture.Server.Services.Template.Lonira;

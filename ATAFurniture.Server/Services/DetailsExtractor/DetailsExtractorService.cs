@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using ATAFurniture.Server.Services.ExcelGenerator;
 using Microsoft.Extensions.Logging;
 
-namespace ATAFurniture.Server.Services;
+namespace ATAFurniture.Server.Services.DetailsExtractor;
 
-public class DetailsExtractor(ILogger<DetailsExtractor> logger)
+public interface IDetailsExtractorService
+{
+    List<Detail> ExtractDetails(MemoryStream stream);
+}
+
+public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : IDetailsExtractorService
 {
     private const char ParameterSplitter = ';';
     
-    public List<Detail> ExtractDetailsAsync(MemoryStream stream)
+    public List<Detail> ExtractDetails(MemoryStream stream)
     {
         string[] textLines;
         try
@@ -40,7 +44,7 @@ public class DetailsExtractor(ILogger<DetailsExtractor> logger)
             }
 
             var separateParameters = line.Split(ParameterSplitter);
-            if (separateParameters.Length != 11)
+            if (separateParameters.Length != 16)
             {
                 logger.LogError("Invalid number of parameters in line {Line}", line);
                 return null;
@@ -56,7 +60,12 @@ public class DetailsExtractor(ILogger<DetailsExtractor> logger)
                 int.Parse(separateParameters[7]) == 1,
                 int.Parse(separateParameters[8]) == 1,
                 separateParameters[9],
-                int.Parse(separateParameters[10])
+                int.Parse(separateParameters[10]),
+                double.Parse(separateParameters[11], CultureInfo.InvariantCulture),
+                double.Parse(separateParameters[12], CultureInfo.InvariantCulture),
+                double.Parse(separateParameters[13], CultureInfo.InvariantCulture),
+                double.Parse(separateParameters[14], CultureInfo.InvariantCulture),
+                double.Parse(separateParameters[15], CultureInfo.InvariantCulture)
             );
             details.Add(detail);
         }

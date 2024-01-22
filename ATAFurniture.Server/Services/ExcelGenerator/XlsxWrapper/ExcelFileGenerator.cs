@@ -24,29 +24,7 @@ public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger) : IExcelFile
             var groupedCellsByRow = sheet.Cells.GroupBy(c => c.Row);
             foreach (var row in groupedCellsByRow)
             {
-                lastFilledRow++;
-
-                while (lastFilledRow < row.Key)
-                {
-                    writer.SkipRows(1);
-                    lastFilledRow++;
-                }
-                writer.BeginRow();
-                
-                foreach (var cell in row)
-                {
-                    if (cell.ContentAlignment == 0)
-                    {
-                        writer.Write(cell.Value);
-                    }
-                    else
-                    {
-                        writer.Write(
-                            double.Parse(cell.Value),
-                            XlsxStyle.Default.With(
-                                alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
-                    }
-                }
+                lastFilledRow = CreateAllRows(lastFilledRow, row, writer);
             }
             writer.Dispose();
             var fileName = fileNameProvider.GetFileNameForSheet(sheet);
@@ -54,5 +32,45 @@ public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger) : IExcelFile
         }
 
         return result;
+    }
+
+    private int CreateAllRows(int lastFilledRow, IGrouping<int, Cell> row, XlsxWriter writer)
+    {
+        lastFilledRow++;
+
+        while (lastFilledRow < row.Key)
+        {
+            writer.SkipRows(1);
+            lastFilledRow++;
+        }
+        writer.BeginRow();
+                
+        foreach (var cell in row)
+        {
+            CreateSingleRow(writer, cell);
+        }
+
+        return lastFilledRow;
+    }
+
+    private void CreateSingleRow(XlsxWriter writer, Cell cell)
+    {
+        if (cell.ContentAlignment == 0)
+        {
+            writer.Write(cell.Value);
+        }
+        else
+        {
+            if ( string.IsNullOrEmpty(cell.Value))
+            {
+                writer.SkipColumns(1);
+                return;
+            }
+            var val = double.Parse(cell.Value);
+            writer.Write(
+                val,
+                XlsxStyle.Default.With(
+                    alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+        }
     }
 }
