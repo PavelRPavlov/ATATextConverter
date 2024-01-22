@@ -88,11 +88,27 @@ public class CosmosDbContext(
             cosmosConfig.PrimaryKey,
             new CosmosClientOptions
             { 
-                ApplicationName = "ATAFurniture Converter" 
+                ConnectionMode = ConnectionMode.Gateway
             });
-        _database ??= await _cosmosClient.CreateDatabaseIfNotExistsAsync(cosmosConfig.DatabaseId);
+        try
+        {
+            _database ??= await _cosmosClient.CreateDatabaseIfNotExistsAsync(cosmosConfig.DatabaseId);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to get or create database");
+            throw;
+        }
 
-        _container ??= await _database.CreateContainerIfNotExistsAsync(cosmosConfig.UserContainerId, "/partitionKey", 400);
+        try
+        {
+            _container ??= await _database.CreateContainerIfNotExistsAsync(cosmosConfig.UserContainerId, "/partitionKey", 400);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to get or create container");
+            throw;
+        }
     }
 
     public async Task UpdateSelectedCompany(string userId, SupportedCompany selectedTargetCompany)

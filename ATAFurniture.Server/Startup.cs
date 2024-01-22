@@ -9,6 +9,7 @@ using Microsoft.Identity.Web.UI;
 using System.IdentityModel.Tokens.Jwt;
 using ATAFurniture.Server.Models;
 using ATAFurniture.Server.Services;
+using ATAFurniture.Server.Services.DetailsExtractor;
 using ATAFurniture.Server.Services.ExcelGenerator;
 using ATAFurniture.Server.Services.ExcelGenerator.XlsxWrapper;
 using ATAFurniture.Server.Services.Template;
@@ -62,7 +63,7 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<UserContextService>();
         services.AddScoped<CosmosDbContext>();
         
-        services.AddScoped<DetailsExtractor>();
+        services.AddScoped<IDetailsExtractorService, DetailsExtractorService>();
         services.AddKeyedScoped<ITemplateBuilder, LoniraTemplateBuilder>(nameof(SupportedCompanies.Lonira));
         services.AddKeyedScoped<ITableRowProvider, LoniraTableRowProvider>(nameof(SupportedCompanies.Lonira));
         services.AddKeyedScoped<IFileNameProvider, LoniraFileNameProvider>(nameof(SupportedCompanies.Lonira));

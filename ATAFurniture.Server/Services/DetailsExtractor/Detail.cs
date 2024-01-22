@@ -1,4 +1,4 @@
-﻿namespace ATAFurniture.Server.Services.ExcelGenerator;
+﻿namespace ATAFurniture.Server.Services.DetailsExtractor;
 
 public record Detail(
     double Height,
@@ -11,4 +11,9 @@ public record Detail(
     bool HasRightEdge, 
     bool HasLeftEdge, 
     string Cabinet, 
-    int CuttingNumber);
+    int CuttingNumber,
+    double MaterialThickness,
+    double TopEdgeThickness,
+    double BottomEdgeThickness,
+    double RightEdgeThickness,
+    double LeftEdgeThickness);

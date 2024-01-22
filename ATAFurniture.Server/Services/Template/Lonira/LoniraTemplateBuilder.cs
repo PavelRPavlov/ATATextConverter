@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ATAFurniture.Server.Models;
+using ATAFurniture.Server.Services.DetailsExtractor;
 using ATAFurniture.Server.Services.ExcelGenerator;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

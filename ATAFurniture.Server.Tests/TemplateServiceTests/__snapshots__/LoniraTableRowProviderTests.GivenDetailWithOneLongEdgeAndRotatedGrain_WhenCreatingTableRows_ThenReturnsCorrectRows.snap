@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Name": "A1",
+    "ContentAlignment": 1,
+    "Value": "50",
+    "Row": 1
+  },
+  {
+    "Name": "B1",
+    "ContentAlignment": 1,
+    "Value": "100",
+    "Row": 1
+  },
+  {
+    "Name": "C1",
+    "ContentAlignment": 1,
+    "Value": "2",
+    "Row": 1
+  },
+  {
+    "Name": "D1",
+    "ContentAlignment": 0,
+    "Value": "1 k; Cabinet",
+    "Row": 1
+  }
+]

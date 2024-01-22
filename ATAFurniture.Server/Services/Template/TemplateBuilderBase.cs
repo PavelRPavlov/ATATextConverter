@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ATAFurniture.Server.Models;
+using ATAFurniture.Server.Services.DetailsExtractor;
 using ATAFurniture.Server.Services.ExcelGenerator;
 
 namespace ATAFurniture.Server.Services.Template;
