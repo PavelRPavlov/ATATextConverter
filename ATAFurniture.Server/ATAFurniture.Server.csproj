@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="wwwroot\Assets\" />
     <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
@@ -59,6 +60,12 @@
     <_ContentIncludedByDefault Remove="wwwroot\files\c68e2eac-642a-4693-a5b0-32b131b04c91\2024-01-18_TestCompany_Grafic back.xlsx" />
     <_ContentIncludedByDefault Remove="wwwroot\files\d85172e5-3c50-46e4-982b-403d0137d642\2024-01-18_TestCompany_.xlsx" />
     <_ContentIncludedByDefault Remove="wwwroot\files\ee9b0190-25cc-4b67-925f-d219af09f846\2024-01-19_TestCompany_{Material}.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Assets\kroiko.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

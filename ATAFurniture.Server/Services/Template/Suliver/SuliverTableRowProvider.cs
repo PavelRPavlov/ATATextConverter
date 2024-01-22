@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ATAFurniture.Server.Services.ExcelGenerator;
 
 namespace ATAFurniture.Server.Services.Template.Suliver;
@@ -14,9 +15,11 @@ public class SuliverTableRowProvider : ITableRowProvider
         nameof(Detail.Width),
         nameof(Detail.Quantity),
         nameof(Detail.Cabinet)
+        // edges should be added
     ];
     public IEnumerable<Cell> GetTableRow(Detail detail, int rowNumber, int startColumnNumber)
     {
+        var currentColumnNumber = startColumnNumber;
         var result = new List<Cell>();
 
         var detailType = typeof(Detail);
@@ -30,7 +33,7 @@ public class SuliverTableRowProvider : ITableRowProvider
             {
                 case nameof(Detail.Material):
                 case nameof(Detail.Cabinet):
-                    newCell = new Cell(Cell.GetCellName(rowNumber, startColumnNumber))
+                    newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber))
                     {
                         Value = propertyStringValue
                     };
@@ -38,23 +41,30 @@ public class SuliverTableRowProvider : ITableRowProvider
                 
                 case nameof(Detail.IsGrainDirectionReversed):
                     var val = bool.Parse(propertyStringValue);
-                    newCell = new Cell(Cell.GetCellName(rowNumber, startColumnNumber), 1)
+                    newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
                     {
                         Value = val ? "2": "1"
                     };
                     break;
                 
                 default:
-                    newCell = new Cell(Cell.GetCellName(rowNumber, startColumnNumber), 1)
+                    newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
                     {
                         Value = propertyStringValue
                     };
                     break;
             }
             result.Add(newCell);
-            startColumnNumber++;
+            currentColumnNumber++;
         }
+
+        result.AddRange(GetSuliverEdges(detail, rowNumber, currentColumnNumber)) ;
         
         return result;
+    }
+
+    private IEnumerable<Cell> GetSuliverEdges(Detail detail, int rowNumber, int currentColumnNumber)
+    {
+        return null;
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SystemEnvironment = System.Environment;
 using Serilog;
+using System.Reflection;
 
 namespace ATAFurniture.Server;
 
@@ -18,6 +19,7 @@ public class Program
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
         .AddJsonFile($"appsettings.{Environment}.json", optional: true)
         .AddEnvironmentVariables()
+        .AddUserSecrets<Program>()
         .Build();
     
     public static void Main(string[] args)
