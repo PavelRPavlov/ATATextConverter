@@ -38,8 +38,17 @@ public class CosmosDbContext(
             PartitionKey = User.PARTITION_KEY,
             CreditsCount = initialCreditCount
         };
-        var userResponse = await _container.CreateItemAsync(user, new PartitionKey(User.PARTITION_KEY));
-        logger.LogInformation("Created user {Id}", userId);
+        ItemResponse<User> userResponse;
+        try
+        {
+            userResponse = await _container.CreateItemAsync(user, new PartitionKey(User.PARTITION_KEY));
+            logger.LogInformation("Created user {Id}", userId);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to create user {Id}", userId);
+            throw;
+        }
         return userResponse.Resource;
     }
     
@@ -118,5 +127,18 @@ public class CosmosDbContext(
         user.LastSelectedCompany = selectedTargetCompany;
         var userResponse = await _container.UpsertItemAsync(user, new PartitionKey(User.PARTITION_KEY));
         logger.LogInformation("User {UserId} selected {@SelectedTargetCompany} as default export target", userId, selectedTargetCompany);
+    }
+
+    public async Task UpdateUser(User dbUser)
+    {
+        try
+        {
+            var userResponse = await _container.UpsertItemAsync(dbUser, new PartitionKey(User.PARTITION_KEY));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Failed to update user {Id}", dbUser.Id);
+            throw;
+        }
     }
 }
