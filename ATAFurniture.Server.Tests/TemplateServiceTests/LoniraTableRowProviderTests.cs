@@ -1,7 +1,6 @@
-﻿using ATAFurniture.Server.Services.DetailsExtractor;
-using ATAFurniture.Server.Services.ExcelGenerator;
-using ATAFurniture.Server.Services.Template.Lonira;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Kroiko.Domain.CellsExtracting;
+using Kroiko.Domain.TemplateBuilding.Lonira;
 using Snapshooter.Xunit;
 using Xunit;
 

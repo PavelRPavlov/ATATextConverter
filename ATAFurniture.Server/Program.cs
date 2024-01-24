@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SystemEnvironment = System.Environment;
 using Serilog;
-using System.Reflection;
 
 namespace ATAFurniture.Server;
 

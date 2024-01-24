@@ -1,5 +1,5 @@
-﻿using ATAFurniture.Server.Services.Template;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Kroiko.Domain.TemplateBuilding;
 using Xunit;
 
 namespace ATAFurniture.Server.Tests.TemplateServiceTests;
