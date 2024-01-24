@@ -16,15 +16,8 @@ public class UserContextService
     private readonly AuthenticationStateProvider _authenticationStateProvider;
     private readonly CosmosDbContext _cosmosDbContext;
     private readonly ILogger<UserContextService> _logger;
-    
-    public string Id { get; private set; }
-    public string Name { get; private set; }
-    public string Email { get; private set; }
-    public string MobileNumber { get; private set; }
-    public string CompanyName { get; private set; }
-    public int CreditCount { get; private set; }
-    public int CreditResets { get; private set; }
-    public SupportedCompany LastSelectedCompany { get; private set; }
+
+    public User User { get; private set; }
 
     public UserContextService(
         AuthenticationStateProvider authenticationStateProvider,
@@ -42,18 +35,18 @@ public class UserContextService
     {
         if (countResets)
         {
-            CreditResets++;
+            User.CreditResets++;
         }
-        _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, Id);
-        await _cosmosDbContext.AddCredits(Id, count, countResets);
-        CreditCount += count;
+        _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, User.Id);
+        await _cosmosDbContext.AddCredits(User.Id, count, countResets);
+        User.CreditsCount += count;
     }
 
     public async Task EnrichUserContextWithDbData()
     {
-        var dbUser = await _cosmosDbContext.GetUser(Id) ?? await _cosmosDbContext.CreateUser(Id, 10);
-        CreditCount = dbUser.CreditsCount;
-        LastSelectedCompany = dbUser.LastSelectedCompany;
+        var dbUser = await _cosmosDbContext.GetUser(User.Id) ?? await _cosmosDbContext.CreateUser(User.Id, 10);
+        User.CreditsCount = dbUser.CreditsCount;
+        User.LastSelectedCompany = dbUser.LastSelectedCompany;
     }
 
     private async Task ExtractUserIdentity()
@@ -69,29 +62,29 @@ public class UserContextService
             var mobileNumber = user.Claims.FirstOrDefault(c => c.Type.Equals(MobileNumberClaimName))?.Value;
             var companyName = user.Claims.FirstOrDefault(c => c.Type.Equals(CompanyNameClaimName))?.Value;
 
-            Id = userId;
-            Name = userName;
-            Email = userEmail;
-            MobileNumber = mobileNumber;
-            CompanyName = companyName;
+            User.Id = userId;
+            User.Name = userName;
+            User.Email = userEmail;
+            User.MobileNumber = mobileNumber;
+            User.CompanyName = companyName;
         }
     }
 
     public async Task ConsumeSingleCredit()
     {
-        await _cosmosDbContext.RemoveCredits(Id, 1);
-        CreditCount--;
+        await _cosmosDbContext.RemoveCredits(User.Id, 1);
+        User.CreditsCount--;
     }
 
     public async Task UpdateSelectedCompanyAsync(SupportedCompany targetCompany)
     {
-        LastSelectedCompany = targetCompany;
-        await _cosmosDbContext.UpdateSelectedCompany(Id, targetCompany);
+        User.LastSelectedCompany = targetCompany;
+        await _cosmosDbContext.UpdateSelectedCompany(User.Id, targetCompany);
     }
 
     public async ValueTask<SupportedCompany> GetPreviouslySelectedTargetCompanyAsync()
     {
-        var user = await _cosmosDbContext.GetUser(Id);
+        var user = await _cosmosDbContext.GetUser(User.Id);
         return user?.LastSelectedCompany;
     }
 }

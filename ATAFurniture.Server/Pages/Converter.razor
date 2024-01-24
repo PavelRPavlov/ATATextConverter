@@ -37,7 +37,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var lastSelection = UserContextService.LastSelectedCompany;
+        var lastSelection = UserContextService.User.LastSelectedCompany;
         if (lastSelection is null)
         {
             _targetCompany = await UserContextService.GetPreviouslySelectedTargetCompanyAsync();

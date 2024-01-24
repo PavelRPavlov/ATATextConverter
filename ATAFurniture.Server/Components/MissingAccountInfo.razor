@@ -54,8 +54,8 @@
 
     protected override void OnInitialized()
     {
-        TempContactInfo.CompanyName = UserContextService.CompanyName;
-        TempContactInfo.MobileNumber = UserContextService.MobileNumber;
+        TempContactInfo.CompanyName = UserContextService.User.CompanyName;
+        TempContactInfo.MobileNumber = UserContextService.User.MobileNumber;
         
         _isContactInfoComplete = !string.IsNullOrEmpty(TempContactInfo.CompanyName) &&
                                  !string.IsNullOrEmpty(TempContactInfo.MobileNumber);

@@ -24,8 +24,8 @@
 else
 {
     <RadzenRow AlignItems="AlignItems.Center">
-        <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.CreditCount.ToString()"></RadzenLabel>
-        @if (UserContextService.CreditCount <= 0)
+        <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.User.CreditsCount.ToString()"></RadzenLabel>
+        @if (UserContextService.User.CreditsCount <= 0)
         {
             <RadzenColumn Size="12" SizeMD="8">
                 <RadzenButton Text="Добави кредити"
@@ -47,7 +47,7 @@ else
                 <RadzenSplitterPane Collapsible="false" Size="40%" Max="50%" Min="30%">
                     <RadzenStack>
                         <RadzenLabel Text="Избери Polyboard файл:"></RadzenLabel>
-                        <InputFile disabled="@(UserContextService.CreditCount <= 0)" OnChange="@LoadFiles"/>
+                        <InputFile disabled="@(UserContextService.User.CreditsCount <= 0)" OnChange="@LoadFiles"/>
                     </RadzenStack>
                 </RadzenSplitterPane>
                 <RadzenSplitterPane Collapsible="false" Size="60%" >
@@ -115,7 +115,7 @@ else
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        if (UserContextService.CreditCount <= 0)
+        if (UserContextService.User.CreditsCount <= 0)
         {
             return;
         }
@@ -137,8 +137,8 @@ else
                 createdFiles = await FileGeneratorService.CreateFiles(
                     memoryStream,
                     new ContactInfo(
-                        TemporaryContactInfo?.CompanyName ?? UserContextService.CompanyName,
-                        TemporaryContactInfo?.MobileNumber ?? UserContextService.MobileNumber,
+                        TemporaryContactInfo?.CompanyName ?? UserContextService.User.CompanyName,
+                        TemporaryContactInfo?.MobileNumber ?? UserContextService.User.MobileNumber,
                         TargetCompany),
                     templateBuilder,
                     fileNameProvider);
