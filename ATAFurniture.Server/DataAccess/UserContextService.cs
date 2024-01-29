@@ -1,9 +1,11 @@
-﻿using Kroiko.Domain.CellsExtracting;
-using Kroiko.Domain.DataAccess;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Kroiko.Domain;
+using Kroiko.Domain.CellsExtracting;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 
-namespace Kroiko.Domain;
+namespace ATAFurniture.Server.DataAccess;
 
 public class UserContextService
 {
@@ -14,17 +16,17 @@ public class UserContextService
     private const string CompanyNameClaimName = "extension_CompanyName";
 
     private readonly AuthenticationStateProvider _authenticationStateProvider;
-    private readonly CosmosDbContext _cosmosDbContext;
     private readonly ILogger<UserContextService> _logger;
+    private readonly IKroikoDataRepository _dataRepository;
     public User User { get; private set; }
 
     public UserContextService(
         AuthenticationStateProvider authenticationStateProvider,
-        CosmosDbContext cosmosDbContext,
+        IKroikoDataRepository dataRepository,
         ILogger<UserContextService> logger)
     {
         _authenticationStateProvider = authenticationStateProvider;
-        _cosmosDbContext = cosmosDbContext;
+        _dataRepository = dataRepository;
         _logger = logger;
         ExtractUserIdentity().ConfigureAwait(false);
     }
@@ -36,7 +38,6 @@ public class UserContextService
             User.CreditResets++;
         }
         _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, User.Id);
-        await _cosmosDbContext.AddCredits(User.Id, count, countResets);
         User.CreditsCount += count;
     }
 
@@ -47,13 +48,13 @@ public class UserContextService
 
         if (user.Identity is { IsAuthenticated: true })
         {
-            var userId = user.Claims.FirstOrDefault(c => c.Type.Equals(UserIdClaimName))?.Value;
+            var aadId = user.Claims.FirstOrDefault(c => c.Type.Equals(UserIdClaimName))?.Value;
             var userName = user.Claims.FirstOrDefault(c => c.Type.Equals(UserNameClaimName))?.Value;
             var userEmail = user.Claims.FirstOrDefault(c => c.Type.Equals(EmailClaimName))?.Value;
             var mobileNumber = user.Claims.FirstOrDefault(c => c.Type.Equals(MobileNumberClaimName))?.Value;
             var companyName = user.Claims.FirstOrDefault(c => c.Type.Equals(CompanyNameClaimName))?.Value;
             
-            var dbUser = await _cosmosDbContext.GetUser(userId) ?? await _cosmosDbContext.CreateUser(userId, 10);
+            var dbUser = await _dataRepository.GetUserAsync(aadId) ?? await _dataRepository.CreateUser(aadId, 10);
             
             dbUser = await SyncUserClaimsAsync(dbUser, userName, userEmail, mobileNumber, companyName);
             
@@ -91,7 +92,7 @@ public class UserContextService
         
         if(shouldUpdate)
         {
-            await _cosmosDbContext.UpdateUser(dbUser);
+            await _dataRepository.UpdateUser(dbUser);
         }
 
         return dbUser;
@@ -99,19 +100,19 @@ public class UserContextService
 
     public async Task ConsumeSingleCredit()
     {
-        await _cosmosDbContext.RemoveCredits(User.Id, 1);
+        await _dataRepository.RemoveCredits(User, 1);
         User.CreditsCount--;
     }
 
     public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)
     {
         User.LastSelectedCompany = targetCompany;
-        await _cosmosDbContext.UpdateSelectedCompany(User.Id, targetCompany);
+        await _dataRepository.UpdateSelectedCompany(User, targetCompany);
     }
 
     public async ValueTask<SupportedCompany?> GetPreviouslySelectedTargetCompanyAsync()
     {
-        var user = await _cosmosDbContext.GetUser(User.Id);
+        var user = await _dataRepository.GetUserAsync(User.AadId);
         return user?.LastSelectedCompany;
     }
 }

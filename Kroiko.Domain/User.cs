@@ -5,11 +5,8 @@ namespace Kroiko.Domain;
 
 public class User
 {
-    public const string PARTITION_KEY = "Users";
-    [JsonProperty("id")]
-    public string Id { get; set; }
-    [JsonProperty("partitionKey")]
-    public string PartitionKey { get; set; }
+    public Guid Id { get; set; }
+    public string AadId { get; set; }
     public int CreditsCount { get; set; }
     public int CreditResets { get; set; }
     public SupportedCompany? LastSelectedCompany { get; set; }

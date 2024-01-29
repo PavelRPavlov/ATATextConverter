@@ -1,9 +1,12 @@
-﻿using Kroiko.Domain.CellsExtracting;
+﻿using System;
+using System.Threading.Tasks;
+using Kroiko.Domain.CellsExtracting;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using User = Kroiko.Domain.User;
 
-namespace Kroiko.Domain.DataAccess;
+namespace ATAFurniture.Server.DataAccess;
 
 public class CosmosDbContext(
     ILogger<CosmosDbContext> logger,

@@ -1,4 +1,6 @@
 ﻿@using ATAFurniture.Server.Models
+@using Kroiko.Domain.CellsExtracting
+@using Kroiko.Domain.TemplateBuilding
 @implements IDisposable
 
 @if (ConverterContext.Details.Count > 0)
@@ -10,13 +12,18 @@
                 <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
             </TabAnimationSettings>
             <TabItems>
-                @foreach (var sheet in ConverterContext.Details.GroupBy(d =>d.Material))
+                @foreach (var file in _files)
                 {
                     <TabItem>
-                        <HeaderTemplate>@sheet.Key</HeaderTemplate>
+                        <HeaderTemplate>
+                            <SfInPlaceEditor @bind-Value="@file.FileName" TValue="string" SubmitOnEnter="true" EnablePersistence="true" ShowButtons="true" >
+                                <EditorComponent>
+                                    <SfTextBox @bind-Value="@file.FileName"></SfTextBox>
+                                </EditorComponent>
+                            </SfInPlaceEditor>
+                        </HeaderTemplate>
                         <ContentTemplate>
-                            
-                            <SfGrid DataSource="@sheet.ToList()"/>
+                            <SfGrid DataSource="@file.Details"/>
                         </ContentTemplate>
                     </TabItem>
                 }
@@ -25,7 +32,10 @@
     </SfCard>
 }
 @code {
+
     [CascadingParameter] ConverterContext ConverterContext { get; set; }
+    
+    private List<KroikoFile> _files = [];
     
     protected override Task OnInitializedAsync()
     {
@@ -35,6 +45,15 @@
 
     private void ConverterContext_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        if (ConverterContext?.TargetCompany?.Name == SupportedCompanies.Lonira.Name)
+        {
+            var groups = ConverterContext.Details.GroupBy(x => x.Material).ToList();
+            foreach (var group in groups.Where(group => !string.IsNullOrEmpty(group.Key)))
+            {
+                _files.Add(new KroikoFile { FileName = group.Key, Details = group.ToList().ToLoniraDetails() });
+            }
+            
+        }
         StateHasChanged();
     }
 
@@ -43,5 +62,7 @@
     {
         ConverterContext.PropertyChanged -= ConverterContext_PropertyChanged;
     }
+        
+    
 
 }

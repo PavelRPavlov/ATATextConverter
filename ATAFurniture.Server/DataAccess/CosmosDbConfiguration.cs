@@ -1,4 +1,4 @@
-﻿namespace Kroiko.Domain.DataAccess;
+﻿namespace ATAFurniture.Server.DataAccess;
 
 public class CosmosDbConfiguration
 {

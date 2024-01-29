@@ -29,4 +29,9 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="DataAccess\CosmosDbConfiguration.cs" />
+      <Compile Remove="DataAccess\CosmosDbContext.cs" />
+    </ItemGroup>
+
 </Project>

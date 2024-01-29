@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using ATAFurniture.Server.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,13 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
-using Kroiko.Domain.DataAccess;
 using Kroiko.Domain.ExcelFilesGeneration;
 using Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
 using Kroiko.Domain.TemplateBuilding;
 using Kroiko.Domain.TemplateBuilding.Lonira;
 using Kroiko.Domain.TemplateBuilding.Suliver;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
@@ -36,9 +37,7 @@ public class Startup(IConfiguration configuration)
 
         // Configuration to sign-in users with Azure AD B2C.
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
-
-        services.Configure<CosmosDbConfiguration>(Configuration.GetSection("CosmosDb"));
-
+        
         services.AddHttpContextAccessor();
             
         services.AddControllersWithViews(
@@ -62,8 +61,13 @@ public class Startup(IConfiguration configuration)
         services.AddRazorPages();
         services.AddServerSideBlazor();
 
+        var connectionString = Configuration.GetSection("SharkAspNetConnectionString").Value;
+        services.AddDbContext<KroikoDataContext>(opt =>
+        {
+            opt.UseSqlServer(connectionString);
+        });
+        services.AddScoped<IKroikoDataRepository, KroikoDataRepository>();
         services.AddScoped<UserContextService>();
-        services.AddScoped<CosmosDbContext>();
         
         services.AddScoped<IDetailsExtractorService, DetailsExtractorService>();
         services.AddKeyedScoped<ITemplateBuilder, LoniraTemplateBuilder>(nameof(SupportedCompanies.Lonira));
