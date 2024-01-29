@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
+using Syncfusion.Blazor;
 
 namespace ATAFurniture.Server;
 
@@ -55,6 +56,8 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<ContextMenuService>();
         services.AddScoped<TooltipService>();
         services.AddRazorComponents();
+        
+        services.AddSyncfusionBlazor();
         
         services.AddRazorPages();
         services.AddServerSideBlazor();

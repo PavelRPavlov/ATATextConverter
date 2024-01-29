@@ -117,7 +117,7 @@ public class CosmosDbContext(
         }
     }
 
-    public async Task UpdateSelectedCompany(string userId, SupportedCompany selectedTargetCompany)
+    public async Task UpdateSelectedCompany(string userId, SupportedCompany? selectedTargetCompany)
     {
         var user = await GetUser(userId);
         if (user is null)

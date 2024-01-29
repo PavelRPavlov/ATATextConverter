@@ -10,11 +10,7 @@ public class FileGeneratorService(ILogger<FileGeneratorService> logger, IDetails
     
     public async Task<List<FileSaveContext>> CreateFiles(MemoryStream memoryStream, ContactInfo contactInfo, ITemplateBuilder templateBuilder, IFileNameProvider fileNameProvider)
     {
-        var details = detailsExtractorService.ExtractDetails(memoryStream);
-        if (details is null)
-        {
-            return null;
-        }
+        var details = await detailsExtractorService.ExtractDetails(memoryStream);
         var sheets = await templateBuilder.BuildTemplateAsync(contactInfo, details);;
         var files = await excelFileGenerator.GenerateExcelFilesAsync(sheets, fileNameProvider);
         foreach (var file in files)
@@ -22,5 +18,19 @@ public class FileGeneratorService(ILogger<FileGeneratorService> logger, IDetails
             file.FileName = file.FileName.Replace("{CompanyName}", contactInfo.CompanyName);
         }
         return files;
+    }
+    
+    public async Task<List<ISheet>?> CreateSheets(MemoryStream memoryStream, ContactInfo contactInfo, ITemplateBuilder templateBuilder)
+    {
+        var details = await detailsExtractorService.ExtractDetails(memoryStream);
+        var sheets = await templateBuilder.BuildTemplateAsync(contactInfo, details);;
+
+        return sheets as List<ISheet>;
+    }
+    
+    public async Task<List<Detail>> CreateDetails(MemoryStream memoryStream)
+    {
+        var details = await detailsExtractorService.ExtractDetails(memoryStream);
+        return details;
     }
 }

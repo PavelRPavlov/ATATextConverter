@@ -6,14 +6,14 @@ namespace Kroiko.Domain.CellsExtracting;
 
 public interface IDetailsExtractorService
 {
-    List<Detail> ExtractDetails(MemoryStream stream);
+    Task<List<Detail>> ExtractDetails(MemoryStream stream);
 }
 
 public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : IDetailsExtractorService
 {
     private const char ParameterSplitter = ';';
     
-    public List<Detail> ExtractDetails(MemoryStream stream)
+    public Task<List<Detail>> ExtractDetails(MemoryStream stream)
     {
         string[] textLines;
         try
@@ -30,7 +30,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
         return ConvertLinesToDetails(textLines);
     }
 
-    private List<Detail> ConvertLinesToDetails(string[] lines)
+    private Task<List<Detail>> ConvertLinesToDetails(string[] lines)
     {
         var details = new List<Detail>();
         foreach (var line in lines)
@@ -41,12 +41,30 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
             }
 
             var separateParameters = line.Split(ParameterSplitter);
-            if (separateParameters.Length != 16)
+            var detail = separateParameters.Length switch
             {
-                logger.LogError("Invalid number of parameters in line {Line}", line);
-                return null;
+                11 => ExtractOldDetailFormat(separateParameters),
+                16 => ExtractLatestDetailFormat(separateParameters),
+                _ => null
+            };
+
+            if (detail is null)
+            {
+                logger.LogError("At least one line did not match the required format");
+                return Task.FromResult(new List<Detail>());
             }
-            var detail = new Detail(
+
+            details.Add(detail);
+        }
+
+        return Task.FromResult(details);
+    }
+
+    private Detail? ExtractLatestDetailFormat(ReadOnlySpan<string> separateParameters)
+    {
+        try
+        {
+            return new Detail(
                 double.Parse(separateParameters[0], CultureInfo.InvariantCulture),
                 double.Parse(separateParameters[1], CultureInfo.InvariantCulture),
                 int.Parse(separateParameters[2]),
@@ -64,9 +82,37 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
                 double.Parse(separateParameters[14], CultureInfo.InvariantCulture),
                 double.Parse(separateParameters[15], CultureInfo.InvariantCulture)
             );
-            details.Add(detail);
         }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error while parsing latest detail format");
+            return null;
+        }
+    }
 
-        return details;
+    private Detail? ExtractOldDetailFormat(ReadOnlySpan<string> separateParameters)
+    {
+        try
+        {
+            return new Detail(
+                double.Parse(separateParameters[0], CultureInfo.InvariantCulture),
+                double.Parse(separateParameters[1], CultureInfo.InvariantCulture),
+                int.Parse(separateParameters[2]),
+                separateParameters[3],
+                int.Parse(separateParameters[4]) == 1,
+                int.Parse(separateParameters[5]) == 1,
+                int.Parse(separateParameters[6]) == 1,
+                int.Parse(separateParameters[7]) == 1,
+                int.Parse(separateParameters[8]) == 1,
+                separateParameters[9],
+                int.Parse(separateParameters[10]),
+                0, 0, 0, 0, 0
+            );
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error while parsing old detail format");
+            return null;
+        }
     }
 }

@@ -103,13 +103,13 @@ public class UserContextService
         User.CreditsCount--;
     }
 
-    public async Task UpdateSelectedCompanyAsync(SupportedCompany targetCompany)
+    public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)
     {
         User.LastSelectedCompany = targetCompany;
         await _cosmosDbContext.UpdateSelectedCompany(User.Id, targetCompany);
     }
 
-    public async ValueTask<SupportedCompany> GetPreviouslySelectedTargetCompanyAsync()
+    public async ValueTask<SupportedCompany?> GetPreviouslySelectedTargetCompanyAsync()
     {
         var user = await _cosmosDbContext.GetUser(User.Id);
         return user?.LastSelectedCompany;

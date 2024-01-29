@@ -1,0 +1,47 @@
+﻿@using ATAFurniture.Server.Models
+@implements IDisposable
+
+@if (ConverterContext.Details.Count > 0)
+{
+    <SfCard>
+        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true">
+            <TabAnimationSettings>
+                <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+                <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+            </TabAnimationSettings>
+            <TabItems>
+                @foreach (var sheet in ConverterContext.Details.GroupBy(d =>d.Material))
+                {
+                    <TabItem>
+                        <HeaderTemplate>@sheet.Key</HeaderTemplate>
+                        <ContentTemplate>
+                            
+                            <SfGrid DataSource="@sheet.ToList()"/>
+                        </ContentTemplate>
+                    </TabItem>
+                }
+            </TabItems>
+        </SfTab>
+    </SfCard>
+}
+@code {
+    [CascadingParameter] ConverterContext ConverterContext { get; set; }
+    
+    protected override Task OnInitializedAsync()
+    {
+        ConverterContext.PropertyChanged += ConverterContext_PropertyChanged;
+        return Task.CompletedTask;
+    }
+
+    private void ConverterContext_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+
+    public void Dispose()
+    {
+        ConverterContext.PropertyChanged -= ConverterContext_PropertyChanged;
+    }
+
+}

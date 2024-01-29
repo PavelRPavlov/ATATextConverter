@@ -24,6 +24,12 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Syncfusion.Blazor.Cards" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.PivotTable" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.47" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
