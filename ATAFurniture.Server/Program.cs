@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SystemEnvironment = System.Environment;
 using Serilog;
-using System.Reflection;
 
 namespace ATAFurniture.Server;
 
@@ -33,6 +32,14 @@ public class Program
             //Log.Information("Starting...");
 
             var host = CreateHostBuilder(args).Build();
+
+            var key = Configuration.GetSection("SyncfusionLicenseKey").Value;
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new Exception("SyncfusionLicenseKey is not set");
+            }
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(key);
+            
             host.Run();
         }
         catch (Exception ex)

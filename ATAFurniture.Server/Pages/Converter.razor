@@ -2,56 +2,35 @@
 @attribute [Authorize]
 
 @using ATAFurniture.Server.Models
-@using ATAFurniture.Server.Services
+@using Kroiko.Domain
+@using ATAFurniture.Server.DataAccess
 
 <PageTitle>Converter</PageTitle>
 
-<RadzenStack Gap="1em">
-    <RadzenRow AlignItems="AlignItems.Center">
-        <RadzenLabel Text="Изберете кък коя фирма ще правите поръчка: "></RadzenLabel>
-        <RadzenDropDown @bind-Value="_targetCompany" TValue="SupportedCompany" Data="@_supportedCompanies" TextProperty="Translation" Change="@(args => OnUserSelection(args))"></RadzenDropDown>
-    </RadzenRow>
-    @if (_isCompanySelected)
-    {
-        <CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
+<CascadingValue TValue="ConverterContext" Value="@Context">
+    <RadzenStack Gap="1em">
+        <TargetCompanySelectionComponent/>
+        @if (Context.TargetCompany != null)
+        {
             <MissingAccountInfo/>
-        </CascadingValue>
 
-        <CascadingValue TValue="TemporaryContactInfo" Value="@_tempContactInfo">
-            <CascadingValue TValue="SupportedCompany" Value="@_targetCompany">
-                <FileHandlingComponent/>
-            </CascadingValue>
-        </CascadingValue>
-    }
-</RadzenStack>
+            <UserCreditsComponent/>
+            
+            <FileUploadComponent/>
+
+            <FileDisplayComponent />
+        }
+    </RadzenStack>
+</CascadingValue>
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }
-    RadzenDropDown<SupportedCompany> _targetCompanyDropDown;
-    private readonly TemporaryContactInfo _tempContactInfo = new();
-    private bool _isCompanySelected = false;
-    private SupportedCompany _targetCompany;
-    readonly SupportedCompany[] _supportedCompanies = [SupportedCompanies.Lonira,SupportedCompanies.Suliver];
+    private ConverterContext Context { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var lastSelection = UserContextService.LastSelectedCompany;
-        if (lastSelection is null)
-        {
-            _targetCompany = await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
-        }
-        else
-        {
-            _targetCompany = lastSelection;
-        }
-        _isCompanySelected = true;
-    }
-
-    private async Task OnUserSelection(object args)
-    {
-        _targetCompany = (SupportedCompany)args;
-        await UserContextService.UpdateSelectedCompanyAsync(_targetCompany);
-        _isCompanySelected = true;
+        var lastSelection = UserContextService.User.LastSelectedCompany;
+        Context.TargetCompany = lastSelection ?? await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
     }
 }

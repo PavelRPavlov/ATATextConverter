@@ -1,0 +1,96 @@
+﻿@using Kroiko.Domain
+@using Kroiko.Domain.CellsExtracting
+@using Kroiko.Domain.ExcelFilesGeneration
+@using Kroiko.Domain.TemplateBuilding
+@using UploadChangeEventArgs = Syncfusion.Blazor.Inputs.UploadChangeEventArgs
+@using System.IO
+@using ATAFurniture.Server.Models
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Cards
+@using System.Collections.ObjectModel
+@using ATAFurniture.Server.DataAccess
+
+<RadzenCard>
+    <RadzenRow>
+        <RadzenStack disabled="@(UserContextService.User.CreditsCount <= 0)" >
+            <RadzenLabel Text="Избери Polyboard файл:"></RadzenLabel>
+            <SfUploader AutoUpload="true" AllowMultiple="false" AllowedExtensions=".txt, .csv">
+                <UploaderEvents ValueChange="@OnFileUpload" OnClear="@OnFileCleared"></UploaderEvents>
+            </SfUploader>
+        </RadzenStack>
+        @if (_isLoadingFiles)
+        {
+            <RadzenColumn>
+                <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                    <Template><h6>Working</h6></Template>
+                </RadzenProgressBarCircular>
+            </RadzenColumn>
+        }
+        @if (_isError)
+        {
+            <RadzenColumn>
+                <RadzenAlert Text="Каченият файл не отговаря на изискванията за формат! Кредити не са консумирани. Моля, качете друг файл." AlertStyle="AlertStyle.Danger" Variant="Variant.Filled"></RadzenAlert>
+                
+                <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Filled">
+                    Информация за формата може да намерите <a href="configuration">ТУК</a>
+                </RadzenAlert>
+            </RadzenColumn>
+        }
+    </RadzenRow>
+</RadzenCard>
+
+@code {
+    [Inject] ILogger<FileUploadComponent> Logger { get; set; }
+    [Inject] FileGeneratorService FileGeneratorService { get; set; }
+    [Inject] UserContextService UserContextService { get; set; }
+    
+    [CascadingParameter] ConverterContext ConverterContext { get; set; }
+
+    private bool _isLoadingFiles;
+    private bool _isError;
+
+    private async Task OnFileUpload(UploadChangeEventArgs arg)
+    {
+        if (UserContextService.User.CreditsCount <= 0)
+        {
+            return;
+        }
+        
+        _isError = false;
+        _isLoadingFiles = true;
+        var uploadFileStream = new MemoryStream();
+        foreach (var file in arg.Files)
+        {
+            try
+            {
+                await file.File.OpenReadStream().CopyToAsync(uploadFileStream);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error while reading uploaded file");
+                _isError = true;
+                return;
+            }
+        }
+
+        var details = await FileGeneratorService.CreateDetails(uploadFileStream);
+        _isLoadingFiles = false;
+        if (!details.Any())
+        {
+            _isError = true;
+            return;
+        }
+
+        ConverterContext.Details = new ObservableCollection<Detail>(details);
+    }
+
+    private void OnFileCleared(ClearingEventArgs arg)
+    {
+        _isError = false;
+        _isLoadingFiles = false;
+        ConverterContext.Details = [];
+    }
+}

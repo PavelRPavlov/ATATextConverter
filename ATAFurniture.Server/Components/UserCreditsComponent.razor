@@ -1,0 +1,27 @@
+﻿@using Kroiko.Domain
+@using ATAFurniture.Server.DataAccess
+
+<RadzenRow AlignItems="AlignItems.Center">
+    <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.User.CreditsCount.ToString()"></RadzenLabel>
+    @if (UserContextService.User.CreditsCount <= 0)
+    {
+        <RadzenColumn Size="12" SizeMD="8">
+            <RadzenButton Text="Добави кредити"
+                          Icon="add_circle_outline"
+                          ButtonStyle="ButtonStyle.Secondary"
+                          Click="OnAddCreditsButtonPress"/>
+        </RadzenColumn>
+    }
+</RadzenRow>
+
+@code {
+    [Inject] UserContextService UserContextService { get; set; }
+    
+
+    private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
+    {
+        // trigger the payment flow
+        // move this to the webhook the flow will call
+        await UserContextService.AddCredits(10, true);
+    }
+}
