@@ -1,0 +1,86 @@
+﻿@using ATAFurniture.Server.Models
+@using TextAlign = Syncfusion.Blazor.Grids.TextAlign
+@implements IDisposable
+
+<TabItem >
+    <HeaderTemplate>@File.FileName</HeaderTemplate>
+    <ContentTemplate >
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Име на клиента: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@ConverterContext.ContactInfo.CompanyName"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@ConverterContext.ContactInfo.MobileNumber"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Материал: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@File.FileName"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+
+        <SfGrid class="p-3" @ref="_grid" DataSource="_source" TValue="LoniraDetail">
+            <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
+            <GridEvents OnActionBegin="OnActionBegin" TValue="LoniraDetail"></GridEvents>
+            <GridColumns>
+                <GridColumn Field="@nameof(LoniraDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Height)" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Width)" HeaderText="Размер срещу фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Quantity)" HeaderText="Брой детайли" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.LoniraEdges)" HeaderText="Кантиране" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ContentTemplate>
+</TabItem>
+<style>
+    .e-tab .e-content {
+            background: #FAFAFA !important;
+            border: 0px solid black;
+       }
+</style>
+@code {
+    [Parameter]
+    public KroikoFile File { get; set; }
+    [CascadingParameter] 
+    ConverterContext ConverterContext { get; set; }
+    
+    private SfGrid<LoniraDetail> _grid;
+    private List<LoniraDetail> _source;
+
+    protected override void OnInitialized()
+    {
+        _source = File.Details.Cast<LoniraDetail>().ToList();
+    }
+
+    private async Task OnActionBegin(Syncfusion.Blazor.Grids.ActionEventArgs<LoniraDetail> arg)
+    {
+        if (arg.RequestType.Equals(Syncfusion.Blazor.Grids.Action.BeginEdit))
+        {
+            arg.Data = new LoniraDetail
+            {
+                Note = arg.RowData.Note
+            };
+        }
+        else if (arg.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            arg.RowData.Note = arg.Data.Note;
+        }
+    }
+
+    public void Dispose()
+    {
+        ((IDisposable)_grid)?.Dispose();
+    }
+}

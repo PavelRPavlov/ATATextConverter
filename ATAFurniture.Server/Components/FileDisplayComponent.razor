@@ -1,12 +1,14 @@
 ﻿@using ATAFurniture.Server.Models
 @using Kroiko.Domain.CellsExtracting
 @using Kroiko.Domain.TemplateBuilding
+@using TextAlign = Syncfusion.Blazor.Grids.TextAlign
 @implements IDisposable
 
-@if (ConverterContext.Details.Count > 0)
+@if (Context.Details.Count > 0)
 {
-    <SfCard>
-        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true">
+    <RadzenCard class="p-3">
+        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
+            <TabEvents Selecting="OnTabItemSelected"/>
             <TabAnimationSettings>
                 <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
                 <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
@@ -14,55 +16,82 @@
             <TabItems>
                 @foreach (var file in _files)
                 {
-                    <TabItem>
-                        <HeaderTemplate>
-                            <SfInPlaceEditor @bind-Value="@file.FileName" TValue="string" SubmitOnEnter="true" EnablePersistence="true" ShowButtons="true" >
-                                <EditorComponent>
-                                    <SfTextBox @bind-Value="@file.FileName"></SfTextBox>
-                                </EditorComponent>
-                            </SfInPlaceEditor>
-                        </HeaderTemplate>
-                        <ContentTemplate>
-                            <SfGrid DataSource="@file.Details"/>
-                        </ContentTemplate>
-                    </TabItem>
+                    switch (Context.TargetCompany.Name)
+                    {
+                        case nameof(SupportedCompanies.Lonira):
+                            <LoniraTabItemContent File="@file" />
+                            break;
+                        case nameof(SupportedCompanies.Suliver):
+                            break;
+                            default:
+                            break;
+                    }
                 }
             </TabItems>
         </SfTab>
-    </SfCard>
+    </RadzenCard>
 }
+<style>
+    .e-tab .e-tab-header {
+       background: #FAFAFA !important;
+       color: whitesmoke;
+   }
+   .e-tab .e-tab-header .e-toolbar-item.e-active {
+        border-left: 1px solid black;
+        border-top: 1px solid black;
+        border-right: 1px solid black;
+        border-radius: 6px 6px 0 0;
+        color: black;
+    }
+    .e-tab .e-tab-header .e-toolbar-item .e-tab-wrap:hover {
+        border-left: 1px solid black;
+        border-top: 1px solid black;
+        border-right: 1px solid black;
+        border-radius: 6px 6px 0 0;
+        color: black;
+     }
+   .e-tab .e-content {
+        background: #FAFAFA !important;
+        border: 1px solid black;
+   }
+</style>
 @code {
 
-    [CascadingParameter] ConverterContext ConverterContext { get; set; }
-    
+    [Parameter] public ConverterContext Context { get; set; }
+
     private List<KroikoFile> _files = [];
-    
-    protected override Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
-        ConverterContext.PropertyChanged += ConverterContext_PropertyChanged;
-        return Task.CompletedTask;
+        Context.PropertyChanged += ContextPropertyChanged;
     }
 
-    private void ConverterContext_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (ConverterContext?.TargetCompany?.Name == SupportedCompanies.Lonira.Name)
+        _files.Clear();
+        if (Context?.TargetCompany?.Name == nameof(SupportedCompanies.Lonira))
         {
-            var groups = ConverterContext.Details.GroupBy(x => x.Material).ToList();
+            var groups = Context.Details.GroupBy(x => x.Material).ToList();
             foreach (var group in groups.Where(group => !string.IsNullOrEmpty(group.Key)))
             {
                 _files.Add(new KroikoFile { FileName = group.Key, Details = group.ToList().ToLoniraDetails() });
             }
-            
         }
+
         StateHasChanged();
     }
 
-
     public void Dispose()
     {
-        ConverterContext.PropertyChanged -= ConverterContext_PropertyChanged;
+        Context.PropertyChanged -= ContextPropertyChanged;
     }
-        
-    
+
+    private void OnTabItemSelected(SelectingEventArgs obj)
+    {
+        if (obj.IsSwiped)
+        {
+            obj.Cancel = true;
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 ﻿namespace Kroiko.Domain.CellsExtracting;
 
+//TODO use SmartEnum instead
 public static class SupportedCompanies
 {
     public static readonly  SupportedCompany Lonira = new SupportedCompany(nameof(Lonira), "Лонира, гр.София");

@@ -28,7 +28,6 @@ public class UserContextService
         _authenticationStateProvider = authenticationStateProvider;
         _dataRepository = dataRepository;
         _logger = logger;
-        ExtractUserIdentity().ConfigureAwait(false);
     }
     
     public async Task AddCredits(int count, bool countResets = false)
@@ -41,7 +40,7 @@ public class UserContextService
         User.CreditsCount += count;
     }
 
-    private async Task ExtractUserIdentity()
+    public async Task ExtractUserIdentity()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -65,28 +64,28 @@ public class UserContextService
     private async Task<User> SyncUserClaimsAsync(User dbUser, string? userName, string? userEmail, string? mobileNumber, string? companyName)
     {
         var shouldUpdate = false;
-        if (!string.IsNullOrEmpty(userName) && dbUser.Name != userName)
+        if (dbUser.Name != userName)
         {
             _logger.LogInformation("Updating user info for {Id} ==> Property NAME to {UserName}", dbUser.Id, userName);
-            dbUser.Name = userName;
+            dbUser.Name = userName ?? "";
             shouldUpdate = true;
         }
-        if (!string.IsNullOrEmpty(userEmail) && dbUser.Email != userEmail)
+        if (dbUser.Email != userEmail)
         {
             _logger.LogInformation("Updating user info for {Id} ==> Property EMAIL to {UserEmail}", dbUser.Id, userEmail);
-            dbUser.Email = userEmail;
+            dbUser.Email = userEmail ?? "";
             shouldUpdate = true;
         }
-        if (!string.IsNullOrEmpty(mobileNumber) && dbUser.MobileNumber != mobileNumber)
+        if (dbUser.MobileNumber != mobileNumber)
         {
             _logger.LogInformation("Updating user info for {Id} ==> Property MOBILE_NUMBER to {UserMobileNumber}", dbUser.Id, mobileNumber);
-            dbUser.MobileNumber = mobileNumber;
+            dbUser.MobileNumber = mobileNumber ?? "";
             shouldUpdate = true;
         }
-        if (!string.IsNullOrEmpty(companyName) && dbUser.CompanyName != companyName)
+        if (dbUser.CompanyName != companyName)
         {
             _logger.LogInformation("Updating user info for {Id} ==> Property COMPANY_NAME to {UserCompanyName}", dbUser.Id, companyName);
-            dbUser.CompanyName = companyName;
+            dbUser.CompanyName = companyName ?? "";
             shouldUpdate = true;
         }
         
@@ -101,12 +100,10 @@ public class UserContextService
     public async Task ConsumeSingleCredit()
     {
         await _dataRepository.RemoveCredits(User, 1);
-        User.CreditsCount--;
     }
 
     public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)
     {
-        User.LastSelectedCompany = targetCompany;
         await _dataRepository.UpdateSelectedCompany(User, targetCompany);
     }
 
