@@ -10,6 +10,7 @@ namespace ATAFurniture.Server.Models;
 public sealed class ConverterContext : INotifyPropertyChanged
 {
     private ObservableCollection<Detail> _details = new();
+    private ObservableCollection<KroikoFile> _files = new();
 
     public CustomerContactInfo ContactInfo { get; set; } = new();
     public SupportedCompany? TargetCompany { get; set; }
@@ -18,6 +19,12 @@ public sealed class ConverterContext : INotifyPropertyChanged
     {
         get => _details;
         set => SetField(ref _details, value);
+    }
+
+    public ObservableCollection<KroikoFile> Files
+    {
+        get => _files;
+        set => SetField(ref _files, value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
