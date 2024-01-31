@@ -18,7 +18,7 @@
         <RadzenStack disabled="@(UserContextService.User.CreditsCount <= 0)" >
             <RadzenLabel Text="Избери Polyboard файл:"></RadzenLabel>
             <SfUploader AutoUpload="true" AllowMultiple="false" AllowedExtensions=".txt, .csv">
-                <UploaderEvents ValueChange="@OnFileUpload" OnClear="@OnFileCleared"></UploaderEvents>
+                <UploaderEvents ValueChange="@OnFileUpload" OnRemove="@OnFileRemoved"></UploaderEvents>
             </SfUploader>
         </RadzenStack>
         @if (_isLoadingFiles)
@@ -44,10 +44,10 @@
 
 @code {
     [Inject] ILogger<FileUploadComponent> Logger { get; set; }
-    [Inject] FileGeneratorService FileGeneratorService { get; set; }
     [Inject] UserContextService UserContextService { get; set; }
+    [Inject] IDetailsExtractorService DetailsExtractorService { get; set; }
     
-    [CascadingParameter] ConverterContext ConverterContext { get; set; }
+    [Parameter] public ConverterContext Context { get; set; }
 
     private bool _isLoadingFiles;
     private bool _isError;
@@ -76,7 +76,7 @@
             }
         }
 
-        var details = await FileGeneratorService.CreateDetails(uploadFileStream);
+        var details = await DetailsExtractorService.ExtractDetails(uploadFileStream);
         _isLoadingFiles = false;
         if (!details.Any())
         {
@@ -84,13 +84,14 @@
             return;
         }
 
-        ConverterContext.Details = new ObservableCollection<Detail>(details);
+        Context.Details = new ObservableCollection<Detail>(details);
     }
-
-    private void OnFileCleared(ClearingEventArgs arg)
+    
+    private void OnFileRemoved(RemovingEventArgs obj)
     {
         _isError = false;
         _isLoadingFiles = false;
-        ConverterContext.Details = [];
+        Context.Details = [];
     }
+
 }

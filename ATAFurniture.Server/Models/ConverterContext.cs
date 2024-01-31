@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
+using Kroiko.Domain.TemplateBuilding;
 
 namespace ATAFurniture.Server.Models;
 
 public sealed class ConverterContext : INotifyPropertyChanged
 {
     private ObservableCollection<Detail> _details = new();
-    
-    public readonly TemporaryContactInfo TempContactInfo = new();
-    public SupportedCompany? TargetCompany;
+    private ObservableCollection<KroikoFile> _files = new();
+
+    public ContactInfo ContactInfo { get; set; } = new();
+    public SupportedCompany? TargetCompany { get; set; }
 
     public ObservableCollection<Detail> Details
     {
         get => _details;
         set => SetField(ref _details, value);
+    }
+
+    public ObservableCollection<KroikoFile> Files
+    {
+        get => _files;
+        set => SetField(ref _files, value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

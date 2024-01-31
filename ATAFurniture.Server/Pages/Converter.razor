@@ -2,26 +2,22 @@
 @attribute [Authorize]
 
 @using ATAFurniture.Server.Models
-@using Kroiko.Domain
 @using ATAFurniture.Server.DataAccess
+@using ATAFurniture.Server.Components.FileDisplay
 
-<PageTitle>Converter</PageTitle>
-
-<CascadingValue TValue="ConverterContext" Value="@Context">
-    <RadzenStack Gap="1em">
-        <TargetCompanySelectionComponent/>
-        @if (Context.TargetCompany != null)
-        {
-            <MissingAccountInfo/>
-
-            <UserCreditsComponent/>
-            
-            <FileUploadComponent/>
-
-            <FileDisplayComponent />
-        }
-    </RadzenStack>
-</CascadingValue>
+<RadzenStack Gap="1em">
+    <TargetCompanySelectionComponent Context="@Context"/>
+    @if (Context.TargetCompany != null)
+    {
+        <UserCreditsComponent />
+        
+        <FileUploadComponent Context="@Context"/>
+        
+        <FileDisplayComponent Context="@Context"/>
+        
+        <OrderHandlingComponent Context="@Context"/>
+    }
+</RadzenStack>
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }
@@ -30,7 +26,14 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var lastSelection = UserContextService.User.LastSelectedCompany;
+        if (UserContextService.User is null)
+        {
+            await UserContextService.ExtractUserIdentity();
+        }
+        var lastSelection = UserContextService.User!.LastSelectedCompany;
         Context.TargetCompany = lastSelection ?? await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
+        
+        Context.ContactInfo.CompanyName = UserContextService.User.CompanyName;
+        Context.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
     }
 }

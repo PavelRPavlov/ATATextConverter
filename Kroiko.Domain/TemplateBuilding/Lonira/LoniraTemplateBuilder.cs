@@ -12,19 +12,14 @@ public class LoniraTemplateBuilder(ILogger<LoniraTemplateBuilder> logger, [FromK
     private readonly string _defaultTemplateFilePath =
         Path.Combine(Assembly.GetExecutingAssembly().Location, "..", "TemplateBuilding", "Lonira", "template.json");
 
-    public override async Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<Detail> details)
+    public override async Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<KroikoFile> files)
     {
-        var groupedDetails = details.GroupBy(d => d.Material);
         List<ISheet> sheets = new();
-        foreach (var group in groupedDetails)
+        foreach (var file in files)
         {
-            if (group.Key.Contains('?'))
-            {
-                continue;
-            }
-            
-            var groupMaterial = group.Key;
-            var groupDetails = group.ToList();
+            // TODO only for Lonira the details are grouped by material beforehand 
+            var groupMaterial = file.FileName;
+            var groupDetails = file.Details.Cast<LoniraDetail>();
             
             var sheet = await ReadTemplateAsync<LoniraSheet>(templateFilePath ?? _defaultTemplateFilePath);
             sheet.SheetMaterial = groupMaterial;

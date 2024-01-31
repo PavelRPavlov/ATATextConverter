@@ -1,4 +1,6 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using ATAFurniture.Server.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
+using Serilog;
 using Syncfusion.Blazor;
 
 namespace ATAFurniture.Server;
@@ -86,6 +89,14 @@ public class Startup(IConfiguration configuration)
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            using var scope = app.ApplicationServices.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<KroikoDataContext>();
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                Log.Logger.Warning("Applying migrations...");
+                context.Database.Migrate();
+                Log.Logger.Warning("Applying migrations completed...");
+            }
         }
         else
         {

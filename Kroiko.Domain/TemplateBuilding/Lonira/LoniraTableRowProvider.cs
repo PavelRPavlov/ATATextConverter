@@ -4,106 +4,43 @@ namespace Kroiko.Domain.TemplateBuilding.Lonira;
 
 public class LoniraTableRowProvider : ITableRowProvider
 {
-    private static readonly List<string> DetailPropertyToColumnMap =
+    private static readonly string[] DetailPropertyToColumnMap =
     [
-        nameof(Detail.Height), // goes to column 'A'
-        nameof(Detail.Width), // goes to column 'B'
-        nameof(Detail.Quantity) // goes to column 'C'
+        nameof(LoniraDetail.Height),
+        nameof(LoniraDetail.Width),
+        nameof(LoniraDetail.Quantity),
+        nameof(LoniraDetail.LoniraEdges),
+        nameof(LoniraDetail.Note)
     ];
     
-    public IEnumerable<Cell> GetTableRow(Detail detail, int rowNumber, int startColumnNumber)
+    private static readonly string[] CenteredCellsContent =
+    [
+        nameof(LoniraDetail.Height),
+        nameof(LoniraDetail.Width),
+        nameof(LoniraDetail.Quantity)
+    ];
+    
+    public IEnumerable<Cell> GetTableRow(IKroikoDetail detail, int rowNumber, int startColumnNumber)
     {
         var result = new List<Cell>();
 
-        var detailType = typeof(Detail);
+        var detailType = typeof(LoniraDetail);
         foreach (var property in DetailPropertyToColumnMap)
         {
-            result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber), 1)
+            var propertyValue = detailType.GetProperty(property)?.GetValue(detail)?.ToString();
+            if (string.IsNullOrEmpty(propertyValue))
             {
-                Value = detailType.GetProperty(property)?.GetValue(detail)?.ToString()
+                propertyValue = "";
+            }
+            var cellContentAlignment = CenteredCellsContent.Contains(property) ? (byte)1 : (byte)0;
+            result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber), cellContentAlignment)
+            {
+                Value = propertyValue
             });
             
             startColumnNumber++;
         }
         
-        result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber))
-        {
-            Value = $"{GetLoniraEdges(detail)}; {detail.Cabinet}"
-        });
-        
         return result;
-    }
-
-    private string GetLoniraEdges(Detail detail)
-    {
-        if (detail.IsGrainDirectionReversed)
-        {
-            detail = detail with { Height = detail.Width, Width = detail.Height };
-        }
-        
-        int longEdgeCount = 0;
-        int shortEdgeCount = 0;
-
-        if (detail.Width >= detail.Height)
-        {
-            if (detail.HasLeftEdge)
-            {
-                shortEdgeCount++;
-            }
-
-            if (detail.HasTopEdge)
-            {
-                longEdgeCount++;
-            }
-
-            if (detail.HasRightEdge)
-            {
-                shortEdgeCount++;
-            }
-
-            if (detail.HasBottomEdge)
-            {
-                longEdgeCount++;
-            }
-        }
-        else
-        {
-            if (detail.HasLeftEdge)
-            {
-                longEdgeCount++;
-            }
-
-            if (detail.HasTopEdge)
-            {
-                shortEdgeCount++;
-            }
-
-            if (detail.HasRightEdge)
-            {
-                longEdgeCount++;
-            }
-
-            if (detail.HasBottomEdge)
-            {
-                shortEdgeCount++;
-            }
-        }
-
-        if (shortEdgeCount == 0 && longEdgeCount == 0)
-        {
-            return string.Empty;
-        }
-
-        if (shortEdgeCount == 0 && longEdgeCount != 0)
-        {
-            return $"{longEdgeCount} d";
-        }
-
-        if (longEdgeCount == 0 && shortEdgeCount != 0)
-        {
-            return $"{shortEdgeCount} k";
-        }
-
-        return $"{shortEdgeCount} k {longEdgeCount} d";
     }
 }
