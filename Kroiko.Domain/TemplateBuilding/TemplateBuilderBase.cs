@@ -9,7 +9,7 @@ public abstract class TemplateBuilderBase : ITemplateBuilder
     private const string MobileNumberCellFlag = "{MobileNumber}";
     private const string TableStartCellFlag = "{TableStart}";
 
-    public abstract Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<Detail> details);
+    public abstract Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<KroikoFile> files);
 
     protected Cell PopulateStaticInfo(ISheet sheet, ContactInfo contactInfo)
     {
@@ -48,7 +48,7 @@ public abstract class TemplateBuilderBase : ITemplateBuilder
         return templateDefinition;
     }
     
-    protected void PopulateDetails(ISheet sheet, Cell tableStartCell, IEnumerable<Detail> details, ITableRowProvider tableRowProvider)
+    protected void PopulateDetails(ISheet sheet, Cell tableStartCell, IEnumerable<IKroikoDetail> details, ITableRowProvider tableRowProvider)
     {
         (int currentRow, int currentColumn) = Cell.GetRowAndColumn(tableStartCell);
         foreach (var detail in details)

@@ -1,4 +1,5 @@
 ﻿@using ATAFurniture.Server.Models
+@using Kroiko.Domain.TemplateBuilding
 @using TextAlign = Syncfusion.Blazor.Grids.TextAlign
 @implements IDisposable
 
@@ -10,7 +11,7 @@
                 <RadzenLabel Text="Име на клиента: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@ConverterContext.ContactInfo.CompanyName"></SfTextBox>
+                <SfTextBox @bind-Value="@Context.ContactInfo.CompanyName"></SfTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -18,7 +19,7 @@
                 <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@ConverterContext.ContactInfo.MobileNumber"></SfTextBox>
+                <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -32,7 +33,6 @@
 
         <SfGrid class="p-3" @ref="_grid" DataSource="_source" TValue="LoniraDetail">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
-            <GridEvents OnActionBegin="OnActionBegin" TValue="LoniraDetail"></GridEvents>
             <GridColumns>
                 <GridColumn Field="@nameof(LoniraDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.Height)" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
@@ -44,19 +44,9 @@
         </SfGrid>
     </ContentTemplate>
 </TabItem>
-<style>
-    .e-grid .e-gridheader {
-        border: 1px solid black;
-    }
-    .e-grid .e-gridcontent .e-content {
-        border: 1px solid black;
-    }
-</style>
 @code {
-    [Parameter]
-    public KroikoFile File { get; set; }
-    [CascadingParameter] 
-    ConverterContext ConverterContext { get; set; }
+    [Parameter] public KroikoFile File { get; set; }
+    [Parameter] public ConverterContext Context { get; set; }
     
     private SfGrid<LoniraDetail> _grid;
     private List<LoniraDetail> _source;
@@ -66,23 +56,17 @@
         _source = File.Details.Cast<LoniraDetail>().ToList();
     }
 
-    private async Task OnActionBegin(Syncfusion.Blazor.Grids.ActionEventArgs<LoniraDetail> arg)
-    {
-        if (arg.RequestType.Equals(Syncfusion.Blazor.Grids.Action.BeginEdit))
-        {
-            arg.Data = new LoniraDetail
-            {
-                Note = arg.RowData.Note
-            };
-        }
-        else if (arg.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
-        {
-            arg.RowData.Note = arg.Data.Note;
-        }
-    }
-
     public void Dispose()
     {
         ((IDisposable)_grid)?.Dispose();
     }
+
 }
+<style>
+    .e-grid .e-gridheader {
+        border: 1px solid black;
+    }
+    .e-grid .e-gridcontent .e-content {
+        border: 1px solid black;
+    }
+</style>

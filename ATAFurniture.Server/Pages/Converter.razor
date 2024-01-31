@@ -3,20 +3,21 @@
 
 @using ATAFurniture.Server.Models
 @using ATAFurniture.Server.DataAccess
+@using ATAFurniture.Server.Components.FileDisplay
 
-<CascadingValue TValue="ConverterContext" Value="@Context">
-    <RadzenStack Gap="1em">
-        <TargetCompanySelectionComponent/>
-        @if (Context.TargetCompany != null)
-        {
-            <UserCreditsComponent/>
-            
-            <FileUploadComponent/>
-
-            <FileDisplayComponent Context="@Context"/>
-        }
-    </RadzenStack>
-</CascadingValue>
+<RadzenStack Gap="1em">
+    <TargetCompanySelectionComponent Context="@Context"/>
+    @if (Context.TargetCompany != null)
+    {
+        <UserCreditsComponent />
+        
+        <FileUploadComponent Context="@Context"/>
+        
+        <FileDisplayComponent Context="@Context"/>
+        
+        <OrderHandlingComponent Context="@Context"/>
+    }
+</RadzenStack>
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }

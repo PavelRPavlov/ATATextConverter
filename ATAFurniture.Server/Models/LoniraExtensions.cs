@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Kroiko.Domain.CellsExtracting;
+using Kroiko.Domain.TemplateBuilding;
 
 namespace ATAFurniture.Server.Models;
 
@@ -17,7 +18,7 @@ public static class LoniraExtensions
                 Width = detail.Width,
                 Height = detail.Height,
                 Quantity = detail.Quantity,
-                LoniraEdges = GetLoniraEdges(detail)
+                LoniraEdges = $"{GetLoniraEdges(detail)}; {detail.Cabinet}"
             });
         }
 

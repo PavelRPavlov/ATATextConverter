@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
+using Kroiko.Domain.TemplateBuilding;
 
 namespace ATAFurniture.Server.Models;
 
@@ -12,7 +14,7 @@ public sealed class ConverterContext : INotifyPropertyChanged
     private ObservableCollection<Detail> _details = new();
     private ObservableCollection<KroikoFile> _files = new();
 
-    public CustomerContactInfo ContactInfo { get; set; } = new();
+    public ContactInfo ContactInfo { get; set; } = new();
     public SupportedCompany? TargetCompany { get; set; }
 
     public ObservableCollection<Detail> Details

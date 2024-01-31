@@ -6,32 +6,37 @@ public class SuliverTableRowProvider : ITableRowProvider
 {
     private static readonly List<string> DetailPropertyToColumnMap =
     [
-        nameof(Detail.Material),
-        nameof(Detail.MaterialThickness),
-        nameof(Detail.IsGrainDirectionReversed),
-        nameof(Detail.Height),
-        nameof(Detail.Width),
-        nameof(Detail.Quantity),
-        nameof(Detail.Cabinet)
-        // edges should be added
+        nameof(SuliverDetail.Material),
+        nameof(SuliverDetail.MaterialThickness),
+        nameof(SuliverDetail.IsGrainDirectionReversed),
+        nameof(SuliverDetail.Height),
+        nameof(SuliverDetail.Width),
+        nameof(SuliverDetail.Quantity),
+        nameof(SuliverDetail.Cabinet),
+        nameof(SuliverDetail.LongEdge),
+        nameof(SuliverDetail.LongEdge2),
+        nameof(SuliverDetail.ShortEdge),
+        nameof(SuliverDetail.ShortEdge2),
+        nameof(SuliverDetail.Note)
     ];
-    public IEnumerable<Cell> GetTableRow(Detail detail, int rowNumber, int startColumnNumber)
+    public IEnumerable<Cell> GetTableRow(IKroikoDetail det, int rowNumber, int startColumnNumber)
     {
         var currentColumnNumber = startColumnNumber;
         var result = new List<Cell>();
 
-        var detailType = typeof(Detail);
+        var detailType = typeof(SuliverDetail);
+        var detail = (SuliverDetail)det;
         foreach (var property in DetailPropertyToColumnMap)
         {
             currentColumnNumber = ExtractDirectColumnInfo(detail, rowNumber, detailType, property, currentColumnNumber, result);
         }
 
-        result.AddRange(GetSuliverEdges(detail, rowNumber, currentColumnNumber)) ;
+        //result.AddRange(GetSuliverEdges(detail, rowNumber, currentColumnNumber)) ;
         
         return result;
     }
 
-    private static int ExtractDirectColumnInfo(Detail detail, int rowNumber, Type detailType, string property,
+    private static int ExtractDirectColumnInfo(SuliverDetail detail, int rowNumber, Type detailType, string property,
         int currentColumnNumber, List<Cell> result)
     {
         var info = detailType.GetProperty(property);
@@ -40,15 +45,15 @@ public class SuliverTableRowProvider : ITableRowProvider
         Cell newCell;
         switch (propertyName)
         {
-            case nameof(Detail.Material):
-            case nameof(Detail.Cabinet):
+            case nameof(SuliverDetail.Material):
+            case nameof(SuliverDetail.Cabinet):
                 newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber))
                 {
                     Value = propertyStringValue
                 };
                 break;
                 
-            case nameof(Detail.IsGrainDirectionReversed):
+            case nameof(SuliverDetail.IsGrainDirectionReversed):
                 var val = bool.Parse(propertyStringValue);
                 newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
                 {
@@ -67,41 +72,41 @@ public class SuliverTableRowProvider : ITableRowProvider
         currentColumnNumber++;
         return currentColumnNumber;
     }
-
-    private IEnumerable<Cell> GetSuliverEdges(Detail detail, int rowNumber, int currentColumnNumber)
-    {
-        var result = new List<Cell>();
-        result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
-        {
-            Value = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness)
-        });
-        currentColumnNumber++;
-        result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
-        {
-            Value = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness)
-        });
-        currentColumnNumber++;
-        result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
-        {
-            Value = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness)
-        });
-        currentColumnNumber++;
-        result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
-        {
-            Value = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness)
-        });
-        return result;
-    }
-
-    private string GetSuliverEdgeThicknessValue(double detailTopEdgeThickness)
-    {
-        return detailTopEdgeThickness switch 
-        {
-            0 => "",
-            0.5 => "1",
-            1 => "3",
-            2 => "2",
-            _ => throw new ArgumentOutOfRangeException(nameof(detailTopEdgeThickness))
-        };
-    }
+    
+    // private IEnumerable<Cell> GetSuliverEdges(SuliverDetail detail, int rowNumber, int currentColumnNumber)
+    // {
+    //     var result = new List<Cell>();
+    //     result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+    //     {
+    //         Value = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness)
+    //     });
+    //     currentColumnNumber++;
+    //     result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+    //     {
+    //         Value = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness)
+    //     });
+    //     currentColumnNumber++;
+    //     result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+    //     {
+    //         Value = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness)
+    //     });
+    //     currentColumnNumber++;
+    //     result.Add(new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+    //     {
+    //         Value = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness)
+    //     });
+    //     return result;
+    // }
+    //
+    // private string GetSuliverEdgeThicknessValue(double detailTopEdgeThickness)
+    // {
+    //     return detailTopEdgeThickness switch 
+    //     {
+    //         0 => "",
+    //         0.5 => "1",
+    //         1 => "3",
+    //         2 => "2",
+    //         _ => throw new ArgumentOutOfRangeException(nameof(detailTopEdgeThickness))
+    //     };
+    // }
 }

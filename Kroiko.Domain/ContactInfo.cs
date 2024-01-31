@@ -2,4 +2,8 @@
 
 namespace Kroiko.Domain;
 
-public record ContactInfo(string CompanyName, string MobileNumber, SupportedCompany ExportTarget);
+public class ContactInfo
+{
+    public string CompanyName { get; set; }
+    public string MobileNumber { get; set; }
+}

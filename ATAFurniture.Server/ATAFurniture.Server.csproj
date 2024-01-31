@@ -30,6 +30,7 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.47" />
     <PackageReference Include="Syncfusion.Blazor.Cards" Version="24.1.47" />
     <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.47" />
     <PackageReference Include="Syncfusion.Blazor.InPlaceEditor" Version="24.1.47" />
@@ -59,6 +60,17 @@
   <ItemGroup>
     <Compile Remove="DataAccess\CosmosDbConfiguration.cs" />
     <Compile Remove="DataAccess\CosmosDbContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\files\1b70fd2c-31cd-4905-9cea-3db6b62f2350\2024-01-24_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\3eeb0dfd-36d1-4062-86a9-a41842750fde\2024-01-24_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\6a4d1d79-d5ba-4cbd-b608-371fd7165022\2024-01-31_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\64bf5ef3-7280-4d55-b1a3-d05bed03ea01\2024-01-31_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\367b81ec-3f5c-4359-af8c-518c49fa856e\2024-01-24_TestCompany.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\a66c5f37-5026-47a9-9fb1-6e2e04cec9bc\2024-01-24_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\b743f5fd-5548-4092-a963-d569e8ae5712\2024-01-31_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ce6aec1b-4f74-4e3d-88f7-b0a3204318ef\2024-01-31_TestCompany_Basic white W908 ST2.xlsx" />
   </ItemGroup>
 
 </Project>
