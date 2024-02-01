@@ -13,9 +13,14 @@ public sealed class ConverterContext : INotifyPropertyChanged
 {
     private ObservableCollection<Detail> _details = new();
     private ObservableCollection<KroikoFile> _files = new();
-
+    private SupportedCompany? _targetCompany = null;
     public ContactInfo ContactInfo { get; set; } = new();
-    public SupportedCompany? TargetCompany { get; set; }
+    
+    public SupportedCompany? TargetCompany 
+    {
+        get => _targetCompany;
+        set => SetField(ref _targetCompany, value);
+    }
 
     public ObservableCollection<Detail> Details
     {

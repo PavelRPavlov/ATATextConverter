@@ -6,41 +6,39 @@
 
 @implements IDisposable
 
-@if (_areFilesReady)
-{
-    <RadzenCard>
-        <RadzenRow>
-            <RadzenColumn>
-                <SfRadioButton TChecked="bool" Name="options" Label="Генерирай файлове за сваляне" @onclick="OnCreateFilesClicked"></SfRadioButton>
-            </RadzenColumn>
-            <RadzenColumn>
-                <SfRadioButton TChecked="bool" Name="options" Label="Изпрати e-mail поръчка" @onclick="OnSendEmailClick"></SfRadioButton>
-            </RadzenColumn>
-        </RadzenRow>
-        @if (_shouldGenerateFiles)
+<RadzenCard>
+    <RadzenLabel class="py-3" Text="Избери една от опциите:"></RadzenLabel>
+    <RadzenRow class="py-3">
+        <RadzenColumn>
+            <SfRadioButton TChecked="bool" Name="options" Label="Генерирай файлове за сваляне" @onclick="OnCreateFilesClicked"></SfRadioButton>
+        </RadzenColumn>
+        <RadzenColumn>
+            <SfRadioButton TChecked="bool" Name="options" Label="Изпрати e-mail поръчка" @onclick="OnSendEmailClick"></SfRadioButton>
+        </RadzenColumn>
+    </RadzenRow>
+    @if (_shouldGenerateFiles)
+    {
+        @if (_areFilesGenerating)
         {
-            @if (_areFilesGenerating)
-            {
-                <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
-                    <Template><h6>Working</h6></Template>
-                </RadzenProgressBarCircular>
-            }
-            else
-            {
-                <ul>
-                    @foreach (var file in _files)
-                    {
-                        <li><a href="@file.Url" download="@file.Name">@file.Name</a></li>
-                    }
-                </ul>
-            }
+            <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                <Template><h6>Working</h6></Template>
+            </RadzenProgressBarCircular>
         }
-        @if (_shouldSendEmail)
+        else
         {
-            <SfButton Icon="email" CssClass="sf-button-primary" Content="Изпрати e-mail поръчка" @onclick="OnSendEmailClick"></SfButton>
+            <ul class="p-4">
+                @foreach (var file in _files)
+                {
+                    <li class="p-3"><a href="@file.Url" download="@file.Name">@file.Name</a></li>
+                }
+            </ul>
         }
-    </RadzenCard>
-}
+    }
+    @if (_shouldSendEmail)
+    {
+        <SfButton Icon="email" CssClass="sf-button-primary" Content="Изпрати e-mail поръчка" @onclick="OnSendEmailClick"></SfButton>
+    }
+</RadzenCard>
 
 @code {
     [Inject] public FileGeneratorService FileGenerator { get; set; }
@@ -68,7 +66,6 @@
             _shouldSendEmail = false;
             _shouldGenerateFiles = false;
             _files.Clear();
-            _areFilesReady = Context.Files.Any();;
             StateHasChanged();
         }
     }
@@ -133,7 +130,7 @@
     {
         _shouldGenerateFiles = false;
         _shouldSendEmail = true;
-        // TODO trigger SendGrid to send email
+        
         StateHasChanged();
     }
 

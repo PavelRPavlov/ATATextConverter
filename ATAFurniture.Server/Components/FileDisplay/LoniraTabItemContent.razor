@@ -1,7 +1,6 @@
 ﻿@using ATAFurniture.Server.Models
 @using Kroiko.Domain.TemplateBuilding
 @using TextAlign = Syncfusion.Blazor.Grids.TextAlign
-@implements IDisposable
 
 <TabItem >
     <HeaderTemplate>@File.FileName</HeaderTemplate>
@@ -31,12 +30,13 @@
             </RadzenColumn>
         </RadzenRow>
 
-        <SfGrid class="p-3" @ref="_grid" DataSource="_source" TValue="LoniraDetail">
+        <SfGrid class="p-3" DataSource="_source" TValue="LoniraDetail" AllowPaging="true" AllowTextWrap="true">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
+            <GridPageSettings PageSize="25"></GridPageSettings>
             <GridColumns>
                 <GridColumn Field="@nameof(LoniraDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
-                <GridColumn Field="@nameof(LoniraDetail.Height)" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(LoniraDetail.Width)" HeaderText="Размер срещу фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Height)" Width="160" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Width)" Width="180" HeaderText="Размер срещу фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.Quantity)" HeaderText="Брой детайли" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.LoniraEdges)" HeaderText="Кантиране" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>
@@ -48,19 +48,12 @@
     [Parameter] public KroikoFile File { get; set; }
     [Parameter] public ConverterContext Context { get; set; }
     
-    private SfGrid<LoniraDetail> _grid;
     private List<LoniraDetail> _source;
 
     protected override void OnInitialized()
     {
         _source = File.Details.Cast<LoniraDetail>().ToList();
     }
-
-    public void Dispose()
-    {
-        ((IDisposable)_grid)?.Dispose();
-    }
-
 }
 <style>
     .e-grid .e-gridheader {

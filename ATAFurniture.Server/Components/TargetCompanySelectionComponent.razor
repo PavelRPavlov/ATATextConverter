@@ -3,10 +3,12 @@
 @using Kroiko.Domain
 @using ATAFurniture.Server.DataAccess
 
-<RadzenRow AlignItems="AlignItems.Center">
-    <RadzenLabel Text="Изберете към коя фирма ще правите поръчка: "></RadzenLabel>
-    <RadzenDropDown @bind-Value="Context.TargetCompany" TValue="SupportedCompany" Data="@_supportedCompanies" TextProperty="Translation" Change="@(args => OnUserSelection(args))"></RadzenDropDown>
-</RadzenRow>
+<RadzenCard>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Изберете към коя фирма ще правите поръчка: "></RadzenLabel>
+        <RadzenDropDown @bind-Value="Context.TargetCompany" TValue="SupportedCompany" Data="@_supportedCompanies" TextProperty="Translation" Change="@(args => OnUserSelection(args))"></RadzenDropDown>
+    </RadzenRow>
+</RadzenCard>
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }

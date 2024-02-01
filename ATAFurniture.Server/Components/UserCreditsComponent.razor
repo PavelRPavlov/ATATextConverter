@@ -1,18 +1,20 @@
 ﻿@using Kroiko.Domain
 @using ATAFurniture.Server.DataAccess
 
-<RadzenRow AlignItems="AlignItems.Center">
-    <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.User.CreditsCount.ToString()"></RadzenLabel>
-    @if (UserContextService.User.CreditsCount <= 0)
-    {
-        <RadzenColumn Size="12" SizeMD="8">
-            <RadzenButton Text="Добави кредити"
-                          Icon="add_circle_outline"
-                          ButtonStyle="ButtonStyle.Secondary"
-                          Click="OnAddCreditsButtonPress"/>
-        </RadzenColumn>
-    }
-</RadzenRow>
+<RadzenCard>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Налични кредити: "/><RadzenLabel Text="@UserContextService.User.CreditsCount.ToString()"></RadzenLabel>
+        @if (UserContextService.User.CreditsCount <= 0)
+        {
+            <RadzenColumn Size="12" SizeMD="8">
+                <RadzenButton Text="Добави кредити"
+                              Icon="add_circle_outline"
+                              ButtonStyle="ButtonStyle.Secondary"
+                              Click="OnAddCreditsButtonPress"/>
+            </RadzenColumn>
+        }
+    </RadzenRow>
+</RadzenCard>
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }
