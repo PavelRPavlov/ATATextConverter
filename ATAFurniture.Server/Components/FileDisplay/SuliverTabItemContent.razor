@@ -24,7 +24,7 @@
 
         <SfGrid class="p-3" DataSource="_source" TValue="SuliverDetail" AllowPaging="true" AllowTextWrap="true">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
-            <GridPageSettings PageSize="15"></GridPageSettings>
+            <GridPageSettings PageSize="25"></GridPageSettings>
             <GridColumns>
                 <GridColumn Field="@nameof(SuliverDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.Material)" Width="200" HeaderText="Материал" TextAlign="TextAlign.Left" AllowEditing="false"></GridColumn>

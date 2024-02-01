@@ -30,12 +30,13 @@
             </RadzenColumn>
         </RadzenRow>
 
-        <SfGrid class="p-3" DataSource="_source" TValue="LoniraDetail">
+        <SfGrid class="p-3" DataSource="_source" TValue="LoniraDetail" AllowPaging="true" AllowTextWrap="true">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
+            <GridPageSettings PageSize="25"></GridPageSettings>
             <GridColumns>
                 <GridColumn Field="@nameof(LoniraDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
-                <GridColumn Field="@nameof(LoniraDetail.Height)" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(LoniraDetail.Width)" HeaderText="Размер срещу фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Height)" Width="160" HeaderText="Размер по фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(LoniraDetail.Width)" Width="180" HeaderText="Размер срещу фладер [мм]" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.Quantity)" HeaderText="Брой детайли" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.LoniraEdges)" HeaderText="Кантиране" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(LoniraDetail.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>

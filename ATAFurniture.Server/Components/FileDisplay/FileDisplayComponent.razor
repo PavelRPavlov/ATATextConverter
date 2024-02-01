@@ -8,45 +8,42 @@
 @using Timer = System.Threading.Timer
 @implements IDisposable
 
-@if (Context.Details.Count > 0)
-{
-    <RadzenCard>
-        <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
-        @if (_isLoadingFiles)
-        {
-            <h1>Loading indicator should be here...</h1>
-            <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
-                <Template><h6>Working</h6></Template>
-            </RadzenProgressBarCircular>
-        }
-        else
-        {
-            <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
-                <TabEvents Selecting="OnTabItemSelected"/>
-                <TabAnimationSettings>
-                    <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
-                    <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
-                </TabAnimationSettings>
-                <TabItems>
-                    @foreach (var file in Context.Files)
+
+<RadzenCard>
+    <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
+    @if (_isLoadingFiles)
+    {
+        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+            <Template><h6>Working</h6></Template>
+        </RadzenProgressBarCircular>
+    }
+    else
+    {
+        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
+            <TabEvents Selecting="OnTabItemSelected"/>
+            <TabAnimationSettings>
+                <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+                <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+            </TabAnimationSettings>
+            <TabItems>
+                @foreach (var file in Context.Files)
+                {
+                    switch (Context.TargetCompany.Name)
                     {
-                        switch (Context.TargetCompany.Name)
-                        {
-                            case nameof(SupportedCompanies.Lonira):
-                                <LoniraTabItemContent File="@file" Context="@Context"/>
-                                break;
-                            case nameof(SupportedCompanies.Suliver):
-                                <SuliverTabItemContent File="@file" Context="@Context"/>
-                                break;
-                            default:
-                                break;
-                        }
+                        case nameof(SupportedCompanies.Lonira):
+                            <LoniraTabItemContent File="@file" Context="@Context"/>
+                            break;
+                        case nameof(SupportedCompanies.Suliver):
+                            <SuliverTabItemContent File="@file" Context="@Context"/>
+                            break;
+                        default:
+                            break;
                     }
-                </TabItems>
-            </SfTab>
-        }
-    </RadzenCard>
-}
+                }
+            </TabItems>
+        </SfTab>
+    }
+</RadzenCard>
 
 @code {
 
@@ -60,40 +57,56 @@
         Context.PropertyChanged += ContextPropertyChanged;
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            LoadDataSource();
+        }
+    }
+
     private void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ConverterContext.Details) ||
             e.PropertyName == nameof(ConverterContext.TargetCompany) && 
             !_isInternalChange)
         {
-            _isInternalChange = true;
-            _isLoadingFiles = true;
-            var result = new List<KroikoFile>();
-            switch (Context.TargetCompany.Name)
-            {
-                case nameof(SupportedCompanies.Lonira):
-                    var groups = Context.Details.GroupBy(x => x.Material).ToList();
-                    foreach (var group in groups.Where(group => !string.IsNullOrEmpty(group.Key)))
-                    {
-                        result.Add(new KroikoFile { FileName = group.Key, Details = group.ToList().ToLoniraDetails() });
-                    }
+            LoadDataSource();
+        }
+    }
 
-                    break;
-                case nameof(SupportedCompanies.Suliver):
+    private void LoadDataSource()
+    {
+        _isLoadingFiles = true;
+        var result = new List<KroikoFile>();
+        switch (Context.TargetCompany.Name)
+        {
+            case nameof(SupportedCompanies.Lonira):
+                var groups = Context.Details.GroupBy(x => x.Material).ToList();
+                foreach (var group in groups.Where(group => !string.IsNullOrEmpty(group.Key)))
+                {
+                    result.Add(new KroikoFile { FileName = group.Key, Details = group.ToList().ToLoniraDetails() });
+                }
+
+                break;
+            case nameof(SupportedCompanies.Suliver):
+                if (Context.Details.Any())
+                {
                     result.Add(new KroikoFile
                     {
                         // TODO what is the required file name
                         FileName = "Suliver",
                         Details = Context.Details.ToSuliverDetails()
                     });
-                    break;
-            }
-
-            Context.Files = new ObservableCollection<KroikoFile>(result);
-            _isInternalChange = false;
-            _isLoadingFiles = false;
-            StateHasChanged();
+                }
+                break;
         }
+
+        _isInternalChange = true;
+        Context.Files = new ObservableCollection<KroikoFile>(result);
+        _isInternalChange = false;
+        _isLoadingFiles = false;
+        StateHasChanged();
     }
 
     public void Dispose()
