@@ -23,7 +23,7 @@ public static class SuliverExtensions
                 Material = detail.Material,
                 Cabinet = detail.Cabinet,
                 MaterialThickness = detail.MaterialThickness,
-                IsGrainDirectionReversed = detail.IsGrainDirectionReversed,
+                IsGrainDirectionReversed = detail.IsGrainDirectionReversed ? (byte)2 : (byte)1,
                 LongEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness),
                 LongEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness),
                 ShortEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness),

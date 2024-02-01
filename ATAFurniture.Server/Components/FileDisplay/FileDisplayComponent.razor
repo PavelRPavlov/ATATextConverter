@@ -3,6 +3,9 @@
 @using Kroiko.Domain.TemplateBuilding
 @using TextAlign = Syncfusion.Blazor.Grids.TextAlign
 @using System.Collections.ObjectModel
+@using System.Diagnostics
+@using System.Timers
+@using Timer = System.Threading.Timer
 @implements IDisposable
 
 @if (Context.Details.Count > 0)
@@ -11,6 +14,7 @@
         <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
         @if (_isLoadingFiles)
         {
+            <h1>Loading indicator should be here...</h1>
             <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
                 <Template><h6>Working</h6></Template>
             </RadzenProgressBarCircular>
@@ -32,6 +36,7 @@
                                 <LoniraTabItemContent File="@file" Context="@Context"/>
                                 break;
                             case nameof(SupportedCompanies.Suliver):
+                                <SuliverTabItemContent File="@file" Context="@Context"/>
                                 break;
                             default:
                                 break;
@@ -47,7 +52,7 @@
 
     [Parameter] public ConverterContext Context { get; set; }
 
-    private bool _isLoadingFiles = false;
+    private bool _isLoadingFiles = true;
     private bool _isInternalChange = false;
 
     protected override void OnInitialized()
@@ -57,17 +62,11 @@
 
     private void ContextPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(Context.Details))
+        if (e.PropertyName == nameof(ConverterContext.Details) ||
+            e.PropertyName == nameof(ConverterContext.TargetCompany) && 
+            !_isInternalChange)
         {
             _isInternalChange = true;
-            Context.Files = [];
-            StateHasChanged();
-            _isInternalChange = false;
-        }
-
-        if (e.PropertyName == nameof(Context.Details) && !_isInternalChange)
-        {
-            Context.Files.Clear();
             _isLoadingFiles = true;
             var result = new List<KroikoFile>();
             switch (Context.TargetCompany.Name)
@@ -91,6 +90,7 @@
             }
 
             Context.Files = new ObservableCollection<KroikoFile>(result);
+            _isInternalChange = false;
             _isLoadingFiles = false;
             StateHasChanged();
         }
