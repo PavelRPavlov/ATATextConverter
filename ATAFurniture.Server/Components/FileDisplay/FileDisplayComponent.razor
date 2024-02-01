@@ -7,7 +7,8 @@
 
 @if (Context.Details.Count > 0)
 {
-    <RadzenCard class="p-3">
+    <RadzenCard>
+        <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
         @if (_isLoadingFiles)
         {
             <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
@@ -46,7 +47,7 @@
 
     [Parameter] public ConverterContext Context { get; set; }
 
-    private bool _isLoadingFiles = true;
+    private bool _isLoadingFiles = false;
     private bool _isInternalChange = false;
 
     protected override void OnInitialized()

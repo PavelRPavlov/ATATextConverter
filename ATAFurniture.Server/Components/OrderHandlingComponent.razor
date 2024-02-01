@@ -9,7 +9,8 @@
 @if (_areFilesReady)
 {
     <RadzenCard>
-        <RadzenRow>
+        <RadzenLabel class="py-3" Text="Избери една от опциите:"></RadzenLabel>
+        <RadzenRow class="py-3">
             <RadzenColumn>
                 <SfRadioButton TChecked="bool" Name="options" Label="Генерирай файлове за сваляне" @onclick="OnCreateFilesClicked"></SfRadioButton>
             </RadzenColumn>
@@ -27,10 +28,10 @@
             }
             else
             {
-                <ul>
+                <ul class="p-4">
                     @foreach (var file in _files)
                     {
-                        <li><a href="@file.Url" download="@file.Name">@file.Name</a></li>
+                        <li class="p-3"><a href="@file.Url" download="@file.Name">@file.Name</a></li>
                     }
                 </ul>
             }
@@ -133,7 +134,7 @@
     {
         _shouldGenerateFiles = false;
         _shouldSendEmail = true;
-        // TODO trigger SendGrid to send email
+        
         StateHasChanged();
     }
 
