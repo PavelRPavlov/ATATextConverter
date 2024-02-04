@@ -2,7 +2,7 @@ name: 'Delete old artifacts'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # every hour
+    - cron: '0 0 * * 0' # every sunday
         
 jobs:
   get-repos:
@@ -14,9 +14,7 @@ jobs:
         id: get-repo
         uses: echapmanFromBunnings/repository-query@v1.3
         with:
-          repo-owner: 'ORG_NAME'
           repo-token: ${{ secrets.REPO_TOKEN }}
-          topic-filter: "TOPIC_TO_FILTER_ON"
           
           
   delete-artifact:
