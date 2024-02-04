@@ -1,4 +1,4 @@
-name: 'nightly artifacts cleanup'
+name: 'reguler artifacts cleanup'
 on:
   schedule:
     - cron: '0 1 * * 0' # weekly at 1 am UTC
