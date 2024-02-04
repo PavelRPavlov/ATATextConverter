@@ -1,7 +1,8 @@
-name: 'reguler artifacts cleanup'
+name: 'regular artifacts cleanup'
 on:
   schedule:
     - cron: '0 1 * * 0' # weekly at 1 am UTC
+  workflow_dispatch:
 
 jobs:
   delete-artifacts:
