@@ -12,20 +12,33 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
-    <PackageReference Include="EPPlus" Version="7.0.5" />
     <PackageReference Include="LargeXlsx" Version="1.9.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.0" />
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
-    <PackageReference Include="Radzen.Blazor" Version="4.23.7" />
-    <PackageReference Include="Sentry.AspNetCore" Version="3.41.3" />
-    <PackageReference Include="Sentry.Serilog" Version="3.41.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.1" />
+    <PackageReference Include="Radzen.Blazor" Version="4.24.2" />
+    <PackageReference Include="Sentry.AspNetCore" Version="3.41.4" />
+    <PackageReference Include="Sentry.Serilog" Version="3.41.4" />
     <PackageReference Include="Serilog" Version="3.1.2-dev-02097" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Cards" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.InPlaceEditor" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.PivotTable" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.47" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,37 +48,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Services\Template\Lonira\template.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\files\1c19fa76-8781-40de-8ad7-4a1c594e43cb\2024-01-18_TestCompany_H3170 Dyb kendyl natur.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\4e0e3899-bab0-4081-9944-ab7a1dabc0d2\2024-01-20_TestCompany_HDF 3 mm.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\6a23f33c-b793-433e-8bd9-c2b1545c5a3d\2024-01-18_TestCompany_Lemon sorbet.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\6b2b1a4c-0f83-422d-b8f0-4830f20c8020\2024-01-18_TestCompany_.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\8b259f54-38ea-4eca-9080-efbcdfb2619e\2024-01-19_TestCompany_{Material}.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\54bdbf9d-0276-49bf-8f08-bf2962ba6629\t + 561.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\80ce37a9-fa38-4459-92e1-8f8f91683f74\2024-01-18_TestCompany_Plot siv-1st.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\370e96e0-c685-4ce5-ad3c-3788ccd7a692\2024-01-18_TestCompany_Basic white W908 ST2.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\562a1cc8-bcc3-4fb7-8862-c92e49a3e365\2024-01-18_TestCompany_Satin.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\818f049f-52f8-4487-9fc9-e4f595efd249\2024-01-20_TestCompany_Lemon sorbet.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\859a9591-54bf-4f69-af1d-a5621cf1963f\2024-01-18_TestCompany_AGT White.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\4410a475-1054-4750-8f19-c97649d38d14\2024-01-19_TestCompany_{Material}.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\35080fcc-16d0-41fc-9e91-5fa8c7ef26c9\2024-01-18_TestCompany_Lemon sorbet.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\790014ac-19eb-42a1-a1e9-4585da30e48e\2024-01-19_TestCompany.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\ae068107-ac83-43ab-86e8-675555a5dc46\2024-01-20_TestCompany_Cool Grey K0191 SU.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\bfbc318f-9e7d-4409-aacf-84ffd0e0e690\2024-01-18_TestCompany_.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\c68e2eac-642a-4693-a5b0-32b131b04c91\2024-01-18_TestCompany_Grafic back.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\d85172e5-3c50-46e4-982b-403d0137d642\2024-01-18_TestCompany_.xlsx" />
-    <_ContentIncludedByDefault Remove="wwwroot\files\ee9b0190-25cc-4b67-925f-d219af09f846\2024-01-19_TestCompany_{Material}.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\Assets\kroiko.png">
+    <Content Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kroiko.Domain\Kroiko.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DataAccess\CosmosDbConfiguration.cs" />
+    <Compile Remove="DataAccess\CosmosDbContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\files\1b70fd2c-31cd-4905-9cea-3db6b62f2350\2024-01-24_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\3eeb0dfd-36d1-4062-86a9-a41842750fde\2024-01-24_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\6a4d1d79-d5ba-4cbd-b608-371fd7165022\2024-01-31_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\64bf5ef3-7280-4d55-b1a3-d05bed03ea01\2024-01-31_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\367b81ec-3f5c-4359-af8c-518c49fa856e\2024-01-24_TestCompany.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\a66c5f37-5026-47a9-9fb1-6e2e04cec9bc\2024-01-24_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\b743f5fd-5548-4092-a963-d569e8ae5712\2024-01-31_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ce6aec1b-4f74-4e3d-88f7-b0a3204318ef\2024-01-31_TestCompany_Basic white W908 ST2.xlsx" />
   </ItemGroup>
 
 </Project>

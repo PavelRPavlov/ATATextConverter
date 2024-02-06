@@ -1,0 +1,27 @@
+﻿@using Kroiko.Domain.CellsExtracting
+@using ATAFurniture.Server.Models
+@using Kroiko.Domain
+@using ATAFurniture.Server.DataAccess
+
+<RadzenCard>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Изберете към коя фирма ще правите поръчка: "></RadzenLabel>
+        <RadzenDropDown @bind-Value="Context.TargetCompany" TValue="SupportedCompany" Data="@_supportedCompanies" TextProperty="Translation" Change="@(args => OnUserSelection(args))"></RadzenDropDown>
+    </RadzenRow>
+</RadzenCard>
+
+@code {
+    [Inject] UserContextService UserContextService { get; set; }
+    
+    [Parameter] public ConverterContext Context { get; set; }
+    
+    readonly SupportedCompany[] _supportedCompanies = [SupportedCompanies.Lonira,SupportedCompanies.Suliver];
+    
+    
+
+    private async Task OnUserSelection(object args)
+    {
+        Context.TargetCompany = (SupportedCompany)args;
+        await UserContextService.UpdateSelectedCompanyAsync(Context.TargetCompany);
+    }
+}
