@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 using Kroiko.Domain.CellsExtracting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Kroiko.Domain.TemplateBuilding.Lonira;
 
-public class LoniraTemplateBuilder(ILogger<LoniraTemplateBuilder> logger, [FromKeyedServices(nameof(SupportedCompanies.Lonira))] ITableRowProvider tableRowProvider, string templateFilePath = null ) : TemplateBuilderBase
+public class LoniraTemplateBuilder([FromKeyedServices(nameof(SupportedCompanies.Lonira))] ITableRowProvider tableRowProvider, string? templateFilePath = null ) : TemplateBuilderBase
 {
     private const string MaterialNameCellFlag = "{MaterialName}";
 
@@ -36,7 +35,7 @@ public class LoniraTemplateBuilder(ILogger<LoniraTemplateBuilder> logger, [FromK
     
     private void PopulateMaterialName(ISheet sheet, string materialName)
     {
-        foreach (var cell in sheet.Cells.Where(cell => cell.Value.ToString() == MaterialNameCellFlag))
+        foreach (var cell in sheet.Cells.Where(cell => cell.Value?.ToString() == MaterialNameCellFlag))
         {
             cell.Value = materialName;
         }

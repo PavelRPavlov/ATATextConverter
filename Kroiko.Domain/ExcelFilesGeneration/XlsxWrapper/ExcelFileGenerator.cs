@@ -1,12 +1,11 @@
 ﻿using Kroiko.Domain.TemplateBuilding;
 using LargeXlsx;
-using Microsoft.Extensions.Logging;
 
 namespace Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
 
-public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger) : IExcelFileGenerator
+public class ExcelFileGenerator() : IExcelFileGenerator
 {
-    public async Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider)
+    public Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider)
     {
         var result = new List<FileSaveContext>();
         
@@ -27,7 +26,7 @@ public class ExcelFileGenerator(ILogger<ExcelFileGenerator> logger) : IExcelFile
             result.Add(new FileSaveContext(fileName, str.ToArray()));
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     private int CreateAllRows(int lastFilledRow, IGrouping<int, Cell> row, XlsxWriter writer)
