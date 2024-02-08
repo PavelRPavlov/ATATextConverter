@@ -45,8 +45,11 @@
     }
     @if (_shouldSendEmail)
     {
-        <RadzenAlert Variant="Variant.Filled" AlertStyle="AlertStyle.Info" Title="Информация">
+        <RadzenAlert Variant="Variant.Outlined" AlertStyle="AlertStyle.Info" Title="Информация">
             <p>Тази опция ще изпрати реален Email към @Context.TargetCompany.Email с прикачени и попълнени бланки</p>
+            
+            <p>Използвайте отметката за да изпратите тестов Email към вашата поща (не консумира кредити)</p>
+            <SfCheckBox TChecked="bool" @bind-Checked="_isTestEmail" Label="Изпрати тестов Email"></SfCheckBox>
         </RadzenAlert>
         
         <SfButton CssClass="e-sucess" Content="Изпрати e-mail поръчка" @onclick="OnSendEmailClicked"></SfButton>
