@@ -1,6 +1,4 @@
-﻿using Kroiko.Domain.CellsExtracting;
-
-namespace Kroiko.Domain.TemplateBuilding.Suliver;
+﻿namespace Kroiko.Domain.TemplateBuilding.Suliver;
 
 public class SuliverTableRowProvider : ITableRowProvider
 {

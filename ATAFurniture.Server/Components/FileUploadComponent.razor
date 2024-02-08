@@ -44,10 +44,10 @@
 
 @code {
     [Inject] ILogger<FileUploadComponent> Logger { get; set; }
-    [Inject] UserContextService UserContextService { get; set; }
     [Inject] IDetailsExtractorService DetailsExtractorService { get; set; }
     
     [Parameter] public ConverterContext Context { get; set; }
+    [Parameter] public UserContextService UserContextService { get; set; }
 
     private bool _isLoadingFiles;
     private bool _isError;

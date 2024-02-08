@@ -5,9 +5,9 @@
 @using System.Collections.ObjectModel
 @using System.Diagnostics
 @using System.Timers
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
 @using Timer = System.Threading.Timer
 @implements IDisposable
-
 
 <RadzenCard>
     <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
@@ -46,7 +46,6 @@
 </RadzenCard>
 
 @code {
-
     [Parameter] public ConverterContext Context { get; set; }
 
     private bool _isLoadingFiles = true;
@@ -121,7 +120,6 @@
             obj.Cancel = true;
         }
     }
-
 }
 <style>
     .e-tab .e-tab-header {

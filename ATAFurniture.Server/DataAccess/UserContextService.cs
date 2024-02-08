@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
@@ -100,6 +103,7 @@ public class UserContextService
     public async Task ConsumeSingleCredit()
     {
         await _dataRepository.RemoveCredits(User, 1);
+        User.CreditsCount--;
     }
 
     public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)

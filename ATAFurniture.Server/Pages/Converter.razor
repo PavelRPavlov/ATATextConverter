@@ -6,12 +6,12 @@
 @using ATAFurniture.Server.Components.FileDisplay
 
 <RadzenStack Gap="1em">
-    <TargetCompanySelectionComponent Context="@Context"/>
+    <TargetCompanySelectionComponent UserContextService="@UserContextService" Context="@Context"/>
     @if (Context.TargetCompany != null)
     {
-        <UserCreditsComponent />
+        <UserCreditsComponent UserContextService="@UserContextService"  />
         
-        <FileUploadComponent Context="@Context"/>
+        <FileUploadComponent UserContextService="@UserContextService"  Context="@Context"/>
         
         @if (Context.Details.Any())
         {
@@ -20,7 +20,7 @@
 
         @if (Context.Files.Any())
         {
-            <OrderHandlingComponent Context="@Context"/>
+            <OrderHandlingComponent UserContextService="@UserContextService"  Context="@Context"/>
         }
     }
 </RadzenStack>
@@ -41,6 +41,7 @@
         
         Context.ContactInfo.CompanyName = UserContextService.User.CompanyName;
         Context.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
+        Context.ContactInfo.Email = UserContextService.User.Email;
         
         Context.PropertyChanged += OnContextPropertyChanged;
     }

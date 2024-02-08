@@ -1,5 +1,6 @@
 ﻿@using Kroiko.Domain
 @using ATAFurniture.Server.DataAccess
+@implements IDisposable
 
 <RadzenCard>
     <RadzenRow AlignItems="AlignItems.Center">
@@ -17,8 +18,21 @@
 </RadzenCard>
 
 @code {
-    [Inject] UserContextService UserContextService { get; set; }
-    
+    [Parameter] public UserContextService UserContextService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        UserContextService.User.PropertyChanged -= OnUserPropertyChanged;
+        UserContextService.User.PropertyChanged += OnUserPropertyChanged;
+    }
+
+    private void OnUserPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(User.CreditsCount))
+        {
+            StateHasChanged();
+        }
+    }
 
     private async Task OnAddCreditsButtonPress(MouseEventArgs obj)
     {
@@ -26,4 +40,10 @@
         // move this to the webhook the flow will call
         await UserContextService.AddCredits(10, true);
     }
+
+    public void Dispose()
+    {
+        UserContextService.User.PropertyChanged -= OnUserPropertyChanged;
+    }
+
 }

@@ -1,6 +1,4 @@
-﻿using Kroiko.Domain.CellsExtracting;
-
-namespace Kroiko.Domain.TemplateBuilding.Lonira;
+﻿namespace Kroiko.Domain.TemplateBuilding.Lonira;
 
 public class LoniraTableRowProvider : ITableRowProvider
 {

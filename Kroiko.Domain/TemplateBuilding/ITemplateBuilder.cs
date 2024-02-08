@@ -1,6 +1,4 @@
-﻿using Kroiko.Domain.CellsExtracting;
-
-namespace Kroiko.Domain.TemplateBuilding;
+﻿namespace Kroiko.Domain.TemplateBuilding;
 
 public interface ITemplateBuilder
 {

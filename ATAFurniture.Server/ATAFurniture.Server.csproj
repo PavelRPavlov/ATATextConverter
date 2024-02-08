@@ -22,22 +22,25 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.16.1" />
     <PackageReference Include="Radzen.Blazor" Version="4.24.2" />
+    <PackageReference Include="SendGrid" Version="9.29.1" />
     <PackageReference Include="Sentry.AspNetCore" Version="3.41.4" />
     <PackageReference Include="Sentry.Serilog" Version="3.41.4" />
-    <PackageReference Include="Serilog" Version="3.1.2-dev-02097" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.Cards" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.InPlaceEditor" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.PivotTable" Version="24.1.47" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.47" />
+    <PackageReference Include="sib_api_v3_sdk" Version="4.0.2" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.Cards" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.InPlaceEditor" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.PivotTable" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="24.2.4" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.2.4" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
@@ -71,6 +74,32 @@
     <_ContentIncludedByDefault Remove="wwwroot\files\a66c5f37-5026-47a9-9fb1-6e2e04cec9bc\2024-01-24_TestCompany_HDF 3 mm.xlsx" />
     <_ContentIncludedByDefault Remove="wwwroot\files\b743f5fd-5548-4092-a963-d569e8ae5712\2024-01-31_TestCompany_HDF 3 mm.xlsx" />
     <_ContentIncludedByDefault Remove="wwwroot\files\ce6aec1b-4f74-4e3d-88f7-b0a3204318ef\2024-01-31_TestCompany_Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\FONT-LICENSE" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\3b6f3b00-71ed-46f8-abfd-ea90a3d8e43a\2024-02-05_TestCompany.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\4f2c2bd2-524f-40c2-8c94-38db9ad34d2d\2024-02-01_TestCompany_Mirror.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\9c834d35-8a7e-45a7-af28-62674037b7cf\2024-02-01_TestCompany_Lemon sorbet.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\9f6fa98f-28b2-4849-811e-b33150864661\2024-02-01_TestCompany_Med.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\54ce4ca0-7b5d-43dd-828c-7eceb3dd5d15\Basic white W908 ST2.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\096c8aac-08c2-455b-8347-091a28491f40\2024-02-01_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\309d1f16-9988-4c60-8a7f-000aa8362ac9\2024-02-01_TestCompany_Mirror.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\1917a6a1-709b-4a40-935c-94dc262c0cea\2024-02-05_TestCompany.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\7567ea1c-f838-4b7f-ab69-1945053324fe\2024-02-01_TestCompany.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ae138834-98d8-484e-bbea-119bb92073f6\2024-02-01_TestCompany_H3170 Dyb kendyl natur.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\cf3eb316-79c0-464f-9736-7ea095e11a27\2024-02-01_TestCompany_Plot siv-1st.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\de26e345-877c-4564-87b4-5a9738dbd2ee\2024-02-01_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\e8e1923b-f063-4be8-a0fd-cf5a71fbb7fd\2024-02-01_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ea7e9bdd-663c-488c-b7ae-46a8150f5308\2024-02-01_TestCompany_HDF 3 mm.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\f17fafbf-80d9-44b1-bc4b-0c1ca63f0f68\2024-02-01_TestCompany_Cool Grey K0191 SU.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\f85716e5-2149-4894-aca5-ed70a10da897\2024-02-01_TestCompany_Cool Grey K0191 SU.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\files\ff36120b-a495-4c70-a3b7-8af6188ff356\2024-02-01_TestCompany_Basic white W908 ST2.xlsx" />
   </ItemGroup>
 
 </Project>
