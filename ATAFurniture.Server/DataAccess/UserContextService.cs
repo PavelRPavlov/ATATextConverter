@@ -41,6 +41,7 @@ public class UserContextService
         }
         _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, User.Id);
         User.CreditsCount += count;
+        await _dataRepository.UpdateUser(User);
     }
 
     public async Task ExtractUserIdentity()
@@ -115,5 +116,10 @@ public class UserContextService
     {
         var user = await _dataRepository.GetUserAsync(User.AadId);
         return user?.LastSelectedCompany;
+    }
+
+    public void SignOut()
+    {
+        User = null;
     }
 }

@@ -6,22 +6,18 @@
 @using ATAFurniture.Server.Components.FileDisplay
 
 <RadzenStack Gap="1em">
+    <UserCreditsComponent UserContextService="@UserContextService"/>
     <TargetCompanySelectionComponent UserContextService="@UserContextService" Context="@Context"/>
-    @if (Context.TargetCompany != null)
+    <FileUploadComponent UserContextService="@UserContextService" Context="@Context"/>
+    
+    @if (Context.Details.Any())
     {
-        <UserCreditsComponent UserContextService="@UserContextService"  />
-        
-        <FileUploadComponent UserContextService="@UserContextService"  Context="@Context"/>
-        
-        @if (Context.Details.Any())
-        {
-            <FileDisplayComponent Context="@Context"/>
-        }
+        <FileDisplayComponent Context="@Context"/>
+    }
 
-        @if (Context.Files.Any())
-        {
-            <OrderHandlingComponent UserContextService="@UserContextService"  Context="@Context"/>
-        }
+    @if (Context.Files.Any())
+    {
+        <OrderHandlingComponent UserContextService="@UserContextService"  Context="@Context"/>
     }
 </RadzenStack>
 
@@ -31,19 +27,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         if (UserContextService.User is null)
         {
             await UserContextService.ExtractUserIdentity();
         }
+
         var lastSelection = UserContextService.User!.LastSelectedCompany;
         Context.TargetCompany = lastSelection ?? await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
-        
+
         Context.ContactInfo.CompanyName = UserContextService.User.CompanyName;
         Context.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
         Context.ContactInfo.Email = UserContextService.User.Email;
-        
+
         Context.PropertyChanged += OnContextPropertyChanged;
+        await base.OnInitializedAsync();
     }
 
     private void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
