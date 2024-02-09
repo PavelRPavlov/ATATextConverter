@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,13 +10,19 @@ using Kroiko.Domain.TemplateBuilding;
 
 namespace ATAFurniture.Server.Models;
 
-public sealed class ConverterContext : INotifyPropertyChanged
+public sealed class ConverterContext : INotifyPropertyChanged, IDisposable
 {
     private ObservableCollection<Detail> _details = new();
     private ObservableCollection<KroikoFile> _files = new();
     private SupportedCompany? _targetCompany = null;
-    public ContactInfo ContactInfo { get; set; } = new();
-    
+    private ContactInfo _contactInfo = new();
+
+    public ContactInfo ContactInfo
+    {
+        get => _contactInfo;
+        set => SetField(ref _contactInfo, value);
+    }
+
     public SupportedCompany? TargetCompany 
     {
         get => _targetCompany;
@@ -34,6 +41,16 @@ public sealed class ConverterContext : INotifyPropertyChanged
         set => SetField(ref _files, value);
     }
 
+    public ConverterContext()
+    {
+        _contactInfo.PropertyChanged += OnContactsChanged;
+    }
+
+    private void OnContactsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(Kroiko.Domain.ContactInfo));
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -47,5 +64,10 @@ public sealed class ConverterContext : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    public void Dispose()
+    {
+        _contactInfo.PropertyChanged -= OnContactsChanged;
     }
 }

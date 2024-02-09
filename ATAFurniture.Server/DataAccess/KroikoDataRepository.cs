@@ -46,12 +46,12 @@ public class KroikoDataRepository : IKroikoDataRepository
 
     public async Task<User> RemoveCredits(User dbUser, int i)
     {
-        dbUser.CreditResets -= i;
+        dbUser.CreditsCount -= i;
         await UpdateUser(dbUser);
         return dbUser;
     }
 
-    public Task<User> UpdateSelectedCompany(User dbUser, SupportedCompany? targetCompany)
+    public Task<User> UpdateSelectedCompany(User dbUser, SupportedCompany targetCompany)
     {
         dbUser.LastSelectedCompany = targetCompany;
         return UpdateUser(dbUser);

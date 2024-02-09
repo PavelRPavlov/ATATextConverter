@@ -2,5 +2,5 @@
 
 public class LoniraSheet : SheetBase
 {
-    public string SheetMaterial { get; set; }
+    public string? SheetMaterial { get; set; }
 }

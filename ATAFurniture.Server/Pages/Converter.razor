@@ -5,14 +5,13 @@
 @using ATAFurniture.Server.DataAccess
 @using ATAFurniture.Server.Components.FileDisplay
 
-<RadzenStack Gap="1em">
-    <TargetCompanySelectionComponent Context="@Context"/>
-    @if (Context.TargetCompany != null)
-    {
-        <UserCreditsComponent />
-        
-        <FileUploadComponent Context="@Context"/>
-        
+@if(_isUserContextReady)
+{
+    <RadzenStack Gap="1em">
+        <UserCreditsComponent UserContextService="@UserContextService"/>
+        <TargetCompanySelectionComponent UserContextService="@UserContextService" Context="@Context"/>
+        <FileUploadComponent UserContextService="@UserContextService" Context="@Context"/>
+    
         @if (Context.Details.Any())
         {
             <FileDisplayComponent Context="@Context"/>
@@ -20,29 +19,39 @@
 
         @if (Context.Files.Any())
         {
-            <OrderHandlingComponent Context="@Context"/>
+            <OrderHandlingComponent UserContextService="@UserContextService"  Context="@Context"/>
         }
-    }
-</RadzenStack>
+    </RadzenStack>
+}
+else
+{
+    <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+        <Template><h6>Working</h6></Template>
+    </RadzenProgressBarCircular>
+}
 
 @code {
     [Inject] UserContextService UserContextService { get; set; }
     private ConverterContext Context { get; set; } = new();
+    
+    private bool _isUserContextReady = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        if (UserContextService.User is null)
+        if (firstRender) 
         {
             await UserContextService.ExtractUserIdentity();
+            var lastSelection = UserContextService.User!.LastSelectedCompany;
+            Context.TargetCompany = lastSelection ?? await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
+
+            Context.ContactInfo.CompanyName = UserContextService.User.CompanyName;
+            Context.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
+            Context.ContactInfo.Email = UserContextService.User.Email;
+        
+            Context.PropertyChanged += OnContextPropertyChanged;
+            _isUserContextReady = true;
+            StateHasChanged();
         }
-        var lastSelection = UserContextService.User!.LastSelectedCompany;
-        Context.TargetCompany = lastSelection ?? await UserContextService.GetPreviouslySelectedTargetCompanyAsync();
-        
-        Context.ContactInfo.CompanyName = UserContextService.User.CompanyName;
-        Context.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
-        
-        Context.PropertyChanged += OnContextPropertyChanged;
     }
 
     private void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -52,4 +61,5 @@
             StateHasChanged();
         }
     }
+
 }

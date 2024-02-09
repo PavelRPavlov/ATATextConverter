@@ -6,7 +6,7 @@ public record Cell(string Name, byte ContentAlignment = 0)
 {
     public static readonly Cell Empty = new(string.Empty);
 
-    public string Value { get; set; }
+    public string? Value { get; set; }
     
     public int Row => GetRowAndColumn(this).Row;
 

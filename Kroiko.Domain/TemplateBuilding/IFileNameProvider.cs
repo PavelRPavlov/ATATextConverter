@@ -2,5 +2,5 @@
 
 public interface IFileNameProvider
 {
-    string GetFileNameForSheet(ISheet sheet);
+    string GetFileNameForSheet(ISheet? sheet);
 }

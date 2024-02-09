@@ -38,6 +38,7 @@ public class UserContextService
         }
         _logger.LogInformation("Adding {CreditCount} credits to user {Id}", count, User.Id);
         User.CreditsCount += count;
+        await _dataRepository.UpdateUser(User);
     }
 
     public async Task ExtractUserIdentity()
@@ -61,7 +62,7 @@ public class UserContextService
         }
     }
 
-    private async Task<User> SyncUserClaimsAsync(User dbUser, string? userName, string? userEmail, string? mobileNumber, string? companyName)
+    private async Task<User> SyncUserClaimsAsync(User dbUser, string userName, string userEmail, string mobileNumber, string companyName)
     {
         var shouldUpdate = false;
         if (dbUser.Name != userName)
@@ -100,16 +101,22 @@ public class UserContextService
     public async Task ConsumeSingleCredit()
     {
         await _dataRepository.RemoveCredits(User, 1);
+        User.CreditsCount--;
     }
 
-    public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)
+    public async Task UpdateSelectedCompanyAsync(SupportedCompany targetCompany)
     {
         await _dataRepository.UpdateSelectedCompany(User, targetCompany);
     }
 
-    public async ValueTask<SupportedCompany?> GetPreviouslySelectedTargetCompanyAsync()
+    public async ValueTask<SupportedCompany> GetPreviouslySelectedTargetCompanyAsync()
     {
         var user = await _dataRepository.GetUserAsync(User.AadId);
         return user?.LastSelectedCompany;
+    }
+
+    public void SignOut()
+    {
+        User = null;
     }
 }

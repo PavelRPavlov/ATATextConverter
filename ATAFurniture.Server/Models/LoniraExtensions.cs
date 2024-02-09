@@ -18,7 +18,7 @@ public static class LoniraExtensions
                 Width = detail.Width,
                 Height = detail.Height,
                 Quantity = detail.Quantity,
-                LoniraEdges = $"{GetLoniraEdges(detail)}; {detail.Cabinet}"
+                LoniraEdges = $"{GetLoniraEdges(detail)}; {detail.Cabinet} {detail.CuttingNumber}",
             });
         }
 

@@ -4,10 +4,12 @@
 @using TextAlign = Syncfusion.Blazor.Grids.TextAlign
 @using System.Collections.ObjectModel
 @using System.Diagnostics
+@using System.Threading
 @using System.Timers
+@using Microsoft.EntityFrameworkCore.Query.Internal
+@using AnimationEffect = Syncfusion.Blazor.AnimationEffect
 @using Timer = System.Threading.Timer
 @implements IDisposable
-
 
 <RadzenCard>
     <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
@@ -19,7 +21,7 @@
     }
     else
     {
-        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
+        <SfTab LoadOn="ContentLoad.Demand" ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
             <TabEvents Selecting="OnTabItemSelected"/>
             <TabAnimationSettings>
                 <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
@@ -46,7 +48,6 @@
 </RadzenCard>
 
 @code {
-
     [Parameter] public ConverterContext Context { get; set; }
 
     private bool _isLoadingFiles = true;
@@ -57,11 +58,19 @@
         Context.PropertyChanged += ContextPropertyChanged;
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             LoadDataSource();
+            await Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) =>
+            {
+                InvokeAsync(() =>
+                {
+                    _isLoadingFiles = false;
+                    StateHasChanged();
+                });
+            });
         }
     }
 
@@ -77,7 +86,6 @@
 
     private void LoadDataSource()
     {
-        _isLoadingFiles = true;
         var result = new List<KroikoFile>();
         switch (Context.TargetCompany.Name)
         {
@@ -105,7 +113,6 @@
         _isInternalChange = true;
         Context.Files = new ObservableCollection<KroikoFile>(result);
         _isInternalChange = false;
-        _isLoadingFiles = false;
         StateHasChanged();
     }
 
@@ -122,6 +129,10 @@
         }
     }
 
+    private void OnTabCreated(object obj)
+    {
+        _isLoadingFiles = false;
+    }
 }
 <style>
     .e-tab .e-tab-header {

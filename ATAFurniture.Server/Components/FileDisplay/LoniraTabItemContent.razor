@@ -44,6 +44,7 @@
         </SfGrid>
     </ContentTemplate>
 </TabItem>
+
 @code {
     [Parameter] public KroikoFile File { get; set; }
     [Parameter] public ConverterContext Context { get; set; }
@@ -55,6 +56,7 @@
         _source = File.Details.Cast<LoniraDetail>().ToList();
     }
 }
+
 <style>
     .e-grid .e-gridheader {
         border: 1px solid black;
