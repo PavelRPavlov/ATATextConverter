@@ -1,8 +1,15 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
+using Kroiko.Domain.TemplateBuilding;
+using Kroiko.Domain.TemplateBuilding.Lonira;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kroiko.Domain.TemplateBuilding.Lonira;
+namespace ATAFurniture.Server.TemplateBuilding.Lonira;
 
 public class LoniraTemplateBuilder([FromKeyedServices(nameof(SupportedCompanies.Lonira))] ITableRowProvider tableRowProvider, string? templateFilePath = null ) : TemplateBuilderBase
 {

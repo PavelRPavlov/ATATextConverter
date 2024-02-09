@@ -2,7 +2,7 @@
 
 public class LoniraFileNameProvider : IFileNameProvider
 {
-    public string GetFileNameForSheet(ISheet? sheet)
+    public string GetFileNameForSheet(ISheet sheet)
     { 
         // TODO legacy ???
         // var name = $"{DateTime.Now:yyyy-MM-dd}_{{CompanyName}}_{{Material}}.xlsx";

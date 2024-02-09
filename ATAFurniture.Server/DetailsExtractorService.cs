@@ -1,8 +1,13 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using Kroiko.Domain.CellsExtracting;
 using Microsoft.Extensions.Logging;
 
-namespace Kroiko.Domain.CellsExtracting;
+namespace ATAFurniture.Server;
 
 public interface IDetailsExtractorService
 {
@@ -60,7 +65,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
         return Task.FromResult(details);
     }
 
-    private Detail? ExtractLatestDetailFormat(ReadOnlySpan<string> separateParameters)
+    private Detail ExtractLatestDetailFormat(ReadOnlySpan<string> separateParameters)
     {
         try
         {
@@ -90,7 +95,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
         }
     }
 
-    private Detail? ExtractOldDetailFormat(ReadOnlySpan<string> separateParameters)
+    private Detail ExtractOldDetailFormat(ReadOnlySpan<string> separateParameters)
     {
         try
         {
