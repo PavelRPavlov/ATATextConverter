@@ -21,7 +21,7 @@
     }
     else
     {
-        <SfTab LoadOn="ContentLoad.Demand" ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
+        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
             <TabEvents Selecting="OnTabItemSelected"/>
             <TabAnimationSettings>
                 <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
@@ -63,6 +63,8 @@
         if (firstRender)
         {
             LoadDataSource();
+            
+            // add 1s delay to show loading indicator
             await Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith((t) =>
             {
                 InvokeAsync(() =>
@@ -80,7 +82,10 @@
             e.PropertyName == nameof(ConverterContext.TargetCompany) && 
             !_isInternalChange)
         {
+            _isLoadingFiles = true;
             LoadDataSource();
+            _isLoadingFiles = false;
+            StateHasChanged();
         }
     }
 
@@ -113,7 +118,6 @@
         _isInternalChange = true;
         Context.Files = new ObservableCollection<KroikoFile>(result);
         _isInternalChange = false;
-        StateHasChanged();
     }
 
     public void Dispose()
