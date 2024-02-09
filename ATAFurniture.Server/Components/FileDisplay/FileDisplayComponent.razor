@@ -11,21 +11,22 @@
 
 <RadzenCard>
     <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
-    @if (_isLoadingFiles)
-    {
-        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
-            <Template><h6>Working</h6></Template>
-        </RadzenProgressBarCircular>
-    }
-    else
-    {
-        <SfTab ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
-            <TabEvents Selecting="OnTabItemSelected"/>
-            <TabAnimationSettings>
-                <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
-                <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
-            </TabAnimationSettings>
-            <TabItems>
+    <SfTab LoadOn="ContentLoad.Demand" ShowCloseButton="false" AllowDragAndDrop="false" EnablePersistence="true" ReorderActiveTab="false">
+        <TabEvents Selecting="OnTabItemSelected"/>
+        <TabAnimationSettings>
+            <TabAnimationPrevious Effect="AnimationEffect.None"></TabAnimationPrevious>
+            <TabAnimationNext Effect="AnimationEffect.None"></TabAnimationNext>
+        </TabAnimationSettings>
+        <TabItems>
+            @if (_isLoadingFiles)
+            {
+                <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                    <Template><h6>Working</h6></Template>
+                </RadzenProgressBarCircular>
+            }
+            else
+            {
+
                 @foreach (var file in Context.Files)
                 {
                     switch (Context.TargetCompany.Name)
@@ -40,9 +41,9 @@
                             break;
                     }
                 }
-            </TabItems>
-        </SfTab>
-    }
+            }
+        </TabItems>
+    </SfTab>
 </RadzenCard>
 
 @code {
@@ -119,6 +120,11 @@
         {
             obj.Cancel = true;
         }
+    }
+
+    private void OnTabCreated(object obj)
+    {
+        _isLoadingFiles = false;
     }
 }
 <style>

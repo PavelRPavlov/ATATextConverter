@@ -10,5 +10,5 @@ public interface IKroikoDataRepository
     Task<User> CreateUser(string userId, int credits);
     Task<User> UpdateUser(User dbUser);
     Task<User> RemoveCredits(User dbUser, int i);
-    Task<User> UpdateSelectedCompany(User dbUser, SupportedCompany? targetCompany);
+    Task<User> UpdateSelectedCompany(User dbUser, SupportedCompany targetCompany);
 }

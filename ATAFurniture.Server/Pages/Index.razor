@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using ATAFurniture.Server.DataAccess
 
 <RadzenStack Gap="1em">
     <RadzenCard>
@@ -20,12 +19,3 @@
         При регистрация, получавате безплатни кредити за конвертиране и тестване
     </RadzenAlert>
 </RadzenStack>
-
-@code{
-
-    [Inject] UserContextService UserContextService { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        await UserContextService.ExtractUserIdentity();
-    }
-}

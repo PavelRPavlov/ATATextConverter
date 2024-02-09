@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
@@ -65,7 +62,7 @@ public class UserContextService
         }
     }
 
-    private async Task<User> SyncUserClaimsAsync(User dbUser, string? userName, string? userEmail, string? mobileNumber, string? companyName)
+    private async Task<User> SyncUserClaimsAsync(User dbUser, string userName, string userEmail, string mobileNumber, string companyName)
     {
         var shouldUpdate = false;
         if (dbUser.Name != userName)
@@ -107,12 +104,12 @@ public class UserContextService
         User.CreditsCount--;
     }
 
-    public async Task UpdateSelectedCompanyAsync(SupportedCompany? targetCompany)
+    public async Task UpdateSelectedCompanyAsync(SupportedCompany targetCompany)
     {
         await _dataRepository.UpdateSelectedCompany(User, targetCompany);
     }
 
-    public async ValueTask<SupportedCompany?> GetPreviouslySelectedTargetCompanyAsync()
+    public async ValueTask<SupportedCompany> GetPreviouslySelectedTargetCompanyAsync()
     {
         var user = await _dataRepository.GetUserAsync(User.AadId);
         return user?.LastSelectedCompany;
