@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Kroiko.Domain.CellsExtracting;
-using Newtonsoft.Json;
 
 namespace Kroiko.Domain;
 
@@ -88,6 +88,6 @@ public class User : INotifyPropertyChanged
 
     public override string ToString()
     {
-        return JsonConvert.SerializeObject(this);
+        return JsonSerializer.Serialize(this);
     }
 }
