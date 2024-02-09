@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using SystemEnvironment = System.Environment;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace ATAFurniture.Server;
@@ -11,7 +11,7 @@ namespace ATAFurniture.Server;
 public class Program
 {
     private static readonly string Environment
-        = SystemEnvironment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+        = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
     
     public static IConfiguration Configuration { get; private set; } = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -23,14 +23,12 @@ public class Program
     
     public static void Main(string[] args)
     {
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(Configuration)
-            .CreateLogger();
+        var loggerConfig = new LoggerConfiguration().ReadFrom.Configuration(Configuration);
+        Log.Logger = loggerConfig.CreateLogger();
         
         try
         {
-            //Log.Information("Starting...");
-
+            Log.Information("Starting...");
             var host = CreateHostBuilder(args).Build();
 
             var key = Configuration.GetSection("SyncfusionLicenseKey").Value;
@@ -39,6 +37,7 @@ public class Program
                 throw new Exception("SyncfusionLicenseKey is not set");
             }
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(key);
+            
             
             host.Run();
         }
@@ -54,12 +53,27 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            .UseSerilog()
+            .UseSerilog((_, c) =>
+            {
+                c.Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .WriteTo.File(
+                        path: "logs/log_.txt", 
+                        rollingInterval: RollingInterval.Day, 
+                        retainedFileCountLimit: 7, 
+                        rollOnFileSizeLimit: true, 
+                        fileSizeLimitBytes: 10485760)
+                    .WriteTo.Sentry();
+            })
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder
                     .UseConfiguration(Configuration)
-                    .UseSentry();
+                    .UseSentry(options =>
+                    {
+                        options.Dsn = Configuration.GetSection("Sentry:Dsn").Value;
+                        options.MinimumEventLevel = Environment == "Production" ? LogLevel.Warning : LogLevel.Debug;
+                    });
                 webBuilder.UseStartup<Startup>();
             });
 }
