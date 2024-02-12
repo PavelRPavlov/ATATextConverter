@@ -35,12 +35,13 @@ public static class SuliverExtensions
 
     private static byte GetSuliverEdgeThicknessValue(double detailTopEdgeThickness)
     {
+        
         return detailTopEdgeThickness switch 
         {
             0 => 0,
-            0.5 => 1,
-            1 => 3,
-            2 => 1,
+            > 0.4 and < 0.6 => 1,
+            > 0.7 and < 1.4 => 3,
+            > 1.6 and < 2.4 => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(detailTopEdgeThickness))
         };
     }
