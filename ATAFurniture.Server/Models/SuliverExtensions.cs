@@ -20,7 +20,7 @@ public static class SuliverExtensions
                 Height = detail.Height,
                 Quantity = detail.Quantity,
                 Material = detail.Material,
-                Cabinet = detail.Cabinet,
+                Cabinet = $"{detail.Cabinet} {detail.Reference}",
                 MaterialThickness = detail.MaterialThickness,
                 IsGrainDirectionReversed = detail.IsGrainDirectionReversed ? (byte)2 : (byte)1,
                 LongEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness),
