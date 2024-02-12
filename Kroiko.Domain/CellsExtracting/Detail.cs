@@ -19,7 +19,8 @@ public record Detail(
     double TopEdgeThickness,
     double BottomEdgeThickness,
     double RightEdgeThickness,
-    double LeftEdgeThickness) : INotifyPropertyChanged
+    double LeftEdgeThickness,
+    string Reference) : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 

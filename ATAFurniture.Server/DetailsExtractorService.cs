@@ -49,7 +49,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
             var detail = separateParameters.Length switch
             {
                 11 => ExtractOldDetailFormat(separateParameters),
-                16 => ExtractLatestDetailFormat(separateParameters),
+                17 => ExtractLatestDetailFormat(separateParameters),
                 _ => null
             };
 
@@ -85,7 +85,8 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
                 double.Parse(CleanupEmptyString(separateParameters[12]), CultureInfo.InvariantCulture),
                 double.Parse(CleanupEmptyString(separateParameters[13]), CultureInfo.InvariantCulture),
                 double.Parse(CleanupEmptyString(separateParameters[14]), CultureInfo.InvariantCulture),
-                double.Parse(CleanupEmptyString(separateParameters[15]), CultureInfo.InvariantCulture)
+                double.Parse(CleanupEmptyString(separateParameters[15]), CultureInfo.InvariantCulture),
+                separateParameters[16]
             );
         }
         catch (Exception e)
@@ -97,12 +98,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
 
     private string CleanupEmptyString(string val)
     {
-        if (string.IsNullOrEmpty(val))
-        {
-            return "0";
-        }
-
-        return val;
+        return string.IsNullOrEmpty(val) ? "0" : val;
     }
 
     private Detail ExtractOldDetailFormat(ReadOnlySpan<string> separateParameters)
@@ -121,7 +117,7 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
                 int.Parse(CleanupEmptyString(separateParameters[8])) == 1,
                 separateParameters[9],
                 int.Parse(CleanupEmptyString(separateParameters[10])),
-                0, 0, 0, 0, 0
+                0, 0, 0, 0, 0, ""
             );
         }
         catch (Exception e)
