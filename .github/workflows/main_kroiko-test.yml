@@ -57,3 +57,8 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BA7B4421ECF243F1BE0603BC41565B89 }}
           package: .
+
+      - name: Cleanup artifacts
+        uses: geekyeggo/delete-artifact@v4
+        with:
+            name: .net-app

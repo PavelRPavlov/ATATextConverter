@@ -70,22 +70,22 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
         try
         {
             return new Detail(
-                double.Parse(separateParameters[0], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[1], CultureInfo.InvariantCulture),
-                int.Parse(separateParameters[2]),
+                double.Parse(CleanupEmptyString(separateParameters[0]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[1]), CultureInfo.InvariantCulture),
+                int.Parse(CleanupEmptyString(separateParameters[2])),
                 separateParameters[3],
-                int.Parse(separateParameters[4]) == 1,
-                int.Parse(separateParameters[5]) == 1,
-                int.Parse(separateParameters[6]) == 1,
-                int.Parse(separateParameters[7]) == 1,
-                int.Parse(separateParameters[8]) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[4])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[5])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[6])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[7])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[8])) == 1,
                 separateParameters[9],
-                int.Parse(separateParameters[10]),
-                double.Parse(separateParameters[11], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[12], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[13], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[14], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[15], CultureInfo.InvariantCulture)
+                int.Parse(CleanupEmptyString(separateParameters[10])),
+                double.Parse(CleanupEmptyString(separateParameters[11]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[12]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[13]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[14]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[15]), CultureInfo.InvariantCulture)
             );
         }
         catch (Exception e)
@@ -95,22 +95,32 @@ public class DetailsExtractorService(ILogger<DetailsExtractorService> logger) : 
         }
     }
 
+    private string CleanupEmptyString(string val)
+    {
+        if (string.IsNullOrEmpty(val))
+        {
+            return "0";
+        }
+
+        return val;
+    }
+
     private Detail ExtractOldDetailFormat(ReadOnlySpan<string> separateParameters)
     {
         try
         {
             return new Detail(
-                double.Parse(separateParameters[0], CultureInfo.InvariantCulture),
-                double.Parse(separateParameters[1], CultureInfo.InvariantCulture),
-                int.Parse(separateParameters[2]),
+                double.Parse(CleanupEmptyString(separateParameters[0]), CultureInfo.InvariantCulture),
+                double.Parse(CleanupEmptyString(separateParameters[1]), CultureInfo.InvariantCulture),
+                int.Parse(CleanupEmptyString(separateParameters[2])),
                 separateParameters[3],
-                int.Parse(separateParameters[4]) == 1,
-                int.Parse(separateParameters[5]) == 1,
-                int.Parse(separateParameters[6]) == 1,
-                int.Parse(separateParameters[7]) == 1,
-                int.Parse(separateParameters[8]) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[4])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[5])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[6])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[7])) == 1,
+                int.Parse(CleanupEmptyString(separateParameters[8])) == 1,
                 separateParameters[9],
-                int.Parse(separateParameters[10]),
+                int.Parse(CleanupEmptyString(separateParameters[10])),
                 0, 0, 0, 0, 0
             );
         }
