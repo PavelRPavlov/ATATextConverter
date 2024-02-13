@@ -61,7 +61,7 @@ public static class SuliverExtensions
         var note = new StringBuilder();
         if (detail.OversizingHeight.Equals(detail.OversizingWidth) && detail.OversizingHeight > 0)
         {
-            note.Append($"ЗДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ");
+            note.Append($"СДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ");
         }
 
         if (detail.TopEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName) ||
