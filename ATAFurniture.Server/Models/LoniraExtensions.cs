@@ -30,7 +30,7 @@ public static class LoniraExtensions
     {
         if (detail.OversizingHeight.Equals(detail.OversizingWidth) && detail.OversizingHeight > 0)
         {
-            return $"ЗДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ";
+            return $"СДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ";
         }
 
         return string.Empty;

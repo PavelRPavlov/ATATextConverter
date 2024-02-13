@@ -13,6 +13,7 @@ public class LoniraDetail : IKroikoDetail
 public class SuliverDetail : IKroikoDetail
 {
     public Guid Id { get; set; }
+    public bool IsEdgeColorDifferent { get; set; }
     public double Width { get; set; }
     public double Height { get; set; }
     public int Quantity { get; set; }

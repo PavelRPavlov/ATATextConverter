@@ -41,6 +41,7 @@ public class SuliverTableRowProvider : ITableRowProvider
         Cell newCell;
         switch (propertyName)
         {
+            // NOTE this switch controls how the content of a cell will be aligned
             case nameof(SuliverDetail.Material):
             case nameof(SuliverDetail.Note):
             case nameof(SuliverDetail.Cabinet):

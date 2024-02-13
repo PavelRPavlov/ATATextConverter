@@ -16,54 +16,62 @@
   "Cells": [
     {
       "Name": "A1",
-      "Value": "Материал"
+      "Value": "Кантиране с друг цвят"
     },
     {
       "Name": "B1",
+      "Value": "{DifferentEdgeColor}"
+    },
+    {
+      "Name": "A3",
+      "Value": "Материал"
+    },
+    {
+      "Name": "B3",
       "Value": "Деб. (мм)"
     },
     {
-      "Name": "C1",
+      "Name": "C3",
       "Value": "Рот."
     },
     {
-      "Name": "D1",
+      "Name": "D3",
       "Value": "Дължина (мм)"
     },
     {
-      "Name": "E1",
+      "Name": "E3",
       "Value": "Ширина (мм)"
     },
     {
-      "Name": "F1",
+      "Name": "F3",
       "Value": "Брой"
     },
     {
-      "Name": "G1",
+      "Name": "G3",
       "Value": "Име Дет."
     },
     {
-      "Name": "H1",
+      "Name": "H3",
       "Value": "Дъл."
     },
     {
-      "Name": "I1",
+      "Name": "I3",
       "Value": "Дъл.2"
     },
     {
-      "Name": "J1",
+      "Name": "J3",
       "Value": "Шир."
     },
     {
-      "Name": "K1",
+      "Name": "K3",
       "Value": "Шир.2"
     },
     {
-      "Name": "L1",
+      "Name": "L3",
       "Value": "Забележка"
     },
     {
-      "Name": "A2",
+      "Name": "A4",
       "Value": "{TableStart}"
     }
   ]

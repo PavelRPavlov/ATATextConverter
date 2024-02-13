@@ -61,11 +61,21 @@ public class ExcelFileGenerator() : IExcelFileGenerator
                 writer.SkipColumns(1);
                 return;
             }
-            var val = double.Parse(cell.Value);
-            writer.Write(
-                val,
-                XlsxStyle.Default.With(
-                    alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+
+            if (double.TryParse(cell.Value, out var val))
+            {
+                writer.Write(
+                    val,
+                    XlsxStyle.Default.With(
+                        alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+            }
+            else
+            {
+                writer.Write(
+                    cell.Value,
+                    XlsxStyle.Default.With(
+                        alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+            }
         }
     }
 }

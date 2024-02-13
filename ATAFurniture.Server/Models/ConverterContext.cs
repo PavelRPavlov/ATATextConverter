@@ -16,7 +16,14 @@ public sealed class ConverterContext : INotifyPropertyChanged, IDisposable
     private ObservableCollection<KroikoFile> _files = new();
     private SupportedCompany? _targetCompany = null;
     private ContactInfo _contactInfo = new();
+    private string _differentEdgeColor = string.Empty;
 
+    public string DifferentEdgeColor
+    {
+        get => _differentEdgeColor;
+        set => SetField(ref _differentEdgeColor, value);
+    }
+    
     public ContactInfo ContactInfo
     {
         get => _contactInfo;

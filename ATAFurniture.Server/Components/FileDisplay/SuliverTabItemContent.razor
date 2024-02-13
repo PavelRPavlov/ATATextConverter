@@ -21,12 +21,24 @@
                 <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
             </RadzenColumn>
         </RadzenRow>
+        @if (_isDifferentEdgeColorNotePresent)
+        {
+            <RadzenRow class="p-3">
+                <RadzenColumn>
+                    <RadzenLabel Text="Кантиране с друг цвят:"></RadzenLabel>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <SfTextBox @bind-Value="@Context.DifferentEdgeColor"></SfTextBox>
+                </RadzenColumn>
+            </RadzenRow>
+        }
 
         <SfGrid class="p-3" DataSource="_source" TValue="SuliverDetail" AllowPaging="true" AllowTextWrap="true">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
             <GridPageSettings PageSize="25"></GridPageSettings>
             <GridColumns>
                 <GridColumn Field="@nameof(SuliverDetail.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field="@nameof(SuliverDetail.IsEdgeColorDifferent)" Visible="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.Material)" Width="200" HeaderText="Материал" TextAlign="TextAlign.Left" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.MaterialThickness)" Width="48" HeaderText="Деб. (мм)" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.IsGrainDirectionReversed)" Width="48" HeaderText="Рот*" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
@@ -34,9 +46,9 @@
                 <GridColumn Field="@nameof(SuliverDetail.Width)" Width="70" HeaderText="Ширина (мм)" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.Quantity)" Width="48" HeaderText="Брой" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.Cabinet)" HeaderText="Име Дет." TextAlign="TextAlign.Left" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(SuliverDetail.LongEdge)" Width="48" HeaderText="Дъл." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(SuliverDetail.LongEdge)" Width="60" HeaderText="Дъл." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.LongEdge2)" Width="60" HeaderText="Дъл.2" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(SuliverDetail.ShortEdge)" Width="48" HeaderText="Шир." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(SuliverDetail.ShortEdge)" Width="60" HeaderText="Шир." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.ShortEdge2)" Width="60" HeaderText="Шир.2" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
                 <GridColumn Field="@nameof(SuliverDetail.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true" TextAlign="TextAlign.Left"></GridColumn>
             </GridColumns>
@@ -49,9 +61,11 @@
     [Parameter] public ConverterContext Context { get; set; }
     
     private List<SuliverDetail> _source;
+    private bool _isDifferentEdgeColorNotePresent = false;
 
     protected override void OnInitialized()
     {
         _source = File.Details.Cast<SuliverDetail>().ToList();
+        _isDifferentEdgeColorNotePresent = _source.Any(x => x.IsEdgeColorDifferent);
     }
 }
