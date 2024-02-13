@@ -148,7 +148,7 @@
         }
         
         _areFilesGenerating = true;
-        var alreadyGeneratedFiles = await FileGenerator.CreateFiles(Context.ContactInfo, Context.Files, templateBuilder, fileNameProvider);
+        var alreadyGeneratedFiles = await FileGenerator.CreateFiles(Context.ContactInfo, Context.Files, templateBuilder, fileNameProvider, Context.DifferentEdgeColor);
         return alreadyGeneratedFiles;
     }
 

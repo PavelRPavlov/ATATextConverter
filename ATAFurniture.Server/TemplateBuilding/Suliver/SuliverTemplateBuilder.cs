@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kroiko.Domain;
 using Kroiko.Domain.CellsExtracting;
 using Kroiko.Domain.TemplateBuilding;
+using Kroiko.Domain.TemplateBuilding.Suliver;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ATAFurniture.Server.TemplateBuilding.Suliver;
@@ -20,7 +21,7 @@ public class SuliverTemplateBuilder([FromKeyedServices(nameof(SupportedCompanies
         var sheet = await ReadTemplateAsync<SheetBase>(templatePath ?? _defaultTemplateFilePath);
         var tableStartCell = PopulateStaticInfo(sheet, contactInfo);
         
-        // TODO Suliver has a single file
+        // NOTE Suliver has a single file
         PopulateDetails(sheet, tableStartCell, files.First().Details, tableRowProvider);
 
         return new List<ISheet> { sheet };

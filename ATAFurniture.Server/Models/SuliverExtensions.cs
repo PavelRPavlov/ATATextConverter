@@ -9,11 +9,11 @@ namespace ATAFurniture.Server.Models;
 
 public static class SuliverExtensions
 {
-    private const string NutLamEdgeMaterialName = "NutLam";
-    private const string NutEdgeMaterialName = "Nut";
-    private const string NutBlumEdgeMaterialName = "NutBlum";
-    private const string FalcEdgeMaterialName = "Falc";
-    private const string DifferentEdgeMaterialName = "Different";
+    private const string NutLamEdgeFlagName = "nutlam";
+    private const string NutEdgeFlagName = "nut";
+    private const string NutBlumEdgeFlagName = "nutblum";
+    private const string FalcEdgeFlagName = "falc";
+    private const string DifferentEdgeMaterialName = "different";
     
     public static List<IKroikoDetail> ToSuliverDetails(this ObservableCollection<Detail> details)
     {
@@ -29,10 +29,10 @@ public static class SuliverExtensions
                 Material = detail.Material,
                 Cabinet = $"{detail.Cabinet} {detail.Reference}",
                 MaterialThickness = detail.MaterialThickness,
-                IsGrainDirectionReversed = detail.IsGrainDirectionReversed ? (byte)2 : (byte)1,
-                Note = CreateSaliverNote(detail)
+                IsGrainDirectionReversed = detail.IsGrainDirectionReversed ? (byte)2 : (byte)1
             };
             SetSaliverEdges(d, detail);
+            CreateSaliverNote(d, detail);
             result.Add(d);
         }
         return result;
@@ -42,21 +42,21 @@ public static class SuliverExtensions
     {
         if (detail.Width > detail.Height)
         {
-            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial);
-            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial);
-            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial);
-            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial);
+            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
         }
         else
         {
-            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial);
-            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial);
-            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial);
-            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial);
+            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
         }
     }
 
-    private static string CreateSaliverNote(Detail detail)
+    private static void CreateSaliverNote(SuliverDetail suliverDetail, Detail detail)
     {
         var note = new StringBuilder();
         if (detail.OversizingHeight.Equals(detail.OversizingWidth) && detail.OversizingHeight > 0)
@@ -64,35 +64,36 @@ public static class SuliverExtensions
             note.Append($"ЗДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ");
         }
 
-        if (detail.TopEdgeMaterial.Contains(DifferentEdgeMaterialName) ||
-            detail.BottomEdgeMaterial.Contains(DifferentEdgeMaterialName) || 
-            detail.LeftEdgeMaterial.Contains(DifferentEdgeMaterialName) ||
-            detail.RightEdgeMaterial.Contains(DifferentEdgeMaterialName))
+        if (detail.TopEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName) ||
+            detail.BottomEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName) || 
+            detail.LeftEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName) ||
+            detail.RightEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName))
         {
             note.Append("Кантиране с друг цвят");
+            suliverDetail.IsEdgeColorDifferent = true;
         }
 
-        return note.ToString();
+        suliverDetail.Note = note.ToString();
     }
 
 
     private static string GetSuliverEdgeThicknessValue(double detailEdgeThickness, string detailEdgeMaterial)
     {
-        if (detailEdgeMaterial == NutLamEdgeMaterialName)
+        if (detailEdgeMaterial.Contains(NutLamEdgeFlagName))
         {
-            return "НутЛам";
+            return "Нут Лам";
         }
-        if (detailEdgeMaterial == NutEdgeMaterialName)
+        if (detailEdgeMaterial.Contains(NutEdgeFlagName))
         {
-            return "Нут10x4";
+            return "Нут 10x4";
         }
-        if (detailEdgeMaterial == FalcEdgeMaterialName)
+        if (detailEdgeMaterial.Contains(FalcEdgeFlagName))
         {
-            return "Фалц13x4";
+            return "Фалц 13x4";
         }
-        if (detailEdgeMaterial == NutBlumEdgeMaterialName)
+        if (detailEdgeMaterial.Contains(NutBlumEdgeFlagName))
         {
-            return "НутБлум";
+            return "Нут Блум";
         }
         return detailEdgeThickness switch 
         {

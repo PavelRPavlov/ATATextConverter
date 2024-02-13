@@ -4,9 +4,10 @@ namespace Kroiko.Domain.TemplateBuilding;
 
 public abstract class TemplateBuilderBase : ITemplateBuilder
 {
-    private const string CompanyNameCellFlag = "{CompanyName}";
-    private const string MobileNumberCellFlag = "{MobileNumber}";
-    private const string TableStartCellFlag = "{TableStart}";
+    public const string CompanyNameCellFlag = "{CompanyName}";
+    public const string MobileNumberCellFlag = "{MobileNumber}";
+    public const string TableStartCellFlag = "{TableStart}";
+    public const string DifferentEdgeColorCellFlag = "{DifferentEdgeColor}";
 
     public abstract Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<KroikoFile> files);
 
