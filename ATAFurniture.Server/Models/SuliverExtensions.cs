@@ -79,21 +79,22 @@ public static class SuliverExtensions
 
     private static string GetSuliverEdgeThicknessValue(double detailEdgeThickness, string detailEdgeMaterial)
     {
-        if (detailEdgeMaterial.Contains(NutLamEdgeFlagName))
-        {
-            return "Нут Лам";
-        }
-        if (detailEdgeMaterial.Contains(NutEdgeFlagName))
-        {
-            return "Нут 10x4";
-        }
         if (detailEdgeMaterial.Contains(FalcEdgeFlagName))
         {
             return "Фалц 13x4";
         }
+        if (detailEdgeMaterial.Contains(NutLamEdgeFlagName))
+        {
+            return "Нут Лам";
+        }
         if (detailEdgeMaterial.Contains(NutBlumEdgeFlagName))
         {
             return "Нут Блум";
+        }
+        if (detailEdgeMaterial.Contains(NutEdgeFlagName))
+        {
+            //NOTE this is the most generic name, so it should be last to give the other flags a chance to match
+            return "Нут 10x4";
         }
         return detailEdgeThickness switch 
         {
