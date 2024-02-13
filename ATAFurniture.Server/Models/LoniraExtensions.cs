@@ -19,12 +19,23 @@ public static class LoniraExtensions
                 Height = detail.Height,
                 Quantity = detail.Quantity,
                 LoniraEdges = $"{GetLoniraEdges(detail)}; {detail.Cabinet} {detail.CuttingNumber}",
+                Note = CreateLoniraNote(detail)
             });
         }
 
         return result;
     }
-    
+
+    private static string CreateLoniraNote(Detail detail)
+    {
+        if (detail.OversizingHeight.Equals(detail.OversizingWidth) && detail.OversizingHeight > 0)
+        {
+            return $"ЗДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ";
+        }
+
+        return string.Empty;
+    }
+
     private static string GetLoniraEdges(Detail detail)
     {
         if (detail.IsGrainDirectionReversed)

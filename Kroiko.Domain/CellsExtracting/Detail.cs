@@ -20,7 +20,13 @@ public record Detail(
     double BottomEdgeThickness,
     double RightEdgeThickness,
     double LeftEdgeThickness,
-    string Reference) : INotifyPropertyChanged
+    string Reference,
+    string TopEdgeMaterial,
+    string BottomEdgeMaterial,
+    string RightEdgeMaterial,
+    string LeftEdgeMaterial,
+    double OversizingHeight,
+    double OversizingWidth) : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
