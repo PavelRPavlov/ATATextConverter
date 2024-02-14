@@ -42,17 +42,39 @@ public static class SuliverExtensions
     {
         if (detail.Width > detail.Height)
         {
-            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
-            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
-            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
-            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
+            var result = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge2 = result.Value;
+            suliverDetail.AdjustHeightForFalc(result.ShouldUpdateSize);
+            
+            result = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge = result.Value;
+            suliverDetail.AdjustHeightForFalc(result.ShouldUpdateSize);
+            
+            result= GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge2 = result.Value;
+            suliverDetail.AdjustWidthForFalc(result.ShouldUpdateSize);
+            
+            result= GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge = result.Value;
+            suliverDetail.AdjustWidthForFalc(result.ShouldUpdateSize);
         }
         else
         {
-            suliverDetail.LongEdge = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
-            suliverDetail.LongEdge2 = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
-            suliverDetail.ShortEdge = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
-            suliverDetail.ShortEdge2 = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
+            var result = GetSuliverEdgeThicknessValue(detail.LeftEdgeThickness, detail.LeftEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge2 = result.Value;
+            suliverDetail.AdjustWidthForFalc(result.ShouldUpdateSize);
+            
+            result = GetSuliverEdgeThicknessValue(detail.RightEdgeThickness, detail.RightEdgeMaterial.ToLowerInvariant());
+            suliverDetail.LongEdge = result.Value;
+            suliverDetail.AdjustWidthForFalc(result.ShouldUpdateSize);
+            
+            result = GetSuliverEdgeThicknessValue(detail.TopEdgeThickness, detail.TopEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge2 = result.Value;
+            suliverDetail.AdjustHeightForFalc(result.ShouldUpdateSize);
+            
+            result = GetSuliverEdgeThicknessValue(detail.BottomEdgeThickness, detail.BottomEdgeMaterial.ToLowerInvariant());
+            suliverDetail.ShortEdge = result.Value;
+            suliverDetail.AdjustHeightForFalc(result.ShouldUpdateSize);
         }
     }
 
@@ -61,7 +83,7 @@ public static class SuliverExtensions
         var note = new StringBuilder();
         if (detail.OversizingHeight.Equals(detail.OversizingWidth) && detail.OversizingHeight > 0)
         {
-            note.Append($"СДВ с краен размер {detail.Height - detail.OversizingHeight}x{detail.Width - detail.OversizingWidth}; ");
+            note.Append($"СДВ с краен размер {suliverDetail.Height - detail.OversizingHeight}x{suliverDetail.Width - detail.OversizingWidth}; ");
         }
 
         if (detail.TopEdgeMaterial.ToLowerInvariant().Contains(DifferentEdgeMaterialName) ||
@@ -77,31 +99,31 @@ public static class SuliverExtensions
     }
 
 
-    private static string GetSuliverEdgeThicknessValue(double detailEdgeThickness, string detailEdgeMaterial)
+    private static (string Value, bool ShouldUpdateSize) GetSuliverEdgeThicknessValue(double detailEdgeThickness, string detailEdgeMaterial)
     {
         if (detailEdgeMaterial.Contains(FalcEdgeFlagName))
         {
-            return "Фалц 13x4";
+            return ("Фалц 13x4", true);
         }
         if (detailEdgeMaterial.Contains(NutLamEdgeFlagName))
         {
-            return "Нут Лам";
+            return ("Нут Лам", false);
         }
         if (detailEdgeMaterial.Contains(NutBlumEdgeFlagName))
         {
-            return "Нут Блум";
+            return ("Нут Блум", false);
         }
         if (detailEdgeMaterial.Contains(NutEdgeFlagName))
         {
             //NOTE this is the most generic name, so it should be last to give the other flags a chance to match
-            return "Нут 10x4";
+            return ("Нут 10x4", false);
         }
         return detailEdgeThickness switch 
         {
-            0 => "0",
-            > 0.4 and < 0.6 => "1",
-            > 0.7 and < 1.4 => "3",
-            > 1.6 and < 2.4 => "2",
+            0 => ("0", false),
+            > 0.4 and < 0.6 => ("1", false),
+            > 0.7 and < 1.4 => ("3", false),
+            > 1.6 and < 2.4 => ("2", false),
             _ => throw new ArgumentOutOfRangeException(nameof(detailEdgeThickness))
         };
     }
