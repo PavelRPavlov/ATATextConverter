@@ -26,6 +26,22 @@ public class SuliverDetail : IKroikoDetail
     public string? ShortEdge { get; set; }
     public string? ShortEdge2 { get; set; }
     public string? Note { get; set; }
+
+    public void AdjustHeightForFalc(bool result)
+    {
+        if (result)
+        {
+            Height += 4;
+        }
+    }
+
+    public void AdjustWidthForFalc(bool result)
+    {
+        if (result)
+        {
+            Width += 4;
+        }
+    }
 }
 
 public interface IKroikoDetail
