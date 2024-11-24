@@ -3,6 +3,10 @@ using LargeXlsx;
 
 namespace Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
 
+public interface IExcelFileGenerator
+{
+    Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider);
+}
 public class ExcelFileGenerator() : IExcelFileGenerator
 {
     public Task<List<FileSaveContext>> GenerateExcelFilesAsync(IList<ISheet> sheets, IFileNameProvider fileNameProvider)

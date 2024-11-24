@@ -1,0 +1,73 @@
+﻿@using ATAFurniture.Server.Models
+@using Kroiko.Domain.TemplateBuilding
+@using TextAlign = Syncfusion.Blazor.Grids.TextAlign
+
+<TabItem >
+    <HeaderTemplate>@File.FileName</HeaderTemplate>
+    <ContentTemplate >
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Име на клиента: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@Context.ContactInfo.CompanyName"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Материал: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <SfTextBox @bind-Value="@File.FileName"></SfTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+
+        <SfGrid class="p-3" DataSource="_source" TValue="MegaTrading" AllowPaging="true" AllowTextWrap="true">
+            <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
+            <GridPageSettings PageSize="25"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Field="@nameof(MegaTrading.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Material)" Width="160" HeaderText="Материал на детайла" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Height)" Width="160" HeaderText="X - фладер" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Width)" Width="180" HeaderText="Y" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Quantity)" HeaderText="Брой" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Rotated)" HeaderText="Rot." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.LeftEdge)" HeaderText="Ляво" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.BottomEdge)" HeaderText="Долу" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.RightEdge)" HeaderText="Дясно" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.TopEdge)" HeaderText="Горе" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.EdgeBandingMaterial)" HeaderText="Материал - Кант" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTrading.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </ContentTemplate>
+</TabItem>
+
+@code {
+    [Parameter] public KroikoFile File { get; set; }
+    [Parameter] public ConverterContext Context { get; set; }
+    
+    private List<MegaTrading> _source;
+
+    protected override void OnInitialized()
+    {
+        _source = File.Details.Cast<MegaTrading>().ToList();
+    }
+}
+
+<style>
+    .e-grid .e-gridheader {
+        border: 1px solid black;
+    }
+    .e-grid .e-gridcontent .e-content {
+        border: 1px solid black;
+    }
+</style>

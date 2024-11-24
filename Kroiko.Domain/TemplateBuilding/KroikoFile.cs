@@ -1,6 +1,4 @@
-﻿using Kroiko.Domain.CellsExtracting;
-
-namespace Kroiko.Domain.TemplateBuilding;
+﻿namespace Kroiko.Domain.TemplateBuilding;
 public class LoniraDetail : IKroikoDetail
 {
     public string? LoniraEdges { get; set; }
@@ -8,6 +6,22 @@ public class LoniraDetail : IKroikoDetail
     public Guid Id { get; set; }
     public double Width { get; set; }
     public double Height { get; set; }
+    public int Quantity { get; set; }
+}
+public class MegaTrading : IKroikoDetail
+{
+    public string? Note { get; set; }
+    public string? Material { get; set; }
+    public string? EdgeBandingMaterial { get; set; }
+    public bool Rotated { get; set; }
+    public string LeftEdge { get; set; }
+    public string RightEdge { get; set; }
+    public string BottomEdge { get; set; }
+    public string TopEdge { get; set; }
+    public Guid Id { get; set; }
+    public double Width { get; set; }
+    public double Height { get; set; }
+    public double Thickness { get; set; }
     public int Quantity { get; set; }
 }
 public class SuliverDetail : IKroikoDetail

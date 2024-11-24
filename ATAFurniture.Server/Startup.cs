@@ -14,11 +14,13 @@ using Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
 using Kroiko.Domain.TemplateBuilding;
 using Kroiko.Domain.TemplateBuilding.Lonira;
 using Kroiko.Domain.TemplateBuilding.Suliver;
+using Kroiko.Domain.TextFileGeneration;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
+using Radzen.Blazor.Rendering;
 using Serilog;
 using Syncfusion.Blazor;
 
@@ -80,6 +82,7 @@ public class Startup(IConfiguration configuration)
         services.AddKeyedScoped<ITableRowProvider, SuliverTableRowProvider>(nameof(SupportedCompanies.Suliver));
         services.AddKeyedScoped<IFileNameProvider, SuliverFileNameProvider>(nameof(SupportedCompanies.Suliver));
         services.AddScoped<IExcelFileGenerator, ExcelFileGenerator>();
+        services.AddScoped<ITextFileGenerator, MegaTradingFileGenerator>();
         services.AddScoped<FileGeneratorService>();
     }
 
