@@ -41,7 +41,7 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
                 CreateDetailRow(builder, detail);
             }
         }
-        var file = new FileSaveContext($"{contactInfo.CompanyName}-{DateTime.Now.ToShortDateString()}.cut_mt", Encoding.UTF8.GetBytes(builder.ToString()));
+        var file = new FileSaveContext($"{contactInfo.CompanyName}.cut_mt", Encoding.UTF8.GetBytes(builder.ToString()));
         return [file];
     }
     private static void CreateDetailRow(StringBuilder builder, MegaTrading d)

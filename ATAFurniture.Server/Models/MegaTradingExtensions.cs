@@ -25,10 +25,11 @@ public static class MegaTradingExtensions {
                 Rotated = detail.IsGrainDirectionReversed,
                 Note = string.Empty,
                 // TODO edge material should hold the overall thickness of the edge banding (e.g. 22,28 or 42)
-                LeftEdge = detail.HasLeftEdge ? $"{detail.LeftEdgeMaterial}/{GetEdgeBandingThickness(detail.LeftEdgeThickness)}" : string.Empty,
-                BottomEdge = detail.HasBottomEdge ? $"{detail.BottomEdgeMaterial}/{GetEdgeBandingThickness(detail.BottomEdgeThickness)}" : string.Empty,
-                RightEdge = detail.HasRightEdge ? $"{detail.RightEdgeMaterial}/{GetEdgeBandingThickness(detail.RightEdgeThickness)}" : string.Empty,
-                TopEdge = detail.HasTopEdge ? $"{detail.TopEdgeMaterial}/{GetEdgeBandingThickness(detail.TopEdgeThickness)}" : string.Empty,
+                RightEdge = detail.HasTopEdge ? $"{detail.TopEdgeMaterial}/{GetEdgeBandingThickness(detail.TopEdgeThickness)}" : string.Empty,
+                TopEdge = detail.HasLeftEdge ? $"{detail.LeftEdgeMaterial}/{GetEdgeBandingThickness(detail.LeftEdgeThickness)}" : string.Empty,
+                BottomEdge = detail.HasRightEdge ? $"{detail.RightEdgeMaterial}/{GetEdgeBandingThickness(detail.RightEdgeThickness)}" : string.Empty,
+                LeftEdge = detail.HasBottomEdge ? $"{detail.BottomEdgeMaterial}/{GetEdgeBandingThickness(detail.BottomEdgeThickness)}" : string.Empty,
+                
             });
         }
 
@@ -40,7 +41,7 @@ public static class MegaTradingExtensions {
         detailLeftEdgeThickness switch
         {
             <= 0.5 => "0.5",
-            > 0.5 and < 1 => "0.8/1.0",
+            > 0.5 and <= 1 => "0.8/1.0",
             >= 1 => "2.0",
             _ => ""
         };
