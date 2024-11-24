@@ -169,7 +169,6 @@
         var salt = Guid.NewGuid().ToString();
         var sessionFolder = Path.Combine(
             Environment.CurrentDirectory,
-            "wwwroot",
             filesRootPath,
             salt);
         var sessionDir = Directory.CreateDirectory(sessionFolder);
