@@ -135,16 +135,16 @@
 
     private async Task<List<FileSaveContext>> GenerateFiles()
     {
-        var fileNameProvider = ServiceProvider.GetRequiredKeyedService(typeof(IFileNameProvider), Context.TargetCompany.Name) as IFileNameProvider;
+        var fileNameProvider = ServiceProvider.GetKeyedService<IFileNameProvider>(Context.TargetCompany.Name);
         if (fileNameProvider is null)
         {
-            Logger.LogError("No file name provider found for company {CompanyName}", Context.TargetCompany.Name);
+            Logger.LogWarning("No file name provider found for company {CompanyName}", Context.TargetCompany.Name);
         }
 
-        var templateBuilder = ServiceProvider.GetRequiredKeyedService(typeof(ITemplateBuilder), Context.TargetCompany.Name) as ITemplateBuilder;
+        var templateBuilder = ServiceProvider.GetKeyedService<ITemplateBuilder>(Context.TargetCompany.Name) as ITemplateBuilder;
         if (templateBuilder is null)
         {
-            Logger.LogError("No template builder found for company {CompanyName}", Context.TargetCompany.Name);
+            Logger.LogWarning("No template builder found for company {CompanyName}", Context.TargetCompany.Name);
         }
         
         _areFilesGenerating = true;

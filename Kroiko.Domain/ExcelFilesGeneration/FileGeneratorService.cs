@@ -1,11 +1,17 @@
-﻿using Kroiko.Domain.TemplateBuilding;
+﻿using Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
+using Kroiko.Domain.TemplateBuilding;
+using Kroiko.Domain.TextFileGeneration;
 
 namespace Kroiko.Domain.ExcelFilesGeneration;
 
-public class FileGeneratorService(IExcelFileGenerator excelFileGenerator)
+public class FileGeneratorService(IExcelFileGenerator excelFileGenerator, ITextFileGenerator textFileGenerator)
 {
-    public async Task<List<FileSaveContext>> CreateFiles(ContactInfo contactInfo, IEnumerable<KroikoFile> files, ITemplateBuilder templateBuilder, IFileNameProvider fileNameProvider, string? differentEdgeColor = null)
+    public async Task<List<FileSaveContext>> CreateFiles(ContactInfo contactInfo, IEnumerable<KroikoFile> files, ITemplateBuilder? templateBuilder = null, IFileNameProvider? fileNameProvider = null, string? differentEdgeColor = null)
     {
+        if (templateBuilder is null || fileNameProvider is null)
+        {
+            return textFileGenerator.CreateTextBasedFile(contactInfo,files);
+        }
         var sheets = await templateBuilder.BuildTemplateAsync(contactInfo, files);
         foreach (var sheet in sheets)
         {

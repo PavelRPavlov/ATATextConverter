@@ -35,6 +35,9 @@
                         case nameof(SupportedCompanies.Lonira):
                             <LoniraTabItemContent File="@file" Context="@Context"/>
                             break;
+                        case nameof(SupportedCompanies.MegaTrading):
+                            <MegaTradingTabItemContent File="@file" Context="@Context"/>
+                            break;
                         case nameof(SupportedCompanies.Suliver):
                             <SuliverTabItemContent File="@file" Context="@Context"/>
                             break;
@@ -110,6 +113,17 @@
                         // TODO what is the required file name
                         FileName = "Suliver",
                         Details = Context.Details.ToSuliverDetails()
+                    });
+                }
+                break;
+            case nameof(SupportedCompanies.MegaTrading):
+                if (Context.Details.Any())
+                {
+                    result.Add(new KroikoFile
+                    {
+                        // TODO what is the required file name
+                        FileName = "MegaTrading",
+                        Details = Context.Details.ToMegaTradingDetails()
                     });
                 }
                 break;
