@@ -67,7 +67,6 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
     private static void CreateFirstRow(StringBuilder builder)
     {
         // holds a boolean value indicating if the material of the edge banding is different from material itself
-        // we always use 'False' to avoid inspecting all details multiple times
-        builder.AppendLine($"{S}{S}False");
+        builder.AppendLine($"{S}{S}True");
     }
 }

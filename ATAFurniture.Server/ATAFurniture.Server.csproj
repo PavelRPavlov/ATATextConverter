@@ -48,7 +48,6 @@
   <ItemGroup>
     <Folder Include="logs\" />
     <Folder Include="wwwroot\Assets\" />
-    <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +58,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kroiko.Domain\Kroiko.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\files\6165f3a4-9cfd-4158-97a2-2c9261bddade\TestCompany.cut_mt" />
   </ItemGroup>
 
 </Project>

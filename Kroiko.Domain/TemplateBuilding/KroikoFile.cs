@@ -1,6 +1,7 @@
 ﻿namespace Kroiko.Domain.TemplateBuilding;
 public class LoniraDetail : IKroikoDetail
 {
+    public string Material { get; set; }
     public string? LoniraEdges { get; set; }
     public string? Note { get; set; }
     public Guid Id { get; set; }
@@ -11,7 +12,7 @@ public class LoniraDetail : IKroikoDetail
 public class MegaTrading : IKroikoDetail
 {
     public string? Note { get; set; }
-    public string? Material { get; set; }
+    public string Material { get; set; }
     public string? EdgeBandingMaterial { get; set; }
     public bool Rotated { get; set; }
     public string LeftEdge { get; set; }
@@ -31,7 +32,7 @@ public class SuliverDetail : IKroikoDetail
     public double Width { get; set; }
     public double Height { get; set; }
     public int Quantity { get; set; }
-    public string? Material { get; set; }
+    public string Material { get; set; }
     public string? Cabinet { get; set; }
     public double MaterialThickness { get; set; }
     public byte IsGrainDirectionReversed { get; set; }
@@ -65,6 +66,7 @@ public interface IKroikoDetail
     public double Height { get; set; }
     public int Quantity { get; set; }
     public string? Note { get; set; }
+    public string Material { get; set; }
 }
 
 public class KroikoFile

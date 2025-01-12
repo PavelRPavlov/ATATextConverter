@@ -1,6 +1,7 @@
 ﻿@using ATAFurniture.Server.Models
 @using Kroiko.Domain.TemplateBuilding
 @using TextAlign = Syncfusion.Blazor.Grids.TextAlign
+@using System.Collections.ObjectModel
 
 <TabItem >
     <HeaderTemplate>@File.FileName</HeaderTemplate>
@@ -23,29 +24,39 @@
         </RadzenRow>
         <RadzenRow class="p-3">
             <RadzenColumn>
-                <RadzenLabel Text="Материал: "></RadzenLabel>
+                <RadzenLabel Text="Използвани материали: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@File.FileName"></SfTextBox>
+                <RadzenDataList Data="@_groups" TItem="PocoRec">
+                    <Template Context="group">
+                        <RadzenRow AlignItems="AlignItems.Center">
+                            <RadzenLabel Text="@(group.OldName)"></RadzenLabel>
+                            <RadzenTextBox @bind-Value="@(group.NewName)"></RadzenTextBox>
+                        </RadzenRow>
+                    </Template>
+                </RadzenDataList>
             </RadzenColumn>
         </RadzenRow>
+        <RadzenRow class="p-3">
+            <RadzenButton Click="OnMaterialsReplaced" Text="Замести използваните с новите материали"></RadzenButton>
+        </RadzenRow>
 
-        <SfGrid class="p-3" DataSource="_source" TValue="MegaTrading" AllowPaging="true" AllowTextWrap="true">
+        <SfGrid class="p-3" DataSource="@_source" TValue="MegaTradingViewModel" AllowPaging="true" AllowTextWrap="true">
             <GridEditSettings AllowEditing="true" AllowEditOnDblClick="true" Mode="EditMode.Normal"></GridEditSettings>
             <GridPageSettings PageSize="25"></GridPageSettings>
             <GridColumns>
-                <GridColumn Field="@nameof(MegaTrading.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Material)" Width="160" HeaderText="Материал на детайла" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Height)" Width="160" HeaderText="X - фладер" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Width)" Width="180" HeaderText="Y" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Quantity)" HeaderText="Брой" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Rotated)" HeaderText="Rot." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.LeftEdge)" HeaderText="Ляво" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.BottomEdge)" HeaderText="Долу" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.RightEdge)" HeaderText="Дясно" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.TopEdge)" HeaderText="Горе" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.EdgeBandingMaterial)" HeaderText="Материал - Кант" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
-                <GridColumn Field="@nameof(MegaTrading.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Material)" Width="160" HeaderText="Материал на детайла" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Height)" Width="160" HeaderText="X - фладер" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Width)" Width="180" HeaderText="Y" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Quantity)" HeaderText="Брой" TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Rotated)" HeaderText="Rot." TextAlign="TextAlign.Center" AllowEditing="false"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.LeftEdge)" HeaderText="Ляво" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.BottomEdge)" HeaderText="Долу" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.RightEdge)" HeaderText="Дясно" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.TopEdge)" HeaderText="Горе" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.EdgeBandingMaterial)" HeaderText="Материал - Кант" TextAlign="TextAlign.Center" AllowEditing="true"></GridColumn>
+                <GridColumn Field="@nameof(MegaTradingViewModel.Note)" HeaderText="Забележка" EditType="EditType.DefaultEdit" AllowEditing="true"></GridColumn>
             </GridColumns>
         </SfGrid>
     </ContentTemplate>
@@ -55,11 +66,36 @@
     [Parameter] public KroikoFile File { get; set; }
     [Parameter] public ConverterContext Context { get; set; }
     
-    private List<MegaTrading> _source;
+    private ObservableCollection<MegaTradingViewModel> _source;
+    private ObservableCollection<PocoRec> _groups = [];
+
+    private class PocoRec(string oldName, string newName) {
+        public string OldName { get; set;  } = oldName;
+        public string NewName { get; set;  } = newName;
+    }
 
     protected override void OnInitialized()
     {
-        _source = File.Details.Cast<MegaTrading>().ToList();
+        _source = File.Details.ToMegaTradingViewModel();
+        _groups = new ObservableCollection<PocoRec>(
+            _source.GroupBy(x => x.Material)
+            .Select(x => new PocoRec(x.Key, x.Key))
+            .ToList());
+    }
+    
+    private void OnMaterialsReplaced(MouseEventArgs obj)
+    {
+        foreach (var detail in _source)
+        {
+            foreach (var group in _groups.Where(group => detail.Material == group.OldName))
+            {
+                detail.Material = group.NewName;
+            }
+        }
+        
+        StateHasChanged();
+
+        File.Details = _source.ToKroikoDetails();
     }
 }
 
