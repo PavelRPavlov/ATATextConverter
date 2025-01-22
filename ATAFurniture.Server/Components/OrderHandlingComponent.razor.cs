@@ -1,5 +1,6 @@
 ﻿using ATAFurniture.Server.DataAccess;
 using ATAFurniture.Server.Models;
+using Azure.Storage.Blobs;
 using Kroiko.Domain.CellsExtracting;
 using Kroiko.Domain.ExcelFilesGeneration;
 using Kroiko.Domain.TemplateBuilding;
@@ -57,7 +58,7 @@ public partial class OrderHandlingComponent
         _shouldGenerateFiles = true;
         _shouldSendEmail = false;
         var alreadyGeneratedFiles = await GenerateFiles();
-        _files = await SaveFilesLocallyForDownload(alreadyGeneratedFiles);
+        _files = await SaveFilesForDownload(alreadyGeneratedFiles);
         _areFilesGenerating = false;
         StateHasChanged();
     }
@@ -85,17 +86,21 @@ public partial class OrderHandlingComponent
             Context.TargetCompany.Name == SupportedCompanies.MegaTrading.Name);
         return alreadyGeneratedFiles;
     }
-    private async Task<List<FileDisplayContext>> SaveFilesLocallyForDownload(List<FileSaveContext> alreadyGeneratedFiles)
+    private async Task<List<FileDisplayContext>> SaveFilesForDownload(List<FileSaveContext> alreadyGeneratedFiles)
     {
         var result = new List<FileDisplayContext>();
+        var storageConnectionString = Configuration["AzureStorageConnectionString"];
+        var storageContainerName = Configuration["StorageContainerName"];
+        
+        var blobContainer = new BlobContainerClient(storageConnectionString, storageContainerName);
         foreach (var file in alreadyGeneratedFiles)
         {
-            result.Add(await CreateFileDownloadLink(file));
+            result.Add(await CreateFileDownloadLink(blobContainer, file));
         }
 
         return result;
     }
-    private async Task<FileDisplayContext> CreateFileDownloadLink(FileSaveContext context)
+    private async Task<FileDisplayContext> CreateFileDownloadLink(BlobContainerClient container, FileSaveContext context)
     {
         var filesRootPath = "files";
         var salt = Guid.NewGuid().ToString();
@@ -111,10 +116,15 @@ public partial class OrderHandlingComponent
                 sessionDir.FullName,
                 context.FileName),
             context.Content);
-        return new FileDisplayContext
+
+        await container.DeleteBlobIfExistsAsync(context.FileName);
+        var response = await container.UploadBlobAsync(context.FileName, BinaryData.FromBytes(context.Content));
+        
+        var blobClient = container.GetBlobClient(context.FileName);
+        return new()
         {
             Name = context.FileName,
-            Url = Path.Combine(filesRootPath, salt, context.FileName)
+            Url = $"{blobClient.Uri}"
         };
     }
     private void OnSendEmailOptionSelected()

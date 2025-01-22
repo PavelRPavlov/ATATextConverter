@@ -19,12 +19,9 @@ using Kroiko.Domain.TemplateBuilding.Suliver;
 using Kroiko.Domain.TextFileGeneration;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
-using Radzen.Blazor.Rendering;
 using Serilog;
 using Syncfusion.Blazor;
 
