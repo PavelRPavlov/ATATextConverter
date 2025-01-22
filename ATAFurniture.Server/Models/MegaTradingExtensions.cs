@@ -13,7 +13,7 @@ public static class MegaTradingExtensions {
         var result = new List<IKroikoDetail>();
         foreach (var detail in details)
         {
-            result.Add(new MegaTrading
+            result.Add(new MegaTradingDetail
             {
                 Id = Guid.NewGuid(),
                 Width = detail.Width,
@@ -38,7 +38,7 @@ public static class MegaTradingExtensions {
     }
     public static ObservableCollection<MegaTradingViewModel> ToMegaTradingViewModel(this IEnumerable<IKroikoDetail> genericDetails)
     {
-        var dtos = genericDetails.Cast<MegaTrading>();
+        var dtos = genericDetails.Cast<MegaTradingDetail>();
         var vms = dtos.Select(x =>
             new MegaTradingViewModel(x.Rotated, x.EdgeBandingMaterial, x.LeftEdge, x.RightEdge, x.BottomEdge, x.TopEdge, x.Id, x.Width, x.Height, x.Thickness, x.Quantity, x.Material, x.Note));
         return new ObservableCollection<MegaTradingViewModel>(vms);
@@ -46,7 +46,7 @@ public static class MegaTradingExtensions {
     }
 
     public static List<IKroikoDetail> ToKroikoDetails(this ObservableCollection<MegaTradingViewModel> megaTradingViewModels) =>
-        megaTradingViewModels.Select(x => new MegaTrading
+        megaTradingViewModels.Select(x => new MegaTradingDetail
         {
             Id = x.Id,
             Width = x.Width,

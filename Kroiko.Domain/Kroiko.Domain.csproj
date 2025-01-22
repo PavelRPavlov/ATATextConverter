@@ -17,6 +17,9 @@
       <None Update="TemplateBuilding\Suliver\template.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="TemplateBuilding\MegaTrading\template.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

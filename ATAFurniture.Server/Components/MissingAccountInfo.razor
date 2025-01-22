@@ -1,6 +1,4 @@
-﻿@using ATAFurniture.Server.Models
-@using Kroiko.Domain
-@using ATAFurniture.Server.DataAccess
+﻿@using Kroiko.Domain
 
 @if (!_isContactInfoComplete)
 {
@@ -47,18 +45,4 @@
         </RadzenFieldset>
     </RadzenTemplateForm>
     <br/>
-}
-@code {
-    [Inject] UserContextService UserContextService { get; set; }
-    [CascadingParameter] ConverterContext ConverterContext { get; set; }
-    bool _isContactInfoComplete;
-
-    protected override void OnInitialized()
-    {
-        ConverterContext.ContactInfo.CompanyName = UserContextService.User.CompanyName;
-        ConverterContext.ContactInfo.MobileNumber = UserContextService.User.MobileNumber;
-        
-        _isContactInfoComplete = !string.IsNullOrEmpty(ConverterContext.ContactInfo.CompanyName) &&
-                                 !string.IsNullOrEmpty(ConverterContext.ContactInfo.MobileNumber);
-    }
 }

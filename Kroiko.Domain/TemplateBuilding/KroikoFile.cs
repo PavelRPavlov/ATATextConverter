@@ -9,7 +9,7 @@ public class LoniraDetail : IKroikoDetail
     public double Height { get; set; }
     public int Quantity { get; set; }
 }
-public class MegaTrading : IKroikoDetail
+public class MegaTradingDetail : IKroikoDetail
 {
     public string? Note { get; set; }
     public string Material { get; set; }
