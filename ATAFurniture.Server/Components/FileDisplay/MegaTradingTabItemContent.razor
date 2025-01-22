@@ -27,7 +27,7 @@
                 <RadzenLabel Text="Използвани материали: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <RadzenDataList Data="@_groups" TItem="PocoRec">
+                <RadzenDataList Data="@_groups" TItem="MegaTradingGroupModel">
                     <Template Context="group">
                         <RadzenRow AlignItems="AlignItems.Center">
                             <RadzenLabel Text="@(group.OldName)"></RadzenLabel>
@@ -67,19 +67,14 @@
     [Parameter] public ConverterContext Context { get; set; }
     
     private ObservableCollection<MegaTradingViewModel> _source;
-    private ObservableCollection<PocoRec> _groups = [];
-
-    private class PocoRec(string oldName, string newName) {
-        public string OldName { get; set;  } = oldName;
-        public string NewName { get; set;  } = newName;
-    }
+    private ObservableCollection<MegaTradingGroupModel> _groups = [];
 
     protected override void OnInitialized()
     {
         _source = File.Details.ToMegaTradingViewModel();
-        _groups = new ObservableCollection<PocoRec>(
+        _groups = new(
             _source.GroupBy(x => x.Material)
-            .Select(x => new PocoRec(x.Key, x.Key))
+            .Select(x => new MegaTradingGroupModel(x.Key, x.Key))
             .ToList());
     }
     
@@ -87,11 +82,15 @@
     {
         foreach (var detail in _source)
         {
-            foreach (var group in _groups.Where(group => detail.Material == group.OldName))
+            foreach (var group in _groups.Where(g => g.OldName == detail.Material ))
             {
                 detail.Material = group.NewName;
-                group.OldName = group.NewName;
             }
+        }
+
+        foreach (var group in _groups)
+        {
+            group.OldName = group.NewName;
         }
         
         StateHasChanged();
