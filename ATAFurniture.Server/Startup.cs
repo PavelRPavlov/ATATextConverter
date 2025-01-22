@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using ATAFurniture.Server.DataAccess;
+using ATAFurniture.Server.TemplateBuilding;
 using ATAFurniture.Server.TemplateBuilding.Lonira;
 using ATAFurniture.Server.TemplateBuilding.Suliver;
 using Microsoft.AspNetCore.Builder;
@@ -13,10 +14,13 @@ using Kroiko.Domain.ExcelFilesGeneration;
 using Kroiko.Domain.ExcelFilesGeneration.XlsxWrapper;
 using Kroiko.Domain.TemplateBuilding;
 using Kroiko.Domain.TemplateBuilding.Lonira;
+using Kroiko.Domain.TemplateBuilding.MegaTrading;
 using Kroiko.Domain.TemplateBuilding.Suliver;
 using Kroiko.Domain.TextFileGeneration;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
@@ -81,6 +85,9 @@ public class Startup(IConfiguration configuration)
         services.AddKeyedScoped<ITemplateBuilder, SuliverTemplateBuilder>(nameof(SupportedCompanies.Suliver));
         services.AddKeyedScoped<ITableRowProvider, SuliverTableRowProvider>(nameof(SupportedCompanies.Suliver));
         services.AddKeyedScoped<IFileNameProvider, SuliverFileNameProvider>(nameof(SupportedCompanies.Suliver));
+        services.AddKeyedScoped<ITemplateBuilder, MegaTradingTemplateBuilder>(nameof(SupportedCompanies.MegaTrading));
+        services.AddKeyedScoped<ITableRowProvider, MegaTradingTableRowProvider>(nameof(SupportedCompanies.MegaTrading));
+        services.AddKeyedScoped<IFileNameProvider, MegaTradingFileNameProvider>(nameof(SupportedCompanies.MegaTrading));
         services.AddScoped<IExcelFileGenerator, ExcelFileGenerator>();
         services.AddScoped<ITextFileGenerator, MegaTradingFileGenerator>();
         services.AddScoped<FileGeneratorService>();
@@ -109,6 +116,7 @@ public class Startup(IConfiguration configuration)
         }
         
         app.UseHttpsRedirection();
+        
         app.UseStaticFiles();
         app.UseRouting();
 

@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="files\" />
     <Folder Include="logs\" />
     <Folder Include="wwwroot\Assets\" />
   </ItemGroup>

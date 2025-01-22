@@ -11,7 +11,7 @@
                 <RadzenLabel Text="Име на клиента: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.CompanyName"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.CompanyName"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -19,7 +19,7 @@
                 <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -90,6 +90,7 @@
             foreach (var group in _groups.Where(group => detail.Material == group.OldName))
             {
                 detail.Material = group.NewName;
+                group.OldName = group.NewName;
             }
         }
         

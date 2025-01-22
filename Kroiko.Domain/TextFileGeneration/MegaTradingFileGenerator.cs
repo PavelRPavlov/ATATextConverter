@@ -13,7 +13,7 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
     private const string S = "\u256a";
     public List<FileSaveContext> CreateTextBasedFile(ContactInfo contactInfo, IEnumerable<KroikoFile> files)
     {
-        var materials = files.SelectMany(f => f.Details.Cast<MegaTrading>())
+        var materials = files.SelectMany(f => f.Details.Cast<MegaTradingDetail>())
             .GroupBy(d => d.Material).ToList();
         var builder = new StringBuilder();
         
@@ -36,7 +36,7 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
         
         foreach (var kroikoFile in files)
         {
-            foreach (MegaTrading detail in kroikoFile.Details)
+            foreach (MegaTradingDetail detail in kroikoFile.Details)
             {
                 CreateDetailRow(builder, detail);
             }
@@ -44,7 +44,7 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
         var file = new FileSaveContext($"{contactInfo.CompanyName}.cut_mt", Encoding.UTF8.GetBytes(builder.ToString()));
         return [file];
     }
-    private static void CreateDetailRow(StringBuilder builder, MegaTrading d)
+    private static void CreateDetailRow(StringBuilder builder, MegaTradingDetail d)
     {
         var rotated = d.Rotated ? "Yes" : "No";
         builder.AppendLine(
@@ -57,7 +57,7 @@ public class MegaTradingFileGenerator : ITextFileGenerator {
         builder.AppendLine(
         $"50{S}220{S}80{S}80{S}50{S}50{S}90{S}90{S}90{S}90{S}200{S}200{S}");
     }
-    private static void CreateMaterialRow(StringBuilder builder, MegaTrading? detail = null)
+    private static void CreateMaterialRow(StringBuilder builder, MegaTradingDetail? detail = null)
     {
         // there should always be exactly 6 rows, containing different materials
         var material = detail == null ? string.Empty : detail.Material;
