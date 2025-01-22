@@ -10,7 +10,7 @@
                 <RadzenLabel Text="Име на клиента: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.CompanyName"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.CompanyName"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -18,7 +18,7 @@
                 <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         @if (_isDifferentEdgeColorNotePresent)
@@ -28,7 +28,7 @@
                     <RadzenLabel Text="Кантиране с друг цвят:"></RadzenLabel>
                 </RadzenColumn>
                 <RadzenColumn>
-                    <SfTextBox @bind-Value="@Context.DifferentEdgeColor"></SfTextBox>
+                    <RadzenTextBox @bind-Value="@Context.DifferentEdgeColor"></RadzenTextBox>
                 </RadzenColumn>
             </RadzenRow>
         }

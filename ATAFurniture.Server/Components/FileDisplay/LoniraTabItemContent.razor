@@ -10,7 +10,7 @@
                 <RadzenLabel Text="Име на клиента: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.CompanyName"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.CompanyName"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -18,7 +18,7 @@
                 <RadzenLabel Text="Телефон за връзка: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></SfTextBox>
+                <RadzenTextBox @bind-Value="@Context.ContactInfo.MobileNumber"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="p-3">
@@ -26,7 +26,7 @@
                 <RadzenLabel Text="Материал: "></RadzenLabel>
             </RadzenColumn>
             <RadzenColumn>
-                <SfTextBox @bind-Value="@File.FileName"></SfTextBox>
+                <RadzenTextBox @bind-Value="@File.FileName"></RadzenTextBox>
             </RadzenColumn>
         </RadzenRow>
 
