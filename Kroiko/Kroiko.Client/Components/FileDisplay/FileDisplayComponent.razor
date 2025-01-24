@@ -1,0 +1,33 @@
+﻿<RadzenCard>
+    <RadzenLabel class="py-3" Text="Прегледай информацията и редактирай при необходимост:"></RadzenLabel>
+    @if (_isLoadingFiles)
+    {
+        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+            <Template><h6>Working</h6></Template>
+        </RadzenProgressBarCircular>
+    }
+    else
+    {
+        <RadzenTabs>
+            <Tabs>
+                @foreach (var file in Context.Files)
+                {
+                    switch (Context.TargetCompany.Name)
+                    {
+                        case nameof(SupportedCompanies.Lonira):
+                            <LoniraTabItemContent File="@file" Context="@Context"/>
+                            break;
+                        case nameof(SupportedCompanies.MegaTrading):
+                            <MegaTradingTabItemContent File="@file" Context="@Context"/>
+                            break;
+                        case nameof(SupportedCompanies.Suliver):
+                            <SuliverTabItemContent File="@file" Context="@Context"/>
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            </Tabs>
+        </RadzenTabs>
+    }
+</RadzenCard>

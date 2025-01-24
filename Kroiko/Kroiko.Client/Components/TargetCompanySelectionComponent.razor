@@ -1,0 +1,10 @@
+﻿<RadzenCard>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenLabel Text="Изберете към коя фирма ще правите поръчка: "></RadzenLabel>
+        <RadzenDropDown 
+            TValue="SupportedCompany"
+            TextProperty="Translation"
+            @bind-Value="@Context.TargetCompany"
+            Data="@_supportedCompanies"></RadzenDropDown>
+    </RadzenRow>
+</RadzenCard>

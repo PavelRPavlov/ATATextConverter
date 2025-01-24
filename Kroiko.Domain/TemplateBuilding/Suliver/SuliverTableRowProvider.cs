@@ -45,14 +45,14 @@ public class SuliverTableRowProvider : ITableRowProvider
             case nameof(SuliverDetail.Material):
             case nameof(SuliverDetail.Note):
             case nameof(SuliverDetail.Cabinet):
-                newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber))
+                newCell = new(Cell.GetCellName(rowNumber, currentColumnNumber))
                 {
                     Value = propertyStringValue
                 };
                 break;
                 
             default:
-                newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+                newCell = new(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
                 {
                     Value = propertyStringValue
                 };

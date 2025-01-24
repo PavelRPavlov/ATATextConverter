@@ -1,0 +1,23 @@
+﻿<RadzenCard>
+    <RadzenLabel class="py-3" Text="Избери една от опциите:"></RadzenLabel>
+    <RadzenRow class="py-3">
+        <RadzenButton CssClass="e-primary" Click="@OnCreateFilesOptionSelected">
+            <i class="bi-file-earmark-excel"></i> Генерирай бланки за поръчка
+        </RadzenButton>
+    </RadzenRow>
+    @if (_areFilesGenerating)
+    {
+        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+            <Template><h6>Working</h6></Template>
+        </RadzenProgressBarCircular>
+    }
+    else
+    {
+        <ul class="p-4">
+            @foreach (var file in _files)
+            {
+                <li class="p-3"><a href="@file.Url" download="@file.Name">@file.Name</a></li>
+            }
+        </ul>
+    }
+</RadzenCard>

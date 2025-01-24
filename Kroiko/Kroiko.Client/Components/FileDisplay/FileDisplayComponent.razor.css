@@ -1,0 +1,22 @@
+﻿.e-tab .e-tab-header {
+    background: #FAFAFA !important;
+    color: whitesmoke;
+}
+.e-tab .e-tab-header .e-toolbar-item.e-active {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 6px 6px 0 0;
+    color: black;
+}
+.e-tab .e-tab-header .e-toolbar-item .e-tab-wrap:hover {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 6px 6px 0 0;
+    color: black;
+}
+.e-tab .e-content {
+    background: #FAFAFA !important;
+    border: 1px solid black;
+}

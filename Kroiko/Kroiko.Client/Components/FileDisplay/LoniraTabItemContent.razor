@@ -1,0 +1,27 @@
+﻿@using Kroiko.Domain.TemplateBuilding.Lonira
+<RadzenTabsItem>
+    <Template>@File.FileName</Template>
+    <ChildContent>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Материал: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <RadzenTextBox @bind-Value="@File.FileName"></RadzenTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenDataGrid Data="@_source"
+                        TItem="LoniraDetail"
+                        AllowPaging="true"
+                        EditMode="DataGridEditMode.Single"
+                        PageSize="25">
+            <Columns>
+                <RadzenDataGridColumn Property="@nameof(LoniraDetail.Height)" Title="Размер по фладер [мм]" MinWidth="160"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(LoniraDetail.Width)" Title="Размер срещу фладер [мм]" MinWidth="180"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(LoniraDetail.Quantity)" Title="Брой детайли"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(LoniraDetail.LoniraEdges)" Title="Кантиране"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(LoniraDetail.Note)" Title="Забележка"></RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </ChildContent>
+</RadzenTabsItem>

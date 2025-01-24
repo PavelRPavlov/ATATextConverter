@@ -1,0 +1,34 @@
+﻿@using Kroiko.Domain.TemplateBuilding.Suliver
+<RadzenTabsItem>
+    <Template>@File.FileName</Template>
+    <ChildContent>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Материал: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <RadzenTextBox @bind-Value="@File.FileName"></RadzenTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenDataGrid Data="@_source"
+                        TItem="SuliverDetail"
+                        AllowPaging="true"
+                        EditMode="DataGridEditMode.Single"
+                        PageSize="25">
+            <Columns>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Material)" Title="Материал" MinWidth="160"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.MaterialThickness)" Title="Деб. (мм)"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.IsGrainDirectionReversed)" Title="Рот*"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Height)" Title="Дължина (мм)"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Width)" Title="Ширина (мм)"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Quantity)" Title="Брой"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Cabinet)" Title="Име Дет."></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.LongEdge)" Title="Дъл."></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.LongEdge2)" Title="Дъл.2"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.ShortEdge)" Title="Шир."></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.ShortEdge2)" Title="Шир.2"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(SuliverDetail.Note)" Title="Забележка"></RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </ChildContent>
+</RadzenTabsItem>

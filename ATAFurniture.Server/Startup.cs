@@ -1,9 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using ATAFurniture.Server.DataAccess;
-using ATAFurniture.Server.TemplateBuilding;
-using ATAFurniture.Server.TemplateBuilding.Lonira;
-using ATAFurniture.Server.TemplateBuilding.Suliver;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

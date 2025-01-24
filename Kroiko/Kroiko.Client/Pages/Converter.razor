@@ -1,0 +1,17 @@
+﻿@page "/"
+@rendermode InteractiveWebAssembly
+
+<RadzenStack Gap="1em">
+    <TargetCompanySelectionComponent Context="@Context"/>
+    <FileUploadComponent Context="@Context"/>
+
+    @if (Context.Details.Count > 0)
+    {
+        <FileDisplayComponent Context="@Context"/>
+    }
+
+    @if (Context.Files.Count > 0)
+    {
+        <OrderHandlingComponent Context="@Context"/>
+    }
+</RadzenStack>

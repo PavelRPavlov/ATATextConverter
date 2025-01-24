@@ -7,10 +7,10 @@ public class LoniraFileNameProvider : IFileNameProvider
         // TODO legacy ???
         // var name = $"{DateTime.Now:yyyy-MM-dd}_{{CompanyName}}_{{Material}}.xlsx";
         
-        var name = "{Material}.xlsx";
+        var name = $"{TemplateBuilderBase.MaterialNameCellFlag}.xlsx";
         if (sheet is LoniraSheet loniraSheet)
         {
-            name = name.Replace("{Material}", loniraSheet.SheetMaterial);
+            name = name.Replace($"{TemplateBuilderBase.MaterialNameCellFlag}", loniraSheet.SheetMaterial);
         }
 
         return name;

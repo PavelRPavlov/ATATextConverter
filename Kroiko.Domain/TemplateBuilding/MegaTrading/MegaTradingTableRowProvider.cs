@@ -41,14 +41,14 @@ public class MegaTradingTableRowProvider: ITableRowProvider
             // NOTE this switch controls how the content of a cell will be aligned
             case nameof(MegaTradingDetail.Material):
             case nameof(MegaTradingDetail.Note):
-                newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber))
+                newCell = new(Cell.GetCellName(rowNumber, currentColumnNumber))
                 {
                     Value = propertyStringValue
                 };
                 break;
                 
             default:
-                newCell = new Cell(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
+                newCell = new(Cell.GetCellName(rowNumber, currentColumnNumber), 1)
                 {
                     Value = propertyStringValue
                 };

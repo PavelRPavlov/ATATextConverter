@@ -27,7 +27,7 @@ public class ExcelFileGenerator() : IExcelFileGenerator
             }
             writer.Dispose();
             var fileName = fileNameProvider.GetFileNameForSheet(sheet);
-            result.Add(new FileSaveContext(fileName, str.ToArray()));
+            result.Add(new(fileName, str.ToArray()));
         }
 
         return Task.FromResult(result);
@@ -52,7 +52,7 @@ public class ExcelFileGenerator() : IExcelFileGenerator
         return lastFilledRow;
     }
 
-    private void CreateSingleRow(XlsxWriter writer, Cell cell)
+    private static void CreateSingleRow(XlsxWriter writer, Cell cell)
     {
         if (cell.ContentAlignment == 0)
         {
@@ -71,14 +71,14 @@ public class ExcelFileGenerator() : IExcelFileGenerator
                 writer.Write(
                     val,
                     XlsxStyle.Default.With(
-                        alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+                        alignment: new(XlsxAlignment.Horizontal.Center)));
             }
             else
             {
                 writer.Write(
                     cell.Value,
                     XlsxStyle.Default.With(
-                        alignment: new XlsxAlignment(XlsxAlignment.Horizontal.Center)));
+                        alignment: new(XlsxAlignment.Horizontal.Center)));
             }
         }
     }

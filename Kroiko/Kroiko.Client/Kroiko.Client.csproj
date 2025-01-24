@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+        <UserSecretsId>c21733cd-891a-4915-9b7c-87fea01d9ed8</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.1" />
+        <PackageReference Include="Radzen.Blazor" Version="5.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\FileUploadComponent.razor" />
+      <AdditionalFiles Include="Components\OrderHandlingComponent.razor" />
+      <AdditionalFiles Include="Components\TargetCompanySelectionComponent.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Kroiko.Domain\Kroiko.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

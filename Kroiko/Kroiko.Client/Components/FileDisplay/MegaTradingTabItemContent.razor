@@ -1,0 +1,33 @@
+﻿@using Kroiko.Domain.Models
+<RadzenTabsItem>
+    <Template>@File.FileName</Template>
+    <ChildContent>
+        <RadzenRow class="p-3">
+            <RadzenColumn>
+                <RadzenLabel Text="Материал: "></RadzenLabel>
+            </RadzenColumn>
+            <RadzenColumn>
+                <RadzenTextBox @bind-Value="@File.FileName"></RadzenTextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenDataGrid Data="@_source"
+                        TItem="MegaTradingViewModel"
+                        AllowPaging="true"
+                        EditMode="DataGridEditMode.Single"
+                        PageSize="25">
+            <Columns>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Material)" Title="Материал на детайла" MinWidth="160"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Height)" Title="X - фладер" MinWidth="160"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Width)" Title="Y" MinWidth="180"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Quantity)" Title="Брой"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Rotated)" Title="Rot."></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.LeftEdge)" Title="Ляво"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.BottomEdge)" Title="Долу"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.RightEdge)" Title="Дясно"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.TopEdge)" Title="Горе"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.EdgeBandingMaterial)" Title="Материал - Кант"></RadzenDataGridColumn>
+                <RadzenDataGridColumn Property="@nameof(MegaTradingViewModel.Note)" Title="Забележка"></RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </ChildContent>
+</RadzenTabsItem>

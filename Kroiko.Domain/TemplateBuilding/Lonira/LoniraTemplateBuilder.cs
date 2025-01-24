@@ -1,24 +1,15 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Kroiko.Domain;
-using Kroiko.Domain.CellsExtracting;
-using Kroiko.Domain.TemplateBuilding;
-using Kroiko.Domain.TemplateBuilding.Lonira;
+﻿using Kroiko.Domain.CellsExtracting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace ATAFurniture.Server.TemplateBuilding.Lonira;
+namespace Kroiko.Domain.TemplateBuilding.Lonira;
 
 public class LoniraTemplateBuilder([FromKeyedServices(nameof(SupportedCompanies.Lonira))] ITableRowProvider tableRowProvider, string? templateFilePath = null ) : TemplateBuilderBase
 {
-    private const string MaterialNameCellFlag = "{MaterialName}";
+    private readonly string _defaultTemplateFilePath = "Kroiko.Domain.TemplateBuilding.Lonira.template.json"; 
+        //Path.Combine(Assembly.GetExecutingAssembly().Location, "..", "TemplateBuilding", "Lonira", "template.json");
 
-    private readonly string _defaultTemplateFilePath =
-        Path.Combine(Assembly.GetExecutingAssembly().Location, "..", "TemplateBuilding", "Lonira", "template.json");
-
-    public override async Task<IList<ISheet>> BuildTemplateAsync(ContactInfo contactInfo, IEnumerable<KroikoFile> files)
+    public override async Task<IList<ISheet>> BuildTemplateAsync(IEnumerable<KroikoFile> files)
     {
         List<ISheet> sheets = new();
         foreach (var file in files)
@@ -30,7 +21,7 @@ public class LoniraTemplateBuilder([FromKeyedServices(nameof(SupportedCompanies.
             var sheet = await ReadTemplateAsync<LoniraSheet>(templateFilePath ?? _defaultTemplateFilePath);
             sheet.SheetMaterial = groupMaterial;
             
-            var tableStartCell = PopulateStaticInfo(sheet, contactInfo);
+            var tableStartCell = PopulateStaticInfo(sheet);
             PopulateDetails(sheet, tableStartCell, groupDetails, tableRowProvider);
             PopulateMaterialName(sheet, groupMaterial);
             

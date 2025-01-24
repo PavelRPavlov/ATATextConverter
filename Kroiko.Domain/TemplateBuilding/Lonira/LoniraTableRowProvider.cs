@@ -31,7 +31,7 @@ public class LoniraTableRowProvider : ITableRowProvider
                 propertyValue = "";
             }
             var cellContentAlignment = CenteredCellsContent.Contains(property) ? (byte)1 : (byte)0;
-            result.Add(new Cell(Cell.GetCellName(rowNumber, startColumnNumber), cellContentAlignment)
+            result.Add(new(Cell.GetCellName(rowNumber, startColumnNumber), cellContentAlignment)
             {
                 Value = propertyValue
             });

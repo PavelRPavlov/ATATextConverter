@@ -1,0 +1,27 @@
+﻿<RadzenCard>
+    <RadzenRow>
+        <RadzenStack>
+            <RadzenLabel Text="Избери Polyboard файл:"></RadzenLabel>
+            <RadzenUpload Change=@OnClientChange Multiple="false">
+            </RadzenUpload>
+        </RadzenStack>
+        @if (_isLoadingFiles)
+        {
+            <RadzenColumn>
+                <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                    <Template><h6>Working</h6></Template>
+                </RadzenProgressBarCircular>
+            </RadzenColumn>
+        }
+        @if (_isError)
+        {
+            <RadzenColumn>
+                <RadzenAlert Text="Каченият файл не отговаря на изискванията за формат! Моля, качете друг файл." AlertStyle="AlertStyle.Danger" Variant="Variant.Filled"></RadzenAlert>
+                
+                <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Filled">
+                    Информация за формата може да намерите <a href="configuration">ТУК</a>
+                </RadzenAlert>
+            </RadzenColumn>
+        }
+    </RadzenRow>
+</RadzenCard>

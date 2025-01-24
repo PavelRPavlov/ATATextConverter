@@ -1,8 +1,3 @@
 ﻿namespace Kroiko.Domain.ExcelFilesGeneration;
 
-public class FileSaveContext(string fileName, byte[] content)
-{
-    public byte[] Content { get; init; } = content;
-
-    public string FileName { get; set; } = fileName;
-}
+public record FileSaveContext(string FileName, byte[] Content);
